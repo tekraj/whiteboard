@@ -1,0 +1,8 @@
+body{padding-top:50px;}
+.form-group .form-control{border:1px solid #ccc;padding:4px 8px;}
+.card .card .header{padding:5px 20px;}
+.card .card .header small{margin-top:-15px;text-transform: capitalize;}
+
+.unmapped-std>div{margin-bottom:0!important;}
+.unmapped-std span{padding-top:7px;font-weight: bold;}
+.nav-tabs li.active a,.nav-tabs li:hover a,.nav-tabs li a:hover,.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus{background:#fff!important;}

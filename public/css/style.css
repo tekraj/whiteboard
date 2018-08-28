@@ -1,0 +1,19 @@
+.hidden{display:none;}
+#calender a{
+    display: block;
+    padding: 10px;
+    font-size:20px;
+    font-weight:bold;
+    text-align: center;
+}
+
+#calender a.disabled{color:#ccc;}
+.table>tbody>tr>td.today{
+    background: #c4e3f3;
+}
+#calender a span i{
+    font-size:14px;
+}
+.label{font-size:12px;display: inline-block;margin-right:2px;border-radius: 3px;padding:1px 3px;line-height: normal;}
+.label.label-primary{background:#0D47A1;color:#fff;}
+.cmp-dp-btn.J-dtp-btn-clear{display: none!important;}

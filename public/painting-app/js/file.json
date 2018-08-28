@@ -1,0 +1,43 @@
+[
+  {
+    "text": "My Cloudpack",
+    "children": [
+      {
+        "text" : "College"
+
+      },
+      {
+        "text" : "Alberta K to 12 Lessions",
+        "children" : [
+          {
+            "text" : "Class 1 Science",
+
+            "icon" : "images/file-icon.png",
+            "a_attr" : {"class":"js-read-cloud-file","file":"files/cv.pdf"}
+          },
+          {
+            "text" : "Class 2 Science",
+            "a_attr" : {"class":"js-read-cloud-file","file":"files/demoform1.pdf"},
+            "icon" : "images/file-icon.png"
+          },
+          {
+            "text" : "Class 3 Science",
+            "a_attr" : {"class":"js-read-cloud-file","file":"files/pdf-sample.pdf"},
+            "icon" : "images/file-icon.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "text" : "Adobe",
+    "children" : [
+      {
+        "text" : "Adobe"
+      },
+      {
+        "text" : "Illustrator"
+      }
+    ]
+  }
+]
