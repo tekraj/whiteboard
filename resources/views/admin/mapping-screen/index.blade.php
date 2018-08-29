@@ -27,11 +27,11 @@
 
 <div class="container-fluid">
     <div class="subject-panel">
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" role="tablist" id="tab-lists">
             <li ng-repeat="subject in subjects track by $index" role="presentation" ng-class="{'active':$index==0}"><a href="#tab-@{{subject.id}}"  role="tab" data-toggle="tab" >@{{subject.name}}</a></li>
         </ul>
-        <div class="tab-content" style="background: #fff;">
-            <div ng-repeat="subject in subjects track by $index" role="tabpanel" class="tab-pane" ng-class="{'active':$index==0}" id="tab-@{{ $subject.id }}" style="height: 400px;overflow-y: auto;">
+        <div class="tab-content" id="tab-contents" style="background: #fff;">
+            <div ng-repeat="subject in subjects track by $index" role="tabpanel" class="tab-pane" ng-class="{'active':$index==0}" id="tab-@{{subject.id }}" style="height: 400px;overflow-y: auto;">
                 <div class="clearfix">
                     <div class="col-sm-6">
                         <div class="panel panel-default">
@@ -39,14 +39,13 @@
                                 Tutors
                             </div>
                             <div class="panel-body">
-                                <div class="card js-tutor-card" ng-repeat="tutor in tutors track by tutor.ObjectID">
-                                    <div class="header bg-green"><h2 ng-bind="tutor.Name"></h2><small ng-bind="tutor.subject" class="pull-right"></small></div>
+                                <div class="card js-tutor-card" ng-repeat="tutor in tutors track by $index" ng-if="tutor.subject==subject.id"  data-id="@{{ tutor.sub }}">
+                                    <div class="header bg-green"><h2 ng-bind="tutor.Name"></h2>
+                                    </div>
                                     <div class="body">
-                                        <div class="list-group">
-                                            <a href="#" class="list-group-item " ng-repeat="student in tutor.subscribedStudents track by student.ObjectID">
-                                                <span ng-bind="student.Name" class="text-capitalize"></span>
-                                            </a>
-                                        </div>
+                                        <ul class="list-group" style="list-style: none;">
+                                            <li class="ui-state-default js-student" ng-repeat="student in tutor.subscribedStudents track by student.ObjectID" style="padding:5px;"  data-id="@{{ student.sub }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span ng-bind="student.Name" class="text-capitalize"></span></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -58,70 +57,67 @@
                                 Unmapped Students
                             </div>
                             <div class="panel-body">
-                                <div class="list-group">
-                                    <a class="list-group-item unmapped-std row" href="#" ng-repeat="student in students track by student.ObjectID" ng-if="!student.tutor">
-                                            <span ng-bind="student.Name" class="pull-left text-capitalize"></span>
-                                    </a>
-                                </div>
+                                <ul class="list-group" style="list-style: none;">
+                                    <li class="ui-state-default js-student"  ng-repeat="student in students track by student.ObjectID" ng-if="!student.tutor && student.subject==subject.id" style="padding:5px;" data-id="@{{ student.sub }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span ng-bind="student.Name" class="text-capitalize"></span></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="header bg-deep-orange">
-                    <h2>
-                        Unmapped Students <small class="pull-right">Map them with tutors.</small>
-                    </h2>
-                </div>
-                <div class="body">
-                    <div class="list-group">
-                        <a class="list-group-item unmapped-std row" href="#" ng-repeat="student in students track by student.ObjectID" ng-if="!student.tutor">
-                            <div class="col-sm-7">
-                                <span ng-bind="student.Name" class="pull-left text-capitalize"></span>
-                                <span ng-bind="student.subject" class="pull-right text-capitalize"></span>
+    {{--<div class="row">--}}
+        {{--<div class="col-sm-6">--}}
+            {{--<div class="card">--}}
+                {{--<div class="header bg-deep-orange">--}}
+                    {{--<h2>--}}
+                        {{--Unmapped Students <small class="pull-right">Map them with tutors.</small>--}}
+                    {{--</h2>--}}
+                {{--</div>--}}
+                {{--<div class="body">--}}
+                    {{--<div class="list-group">--}}
+                        {{--<a class="list-group-item unmapped-std row" href="#" ng-repeat="student in students track by student.ObjectID" ng-if="!student.tutor">--}}
+                            {{--<div class="col-sm-7">--}}
+                                {{--<span ng-bind="student.Name" class="pull-left text-capitalize"></span>--}}
+                                {{--<span ng-bind="student.subject" class="pull-right text-capitalize"></span>--}}
 
-                            </div>
-                            <div class="col-sm-5">
-                                <select class="form-control js-map-student" data-student="@{{student.socket}}">
-                                    <option>Select tutor to map</option>
-                                    <option ng-repeat="tutor in tutors" ng-if="tutor.subject==student.subject" value="@{{tutor.socket}}">@{{tutor.Name}}</option>
-                                </select>
-                            </div>
+                            {{--</div>--}}
+                            {{--<div class="col-sm-5">--}}
+                                {{--<select class="form-control js-map-student" data-student="@{{student.socket}}">--}}
+                                    {{--<option>Select tutor to map</option>--}}
+                                    {{--<option ng-repeat="tutor in tutors" ng-if="tutor.subject==student.subject" value="@{{tutor.socket}}">@{{tutor.Name}}</option>--}}
+                                {{--</select>--}}
+                            {{--</div>--}}
 
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="header bg-blue">
-                    <h2>
-                        Tutors and Students
-                    </h2>
-                </div>
-                <div class="body">
-                    <div class="card js-tutor-card" ng-repeat="tutor in tutors track by tutor.ObjectID">
-                        <div class="header bg-green"><h2 ng-bind="tutor.Name"></h2><small ng-bind="tutor.subject" class="pull-right"></small></div>
-                        <div class="body">
-                            <div class="list-group">
-                                <a href="#" class="list-group-item " ng-repeat="student in tutor.subscribedStudents track by student.ObjectID">
-                                    <span ng-bind="student.Name" class="text-capitalize"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                        {{--</a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="col-sm-6">--}}
+            {{--<div class="card">--}}
+                {{--<div class="header bg-blue">--}}
+                    {{--<h2>--}}
+                        {{--Tutors and Students--}}
+                    {{--</h2>--}}
+                {{--</div>--}}
+                {{--<div class="body">--}}
+                    {{--<div class="card js-tutor-card" ng-repeat="tutor in tutors track by tutor.ObjectID">--}}
+                        {{--<div class="header bg-green"><h2 ng-bind="tutor.Name"></h2><small ng-bind="tutor.subject" class="pull-right"></small></div>--}}
+                        {{--<div class="body">--}}
+                            {{--<div class="list-group">--}}
+                                {{--<a href="#" class="list-group-item " ng-repeat="student in tutor.subscribedStudents track by student.ObjectID">--}}
+                                    {{--<span ng-bind="student.Name" class="text-capitalize"></span>--}}
+                                {{--</a>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
 
-                </div>
-            </div>
-        </div>
-    </div>
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 </div>
 <script src="{{asset('painting-app/js/jquery.min.js')}}"></script>
 <script src="{{asset('painting-app/chatjs/socket.io.js')}}"></script>

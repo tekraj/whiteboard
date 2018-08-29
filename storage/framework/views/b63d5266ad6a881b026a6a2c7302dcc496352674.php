@@ -54,7 +54,7 @@
                         <?php if($date === \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d')): ?>
 
                             <span class="text-danger" data-toggle="tooltip" data-placement="top"
-                                  title="Schedule for <?php echo e($schedule->subject->name); ?> betwwn <?php echo e(\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s')); ?>"><i
+                                  title="Schedule for <?php echo e($schedule->subject->name); ?> between <?php echo e(\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s')); ?>"><i
                                         class="fa fa-circle"></i></span>
                         <?php endif; ?>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
