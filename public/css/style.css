@@ -17,3 +17,13 @@
 .label{font-size:12px;display: inline-block;margin-right:2px;border-radius: 3px;padding:1px 3px;line-height: normal;}
 .label.label-primary{background:#0D47A1;color:#fff;}
 .cmp-dp-btn.J-dtp-btn-clear{display: none!important;}
+#loader{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    right:0;
+    background:rgba(0,0,0,0.2);
+    display:none;
+    padding-top:30px;
+}

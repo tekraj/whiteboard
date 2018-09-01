@@ -24,7 +24,9 @@
     <title>White Board</title>
 </head>
 <body ng-app="mappingApp" ng-controller="MappingController">
-
+<div id="loader" class="text-center" style="display: none;">
+    <img src="<?php echo e(asset('images/loader.gif')); ?>" alt="">
+</div>
 <div class="container-fluid">
     <div class="subject-panel">
         <ul class="nav nav-tabs" role="tablist" id="tab-lists">
@@ -44,7 +46,7 @@
                                     </div>
                                     <div class="body">
                                         <ul class="list-group" style="list-style: none;">
-                                            <li class="ui-state-default js-student" ng-repeat="student in tutor.subscribedStudents track by student.ObjectID" style="padding:5px;"  data-id="{{ student.sub }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span ng-bind="student.Name" class="text-capitalize"></span></li>
+                                            <li class="ui-state-default js-student tutor-student" ng-repeat="student in tutor.subscribedStudents track by student.ObjectID" style="padding:5px;"  data-student="{{ student }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span ng-bind="student.Name" class="text-capitalize"></span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -52,13 +54,13 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="panel panel-default">
+                        <div class="panel panel-default js-student-card">
                             <div class="panel-heading">
                                 Unmapped Students
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group" style="list-style: none;">
-                                    <li class="ui-state-default js-student"  ng-repeat="student in students track by student.ObjectID" ng-if="!student.tutor && student.subject==subject.id" style="padding:5px;" data-id="{{ student.sub }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span ng-bind="student.Name" class="text-capitalize"></span></li>
+                                    <li class="ui-state-default js-student"  ng-repeat="student in students track by student.ObjectID" ng-if="!student.tutor && student.subject==subject.id" style="padding:5px;" data-id="{{ student }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span ng-bind="student.Name" class="text-capitalize"></span></li>
                                 </ul>
                             </div>
                         </div>
