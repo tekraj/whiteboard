@@ -12,10 +12,14 @@
         <tbody>
 
         @foreach($allSchedules as $key=>$schedule)
+            <?php
+            $startDate = \Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Kolkata')->format('d M Y H:i');
+            $endDate = \Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Kolkata')->format('d M Y H:i')
+            ?>
             <tr>
                 <td>{{$key+1}}</td>
-                <td>{{\Carbon\Carbon::parse($schedule->schedule_start_time)->format('d M Y H:i')}}</td>
-                <td>{{\Carbon\Carbon::parse($schedule->schedule_end_time)->format('d M Y H:i')}}</td>
+                <td>{{$startDate}}</td>
+                <td>{{$endDate}}</td>
                 <td>{{$schedule->subject_name}}</td>
                 <td>{{$schedule->tutor_name}}</td>
 

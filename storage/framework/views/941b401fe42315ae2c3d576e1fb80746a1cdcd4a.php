@@ -68,11 +68,15 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <?php echo e(Form::label('password', ($student->id>0 ? 'Password' : 'Password*'), ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
+                            <?php echo e(Form::label('password',  'Password*', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
 
                             <div class="col-sm-9">
-                                <?php echo e(Form::password('password', ['class' => 'form-control',($student->id>0 ? '':'required')=>true,'autocomplete'=>str_random(7)])); ?>
-
+                                <div class="input-group">
+                                    <input type="password" value="<?php echo e($student->password_plain); ?>" name="password" autocompleted="<?php echo e(str_random(7)); ?>" required="true" class="form-control">
+                                    <label  for="edit-schedule-start-date" class="input-group-addon js-show-passwaord">
+                                        <span class="fa fa-eye"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>

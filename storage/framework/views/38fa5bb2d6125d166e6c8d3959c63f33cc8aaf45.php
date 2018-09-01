@@ -68,11 +68,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <?php echo e(Form::label('password', ($tutor->id>0?'Password' : 'Password*'), ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
+                            <div class="form-group row">
+                                <?php echo e(Form::label('password',  'Password*', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
 
-                            <div class="col-sm-9">
-                                <?php echo e(Form::password('password', ['class' => 'form-control',($tutor->id>0?'':'required')=>true,'autocomplete'=>str_random(7)])); ?>
-
+                                <div class="col-sm-9">
+                                    <input type="password" value="<?php echo e($tutor->password_plain); ?>" name="password" autocompleted="<?php echo e(str_random(7)); ?>" required="true" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>

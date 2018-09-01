@@ -1854,5 +1854,15 @@
         });
     });
 
+    $('.js-show-passwaord').click(function(){
+        if($(this).hasClass('show')){
+            $(this).removeClass('show');
+            $(this).parent().find('input[name="password"]').attr('type','password');
+        }else{
+            $(this).addClass('show');
+            $(this).parent().find('input[name="password"]').attr('type','text');
+        }
+    });
+
 })(jQuery);
 

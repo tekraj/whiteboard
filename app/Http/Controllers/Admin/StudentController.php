@@ -60,6 +60,7 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->email = $request->email;
         $student->password = bcrypt($request->password);
+        $student->password_plain = $request->password;
         $student->status = $request->status;
         $student->school_name = $request->school_name;
         $student->contact_no = $request->contact_no;
@@ -125,7 +126,7 @@ class StudentController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
-            'password'=>'nullable|min:6',
+            'password'=>'min:6',
             'status' => 'required',
             'contact_no' => 'required',
             'gender' => 'required',
@@ -137,6 +138,7 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->email = $request->email;
         $student->password = bcrypt($request->password);
+        $student->password_plain = $request->password;
         $student->status = $request->status;
         $student->school_name = $request->school_name;
         $student->contact_no = $request->contact_no;

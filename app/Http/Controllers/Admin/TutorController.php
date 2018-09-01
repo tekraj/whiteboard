@@ -59,6 +59,7 @@ class TutorController extends Controller
         $tutor->name = $request->name;
         $tutor->email = $request->email;
         $tutor->password = bcrypt($request->password);
+        $tutor->password_plain = $request->password;
         $tutor->status = $request->status;
         $tutor->school_name = $request->school_name;
         $tutor->contact_no = $request->contact_no;
@@ -122,7 +123,7 @@ class TutorController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
-            'password'=>'nullable|min:6',
+            'password'=>'required|min:6',
             'status' => 'required',
             'contact_no' => 'required',
             'gender' => 'required',
@@ -134,6 +135,7 @@ class TutorController extends Controller
         $tutor->name = $request->name;
         $tutor->email = $request->email;
         $tutor->password = bcrypt($request->password);
+        $tutor->password_plain = $request->password;
         $tutor->status = $request->status;
         $tutor->school_name = $request->school_name;
         $tutor->contact_no = $request->contact_no;
