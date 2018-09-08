@@ -108,8 +108,8 @@ class UtilityController extends Controller
         if($type=='student'){
             $subjectId = session('student_subject');
             $sessions = SessionRepository::getStudentSessions($user->id,$subjectId,$filters);
-        }else if($type=='tutors'){
-            $sessions = SessionRepository::getStudentSessions($user->id,$user->session_id,$filters);
+        }else if($type=='tutor'){
+            $sessions = SessionRepository::getTutorSessions($user->id,$user->session_id,$filters);
         }
         $view = View::make('utility.session-table',compact('sessions','type'))->render();
         return response()->json(['status'=>true,'view'=>$view]);

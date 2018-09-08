@@ -1,7 +1,7 @@
 @extends('admin.master-layout')
 @section('content')
     <div class="container-fluid">
-        <h4>Tutor Session Detail <a href="{{url('admin/tutors')}}" class="btn btn-default pull-right">Back</a></h4>
+        <h4>Tutor Session Detail <a href="{{url('admin/tutors')}}" class="btn btn-default pull-right"><b>Back</b></a></h4>
 
     <div class="card">
         <div class="card-header">

@@ -1,6 +1,6 @@
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid">
-        <h4>Tutor Session Detail</h4>
+        <h4>Tutor Session Detail <a href="<?php echo e(url('admin/tutors')); ?>" class="btn btn-default pull-right"><b>Back</b></a></h4>
 
     <div class="card">
         <div class="card-header">

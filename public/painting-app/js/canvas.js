@@ -468,7 +468,7 @@ function canvasDrawing(user, socket) {
                     canvasObjects = [];
                     foreignCanvasData = [];
                     redrawCanvas();
-                    if(user.userType=='tutor'){
+                    if(user.userType=='tutor' && $onlineUsers.find('li.active').length>0){
                         var rec = $onlineUsers.find('li.active').find('.js-online-users').data().user;
                         socket.emit('redraw-canvas', {receiver: rec,type:'new-board'});
                     }
@@ -486,7 +486,7 @@ function canvasDrawing(user, socket) {
             canvasObjects = [];
             foreignCanvasData = [];
             redrawCanvas();
-            if(user.userType=='tutor'){
+            if(user.userType=='tutor' && $onlineUsers.find('li.active').length>0){
                 var rec = $onlineUsers.find('li.active').find('.js-online-users').data().user;
                 socket.emit('redraw-canvas', {receiver: rec,type:'new-board'});
             }
@@ -506,7 +506,7 @@ function canvasDrawing(user, socket) {
         textHolder.css({'font-size': fontSize, 'color': currentColor, 'font-style': 'normal', 'font-weight': 'normal'});
         dc.attr({'height': parentHeight - 8, 'width': parentWidth - 5});
         fa.attr({'height': parentHeight - 8, 'width': parentWidth - 5});
-        sc.attr({'height': parentHeight - 8, 'width': parentWidth - 5});
+        // rC.attr({'height': parentHeight - 8, 'width': parentWidth - 5});
         pencilPoints = [];
         $enableTextTool.click();
         $('#color-indicator').css('background', '#000');
@@ -1431,14 +1431,17 @@ function canvasDrawing(user, socket) {
         var ctx = noAnimation ? drawingCanvas : fakeCanvas;
         fakeCanvas.clearRect(0, 0, fakeCanvasMaxLenght, fakeCanvasMaxLenght);
         if (noAnimation) {
-            var pointsArray = [];
-            var i = x2 > x1 ? x1 : x2,
-                endP = ( x2 > x1 ? x2 : x1) + 2;
+            var pointsArray = {};
+            var i = x2 > x1 ? x1 : x2;
+            var endP = ( x2 > x1 ? x2 : x1) + 2;
             var factor = w / 10;
+            var counter = 0;
             while (i <= endP) {
-
-                pointsArray.push({x: Math.floor(i), y: y1});
+                pointsArray[counter]={x: Math.floor(i), y: y1};
                 i += factor;
+               if(counter>10)
+                    break;
+                counter++;
             }
 
             for (var j in pointsArray) {
@@ -1472,6 +1475,7 @@ function canvasDrawing(user, socket) {
         ctx.stroke();
         ctx.closePath();
         drawArrow(ctx, endX, y1, startX, y1, color, size);
+        pointsArray = {};
     }
 
     /**
@@ -1542,13 +1546,18 @@ function canvasDrawing(user, socket) {
 
         if (noAnimation) {
             //draw vertical lines
-            var pointsArrayX = [];
+            var pointsArrayX = {};
+
+            var counterx = 0;
             var i = (x2 > x1 ? x1 : x2) + 10,
                 endPX = ( x2 > x1 ? x2 : x1);
             while (i <= endPX) {
                 var factor = (w / 20) - 1;
-                pointsArrayX.push({x: Math.floor(i), y: my});
+                pointsArrayX[counterx]={x: Math.floor(i), y: my};
                 i += factor;
+                if(counterx>20)
+                    break;
+                counterx++;
             }
 
             for (var j in pointsArrayX) {
@@ -1588,16 +1597,20 @@ function canvasDrawing(user, socket) {
 
 
             }
-
+            pointsArrayX ={};
 
             //draw horizontal lines
-            var pointsArrayY = [];
+            var pointsArrayY = {};
+            var countery = 0;
             var k = (y2 > y1 ? y1 : y2) + 10,
                 endPY = ( y2 > y1 ? y2 : y1);
             while (k <= endPY) {
                 var factor = (h / 20) - 1;
-                pointsArrayY.push({x: mx, y: Math.floor(k)});
+                pointsArrayY[countery]={x: mx, y: Math.floor(k)};
                 k += factor;
+                if(countery>20)
+                    break;
+                countery++;
             }
 
             for (var l in pointsArrayY) {
@@ -1843,6 +1856,7 @@ function canvasDrawing(user, socket) {
                         fa.attr('width', left + 20);
                         drawingCanvas.drawImage(rC, 0, 0);
                     }
+
                     if (top > canvasHeight) {
                         parentDiv.scrollLeft(top);
                         rC.width = canvasWidth;
@@ -1869,7 +1883,7 @@ function canvasDrawing(user, socket) {
                 img.src = dataUrl;
             })
             .catch(function (error) {
-                console.error('oops, something went wrong!', error);
+                //console.error('oops, something went wrong!', error);
             });
         //});
 
@@ -1969,6 +1983,8 @@ function canvasDrawing(user, socket) {
     });
 
     $('#new-board').click(function () {
+        textEnabled = false;
+        textHolder.blur();
         drawingCanvas.clearRect(0, 0, drawingC.width, drawingC.height);
         drag = [];
         currentColor = '#000';
@@ -1994,7 +2010,7 @@ function canvasDrawing(user, socket) {
         canvasObjects = [];
         foreignCanvasData = [];
         redrawCanvas();
-        if(user.userType=='tutor'){
+        if(user.userType=='tutor' && $onlineUsers.find('li.active').length>0){
             var rec = $onlineUsers.find('li.active').find('.js-online-users').data().user;
             socket.emit('redraw-canvas', {receiver: rec,type:'new-board'});
         }
@@ -2424,7 +2440,7 @@ function canvasDrawing(user, socket) {
     });
 
     socket.on('get-private-drawing', function (data) {
-        console.log(data);
+        //console.log(data);
         if (publicModeEnabled){
             return false;
         }

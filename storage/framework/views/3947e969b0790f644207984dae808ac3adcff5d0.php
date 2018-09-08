@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8">
                         <ul class="nav nav-pills" id="ow-donut">
-                            <li><a href="<?php echo e(route('tutors.create')); ?>">Add New</a></li>
+                            <li><a href="<?php echo e(route('tutors.create')); ?>"><b>Add New Tutor</b></a></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-4">
@@ -52,7 +52,7 @@
                             <td><?php echo e(ucfirst($tutor->subject->name)); ?></td>
                             <td><?php echo e($tutor->contact_no); ?></td>
                             <td>
-                                <?php if($tutor->status===1): ?>
+                                <?php if($tutor->status): ?>
                                     <label class="label text-success">Active</label>
                                 <?php else: ?>
                                     <label class="label text-danger">In-Active</label>

@@ -25,7 +25,7 @@
                         {{$admin->id > 0 ? "Edit {$admin->name}" : "Add new Admin"}}
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="{{url('admin/admins')}}" class="btn btn-default">Back</a>
+                        <a href="{{url('admin/admins')}}" class="btn btn-default"><b>Back</b></a>
                     </div>
                 </div>
             </div>

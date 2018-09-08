@@ -99,9 +99,9 @@ $(function () {
 
             }
             $onlineUserList.html($html);
-            if ($onlineUserList.find('li').length > 0) {
-                $onlineUserList.find('li:first').click();
-            }
+            // if ($onlineUserList.find('li').length > 0) {
+            //     $onlineUserList.find('li:first').click();
+            // }
 
         });
 
@@ -125,10 +125,10 @@ $(function () {
                 });
                 $onlineUserList.append('<li id="user-' + data.ObjectID.toLowerCase() + '"><span class="js-online-users user-name-span" data-uid="' + data.ObjectID + '"  data-user="' + data.socket + '">' + data.Name + '</span> ' + (user.userType == 'tutor' ? '<span class="js-clear-std-board span-clear">Clear Student Board</span>' : '') + '</li>');
                 if ($onlineUserList.find('li').length == 1) {
-                    $onlineUserList.find('li:first').click();
-                    setTimeout(function () {
-                        socket.emit('req-student-drawing', {receiver: receiver});
-                    }, 2000)
+                    //$onlineUserList.find('li:first').click();
+                    // setTimeout(function () {
+                    //     socket.emit('req-student-drawing', {receiver: receiver});
+                    // }, 2000)
 
                 }
             }
@@ -173,7 +173,7 @@ $(function () {
             e.preventDefault();
             var std = $(this).data().student;
             var value = $(this).data().value;
-            console.log('test');
+            //console.log('test');
             if (value == 'accept') {
                 socket.emit('accept-student', {student: std});
             } else {
@@ -218,9 +218,9 @@ $(function () {
                 });
 
                 $onlineUserList.append('<li id="user-' + data.ObjectID.toLowerCase() + '"  ><span class="js-online-users user-name-span" data-uid="' + data.ObjectID + '" data-user="' + data.student + '">' + data.Name + '</span>' + (user.userType == 'tutor' ? '<span class="js-clear-std-board span-clear">Clear Student Board</span>' : '') + '</li>');
-                if ($onlineUserList.find('li').length == 1) {
-                    $onlineUserList.find('li:first').click();
-                }
+                // if ($onlineUserList.find('li').length == 1) {
+                //     $onlineUserList.find('li:first').click();
+                // }
             }
         });
 
@@ -228,30 +228,30 @@ $(function () {
             if ($('#user-' + data.student).length > 0) {
                 var activeClass = $('#user-' + data.student).hasClass('active');
                 $('#user-' + data.student).remove();
-                if (activeClass && $onlineUserList.find('li').length > 0) {
-
-                    $onlineUserList.find('li:first').click();
-                }
+                // if (activeClass && $onlineUserList.find('li').length > 0) {
+                //
+                //     $onlineUserList.find('li:first').click();
+                // }
             }
         })
     }
 
     socket.on(disconnectEvent, function (data) {
-        iziToast.show({
-            class: 'error',
-            message: data.userName.toUpperCase() + ' has left the class',
-            color: 'green',
-            icon: '',
-            position: 'topRight',
-            timeout: 5000
-        });
+        // iziToast.show({
+        //     class: 'error',
+        //     message: data.userName.toUpperCase() + ' has left the class',
+        //     color: 'green',
+        //     icon: '',
+        //     position: 'topRight',
+        //     timeout: 5000
+        // });
 
         if ($('#user-' + data.user.ObjectID.toLowerCase()).length > 0) {
             var activeClass = $('#user-' + data.user.ObjectID.toLowerCase()).hasClass('active');
             $('#user-' + data.user.ObjectID.toLowerCase()).remove();
-            if (activeClass && $onlineUserList.find('li').length > 0) {
-                $onlineUserList.find('li:first').click();
-            }
+            // if (activeClass && $onlineUserList.find('li').length > 0) {
+            //     $onlineUserList.find('li:first').click();
+            // }
         }
     });
 
@@ -280,7 +280,7 @@ $(function () {
                 getUserMessages(user.ObjectID, receiverId, user.userType);
             } else {
                 user.tutor = $onlineUser.data().user;
-                console.log(user);
+                //console.log(user);
                 socket.emit('req-for-join-class', user);
             }
 
@@ -412,7 +412,7 @@ $(function () {
 });
 
 function streamCanvasDrawing(data, publicModeEnabled, redrawForeign) {
-    console.log(data,publicModeEnabled,redrawForeign);
+    //console.log(data,publicModeEnabled,redrawForeign);
     var redrawForeign = redrawForeign ? redrawForeign : 'no';
     if (publicModeEnabled) {
         if (user.userType == 'student') {

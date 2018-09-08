@@ -12,10 +12,14 @@
         <tbody>
 
         <?php $__currentLoopData = $allSchedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
+            $startDate = \Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Kolkata')->format('d M Y H:i');
+            $endDate = \Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Kolkata')->format('d M Y H:i')
+            ?>
             <tr>
                 <td><?php echo e($key+1); ?></td>
-                <td><?php echo e(\Carbon\Carbon::parse($schedule->schedule_start_time)->format('d M Y H:i')); ?></td>
-                <td><?php echo e(\Carbon\Carbon::parse($schedule->schedule_end_time)->format('d M Y H:i')); ?></td>
+                <td><?php echo e($startDate); ?></td>
+                <td><?php echo e($endDate); ?></td>
                 <td><?php echo e($schedule->subject->name); ?></td>
                 <td>
                     <?php $__currentLoopData = $schedule->students; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $student): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>

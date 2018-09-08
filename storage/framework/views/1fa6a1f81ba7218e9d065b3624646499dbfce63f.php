@@ -310,7 +310,7 @@
                                             </div>
                                         </div>
                                         <div class="account-dropdown__footer">
-                                            <a href="<?php echo e(url('logout')); ?>">
+                                            <a href="<?php echo e(url('student/logout')); ?>">
                                                 <i class="zmdi zmdi-power"></i>Logout</a>
                                         </div>
                                     </div>

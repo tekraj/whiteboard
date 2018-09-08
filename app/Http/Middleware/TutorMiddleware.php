@@ -19,7 +19,7 @@ class TutorMiddleware
         if(auth()->guard('tutor')->check()){
             return $next($request);
         }
-        return redirect('/login');
+        return redirect('tutor/login');
     }
 }
 

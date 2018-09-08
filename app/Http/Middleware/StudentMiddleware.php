@@ -18,6 +18,6 @@ class StudentMiddleware
         if(auth()->guard('student')->check()){
             return $next($request);
         }
-        return redirect('login');
+        return redirect('student/login');
     }
 }

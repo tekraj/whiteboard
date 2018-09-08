@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8">
                         <ul class="nav nav-pills" id="ow-donut">
-                            <li><a href="<?php echo e(route('students.create')); ?>">Add New</a></li>
+                            <li><a href="<?php echo e(route('students.create')); ?>"><b>Add New</b></a></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-4">
@@ -38,7 +38,7 @@
                             Name
                         </th>
                         <th>Email</th>
-                        <th>Contact No</th>
+                        <th>Subjects</th>
                         <th>School</th>
                         <th>Class</th>
                         <th>Status</th>
@@ -51,11 +51,15 @@
                         <tr>
                             <td><?php echo e($student->name); ?></td>
                             <td><?php echo e($student->email); ?></td>
-                            <td><?php echo e($student->contact_no); ?></td>
+                            <td>
+                                <?php $__currentLoopData = $student->subjects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subject): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <label class="label label-primary"><?php echo e($subject->name); ?></label>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </td>
                             <td><?php echo e($student->school_name); ?></td>
                             <td><?php echo e($student->studentClass->class_name); ?></td>
                             <td>
-                                <?php if($student->status===1): ?>
+                                <?php if($student->status): ?>
                                     <label class="label text-success">Active</label>
                                 <?php else: ?>
                                     <label class="label text-danger">In-Active</label>

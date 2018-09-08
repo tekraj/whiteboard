@@ -51,9 +51,10 @@
                     <p><?php echo e($i<10 ? '0'.$i:$i); ?></p>
                     <p>
                         <?php $__currentLoopData = $allSchedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php if(Carbon\Carbon::parse($schedule->schedule_start_date)->format('d')==$i): ?>
+                            <?php if($date === \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d')): ?>
+
                                 <span class="text-danger" data-toggle="tooltip" data-placement="top"
-                                      title="Schedule for <?php echo e($schedule->subject_name); ?> with <?php echo e($schedule->tutor_name); ?> betwwn <?php echo e(\Carbon\Carbon::parse($schedule->schedule_start_time)->format('d M Y H:i:s').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time)->format('d M Y H:i:s')); ?>"><i
+                                      title="Schedule for <?php echo e($schedule->subject->name); ?> between <?php echo e(\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s')); ?>"><i
                                             class="fa fa-circle"></i></span>
                             <?php endif; ?>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

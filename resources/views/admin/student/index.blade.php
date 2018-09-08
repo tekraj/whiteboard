@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8">
                         <ul class="nav nav-pills" id="ow-donut">
-                            <li><a href="{{ route('students.create') }}">Add New</a></li>
+                            <li><a href="{{ route('students.create') }}"><b>Add New Student</b></a></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-4">
@@ -36,7 +36,7 @@
                             Name
                         </th>
                         <th>Email</th>
-                        <th>Contact No</th>
+                        <th>Subjects</th>
                         <th>School</th>
                         <th>Class</th>
                         <th>Status</th>
@@ -49,11 +49,15 @@
                         <tr>
                             <td>{{$student->name}}</td>
                             <td>{{$student->email}}</td>
-                            <td>{{$student->contact_no}}</td>
+                            <td>
+                                @foreach($student->subjects as $subject)
+                                    <label class="label label-primary">{{$subject->name}}</label>
+                                @endforeach
+                            </td>
                             <td>{{$student->school_name}}</td>
                             <td>{{$student->studentClass->class_name}}</td>
                             <td>
-                                @if($student->status===1)
+                                @if($student->status)
                                     <label class="label text-success">Active</label>
                                 @else
                                     <label class="label text-danger">In-Active</label>

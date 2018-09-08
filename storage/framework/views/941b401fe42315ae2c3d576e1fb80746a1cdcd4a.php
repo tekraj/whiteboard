@@ -22,11 +22,10 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-sm-6">
-                        <?php echo e($student->id > 0 ? "Edit {$student->name}" : "Add new Tutor"); ?>
-
+                        <b><?php echo e($student->id > 0 ? "Edit {$student->name}" : "Add new Student"); ?></b>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="<?php echo e(url('admin/students')); ?>" class="btn btn-default">Back</a>
+                        <a href="<?php echo e(url('admin/students')); ?>" class="btn btn-default pull-right"><b>Back</b></a>
                     </div>
                 </div>
 
@@ -61,7 +60,7 @@
                             <?php echo e(Form::label('class_id', 'Class*', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
 
                             <div class="col-sm-9">
-                                <?php echo e(Form::select('class_id',([''=>'Selet Class']+$classes),$student->class_id, ['class' => 'form-control','autocomplete'=>str_random(7)])); ?>
+                                <?php echo e(Form::select('class_id',([''=>'Select Class']+$classes),$student->class_id, ['class' => 'form-control','autocomplete'=>str_random(7)])); ?>
 
                             </div>
                         </div>

@@ -23,11 +23,10 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <?php echo e($tutor->id > 0 ? "Edit {$tutor->name}" : "Add new Tutor"); ?>
-
+                        <b><?php echo e($tutor->id > 0 ? "Edit {$tutor->name}" : "Add new Tutor"); ?></b>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="<?php echo e(url('admin/tutors')); ?>" class="btn btn-default">Back</a>
+                        <a href="<?php echo e(url('admin/tutors')); ?>" class="btn btn-default"><b>Back</b></a>
                     </div>
                 </div>
             </div>
@@ -72,7 +71,12 @@
                                 <?php echo e(Form::label('password',  'Password*', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
 
                                 <div class="col-sm-9">
-                                    <input type="password" value="<?php echo e($tutor->password_plain); ?>" name="password" autocompleted="<?php echo e(str_random(7)); ?>" required="true" class="form-control">
+                                    <div class="input-group">
+                                        <input type="password" value="<?php echo e($tutor->password_plain); ?>" name="password" autocompleted="<?php echo e(str_random(7)); ?>" required="true" class="form-control">
+                                        <label  for="edit-schedule-start-date" class="input-group-addon js-show-passwaord">
+                                            <span class="fa fa-eye"></span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<?php echo e(asset('painting-app/izitoast/css/iziToast.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('painting-app/ripple-css/ripple.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('painting-app/css/bootstrap-dropdownhover.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('vendor/daterangepicker/daterangepicker.css')); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo e(asset('painting-app/css/style.css')); ?>" >
     <title>White Board</title>
 
@@ -801,22 +802,15 @@
                 <?php echo e(Form::open(['url'=>url("utility/search-logs/{$type}"),'id'=>'session-lod-form'])); ?>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon" id="start-date-label">Start Date</span>
-                            <input name="start_date" type="text" class="form-control js-datepicker"  aria-describedby="start-date-label" value="<?php echo e(date('m/d/Y')); ?>">
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="end-date-label ">End Date</span>
-                            <input name="end_date" type="text" class="form-control js-datepicker"   aria-describedby="end-date-label" value="<?php echo e(date('m/d/Y')); ?>">
+                            <span class="input-group-addon" id="end-date-label ">Date Range</span>
+                            <input name="daterange" type="text" class="form-control js-daterangepicker"   aria-describedby="end-date-label" value="<?php echo e(date('m/d/Y')); ?>">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <button class="btn btn-default" type="submit">Filter</button>
                     </div>
-
                 </div>
                 <?php echo e(Form::close()); ?>
 
@@ -883,6 +877,35 @@
     $("html").niceScroll();
 </script>
 <script src="<?php echo e(asset('painting-app/momentjs/moment.js')); ?>"></script>
+<script  src="<?php echo e(asset('vendor/daterangepicker/daterangepicker.js')); ?>"></script>
+<script>
+    $(document).ready(function(){
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+        function cb(start, end) {
+            $('.js-daterangepicker').find('span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        }
+
+        $('.js-daterangepicker').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: {
+                format: 'YYYY-MM-DD'
+            },
+            ranges: {
+                'All Time': [moment('1970-1-1'),moment()],
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            "opens": "left",
+        }, cb);
+        cb(start, end);
+    });
+</script>
 <script src="<?php echo e(asset('painting-app/chatjs/chat.js')); ?>"></script>
 <script src="<?php echo e(asset('painting-app/js/canvas.js?ver=1.2')); ?>"></script>
 </body>

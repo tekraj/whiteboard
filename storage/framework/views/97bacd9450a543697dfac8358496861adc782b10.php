@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8">
                         <ul class="nav nav-pills" id="ow-donut">
-                            <li><a href="<?php echo e(route('admins.create')); ?>">Add New</a></li>
+                            <li><a href="<?php echo e(route('admins.create')); ?>" style="font-size:16px;"><b>Add New</b></a></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-4">

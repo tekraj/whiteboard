@@ -20,7 +20,7 @@ class StudentController extends Controller
     public function index()
     {
         $pageTitle = 'Students';
-        $students = Student::with('studentClass')->paginate($this->pageSize);
+        $students = Student::with(['studentClass','subjects'=>function($query){$query->select('name','id');}])->paginate($this->pageSize);
         return view('admin.student.index',compact('pageTitle','students'));
     }
 
@@ -189,7 +189,7 @@ class StudentController extends Controller
         $students = Student::where(function($query) use ($search_data){
             $query->where('name','like',"%{$search_data}%")
                 ->orWhere('email','like',"%{$search_data}%");
-        })->paginate($this->pageSize);
+        })->with(['studentClass','subjects'=>function($query){$query->select('name','id');}])->paginate($this->pageSize);
         return view('admin.student.index',compact('pageTitle','students','search_data'));
     }
 

@@ -57,6 +57,10 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'], function(){
  */
 
 Route::group(['prefix'=>'tutor','namespace'=>'Tutor'], function() {
+    Route::get('login','LoginController@showLoginForm');
+    Route::post('login','LoginController@login');
+    Route::get('logout','LoginController@logout');
+
     Route::group(['middleware'=>'tutor'], function(){
         Route::get('whiteboard','WhiteBoardController@index');
         Route::post('/dashboard/get-calender','DashboardController@getCalender');
@@ -71,13 +75,20 @@ Route::group(['prefix'=>'tutor','namespace'=>'Tutor'], function() {
  * STUDENT ROUTES
  */
 
-Route::group(['prefix'=>'student','namespace'=>'Student','middleware'=>'student'], function() {
-    Route::get('whiteboard','WhiteBoardController@index');
-    Route::post('/dashboard/get-calender','DashboardController@getCalender');
-    Route::post('/dashboard/get-schedule','DashboardController@getSchedule');
-    Route::get('/dashboard','DashboardController@index');
-    Route::get('process-whiteboard-request','DashboardController@processDashboard');
-    Route::get('/','DashboardController@index');
+Route::group(['prefix'=>'student','namespace'=>'Student'], function() {
+    Route::get('login','LoginController@showLoginForm');
+    Route::post('login','LoginController@login');
+    Route::get('logout','LoginController@logout');
+
+    Route::group(['middleware'=>'student'], function() {
+        Route::get('whiteboard', 'WhiteBoardController@index');
+        Route::post('/dashboard/get-calender', 'DashboardController@getCalender');
+        Route::post('/dashboard/get-schedule', 'DashboardController@getSchedule');
+        Route::get('/dashboard', 'DashboardController@index');
+        Route::get('process-whiteboard-request', 'DashboardController@processDashboard');
+
+        Route::get('/', 'DashboardController@index');
+    });
 });
 
 Route::group(['prefix'=>'utility','middleware'=>'studenttutor'],function(){
@@ -103,9 +114,7 @@ Route::get('storage/{filename}', function ($filename)
     $response->header("Content-Type", $type);
     return $response;
 });
-Route::get('login','LoginController@showLoginForm');
-Route::post('login','LoginController@login');
-Route::get('logout','LoginController@logout');
+
 Route::get('/home','HomeController@index');
 Route::get('/',function (){
     return redirect('login');

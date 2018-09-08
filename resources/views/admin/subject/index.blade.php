@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8">
                         <ul class="nav nav-pills" id="ow-donut">
-                            <li><a href="{{ route('subjects.create') }}">Add New</a></li>
+                            <li><a href="{{ route('subjects.create') }}"><b>Add New Subject</b></a></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-4">

@@ -22,10 +22,10 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        {{$subject->id > 0 ? "Edit {$subject->name}" : "Add new Subject"}}
+                        <b>{{$subject->id > 0 ? "Edit {$subject->name}" : "Add new Subject"}}</b>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="{{url('admin/subjects')}}" class="btn btn-default">Back</a>
+                        <a href="{{url('admin/subjects')}}" class="btn btn-default"><b>Back</b></a>
                     </div>
                 </div>
             </div>

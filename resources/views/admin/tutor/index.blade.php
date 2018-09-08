@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8">
                         <ul class="nav nav-pills" id="ow-donut">
-                            <li><a href="{{ route('tutors.create') }}">Add New</a></li>
+                            <li><a href="{{ route('tutors.create') }}"><b>Add New Tutor</b></a></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-4">
@@ -50,7 +50,7 @@
                             <td>{{ucfirst($tutor->subject->name)}}</td>
                             <td>{{$tutor->contact_no}}</td>
                             <td>
-                                @if($tutor->status===1)
+                                @if($tutor->status)
                                     <label class="label text-success">Active</label>
                                 @else
                                     <label class="label text-danger">In-Active</label>
