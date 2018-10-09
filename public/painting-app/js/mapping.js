@@ -8,7 +8,8 @@ angular.module('mappingApp',[])
     $scope.admin = {};
     $scope.user = {};
     $scope.students = {};
-
+    $scope.techSupportData = [];
+    $scope.techNotifications = 0;
     $scope.user = user;
     $scope.subjects = subjects;
     var connectionOptions = {
@@ -78,6 +79,11 @@ angular.module('mappingApp',[])
         $.notify(user.Name+' Needs Help! Please send him message');
     });
 
+    socket.on('tech-notification', function(data){
+        $scope.techSupportData= data;
+        $scope.techNotifications = data.length;
+    });
+
     $(document).on('change','.js-map-student', function (){
        var tutor = $(this).val();
        var student = $(this).data().student;
@@ -86,7 +92,11 @@ angular.module('mappingApp',[])
        }
     });
 
-    $(document).on()
+    $(document).on('click','.js-unread-notifications', function(e){
+        e.preventDefault();
+        $scope.techNotifications =0;
+        $http.get(base_url+'/utility/unread-notifications')
+    })
 
 
 });

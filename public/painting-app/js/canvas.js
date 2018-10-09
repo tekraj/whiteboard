@@ -247,6 +247,10 @@ function canvasDrawing(user, socket) {
         }
     });
 
+    $('#mouse-cursor').click(function(e){
+        e.preventDefault();
+        $('#pencil-tool').click();
+    });
 
     // code for eraser slider
     $('#eraser-slider').slider({
@@ -372,7 +376,9 @@ function canvasDrawing(user, socket) {
         $('#reader-mode-indicator').addClass('active');
         pdfReaderWrapper.show();
         pdfEnabled = true;
-        pdfReaderWrapper.html(' <object data="' + file + '" type="application/pdf" width="600" height="490"></object>');
+        var width = $canvasWrapper.width();
+        var height = $canvasWrapper.height();
+        pdfReaderWrapper.html(' <object data="' + file + '" type="application/pdf" width="'+width+'" height="'+height+'"></object>');
     });
 
     //read sav file
@@ -1705,25 +1711,53 @@ function canvasDrawing(user, socket) {
 
 
     //print canvas
-    $('#print-current-slide').click(function (e) {
+    $('#print-data').click(function (e) {
         e.preventDefault();
         $('#print-modal').modal('hide');
-        var dataUrl = drawingC.toDataURL();
+        var printValue = $('input[name="print_option"]:checked').val();
+        var printMode = $('input[name="print_mode"]:checked').val();
+        var printContent = '';
+        let style  = '';
+        if(printMode=='landscape'){
+            style = '<style type="text/css" >\n' +
+                '  @media print{@page {size: landscape}}\n' +
+                '</style>'
+        }
 
-        var printContent = '<!Doctype html>' +
-            '<html>' +
-            '<head><title>Print</title></head>' +
-            '<body>' +
-            '<img src="' + dataUrl + '">' +
-            '</body>' +
-            '</html>';
+        if(printValue=='current-slide' || printValue=='all-slides'){
+            var dataUrl = drawingC.toDataURL();
+             printContent = '<!Doctype html>' +
+                '<html>' +
+                '<head><title></title>' +
+                 style+
+                 '</head>' +
+                '<body>' +
+                '<img src="' + dataUrl + '">' +
+                '</body>' +
+                '</html>';
+        }else{
+            let chatContent = $('.chat-room').html();
+            printContent = '<!Doctype html>' +
+                '<html>' +
+                '<head><title></title>' +
+                style+
+                '</head>' +
+                '<body>' +
+                chatContent
+                '</body>' +
+                '</html>';
+        }
+
         var printWindow = window.open('', '', width = $('#drawing-board').width(), height = $('#drawing-board').height());
         printWindow.document.write(printContent);
         printWindow.document.addEventListener('load', function () {
-            printWindow.focus();
-            printWindow.print();
-            printWindow.document.close();
-            printWindow.close();
+            setTimeout(function(){
+                printWindow.focus();
+                printWindow.print();
+                printWindow.document.close();
+                printWindow.close();
+            },500);
+
         }, true)
 
     });

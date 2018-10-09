@@ -15,9 +15,10 @@ class WhiteBoardController extends Controller
     public function index(){
         $pageTitle = 'Whiteboard';
         $user = Auth::guard('student')->user();
-        $sessions = SessionRepository::getStudentSessions($user->id);
-        $type = 'student';
         $subjetId = session('student_subject');
+        $sessions = SessionRepository::getStudentSessions($user->id,$subjetId);
+        $type = 'student';
+
         $subject = Subject::find($subjetId);
         if(!$subject)
             return redirect('student/dashboard');
@@ -42,4 +43,6 @@ class WhiteBoardController extends Controller
         $user->ObjectID = $user->uuid;
         return view('whiteboard',compact('pageTitle','user','type','subject','sessions'));
     }
+
+
 }

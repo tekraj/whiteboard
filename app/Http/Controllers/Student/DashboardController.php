@@ -15,8 +15,7 @@ class DashboardController extends Controller
     {
         $pageTitle = 'Dashboard';
         $user = Auth::guard('student')->user();
-        $subjects = Subject::where('status', 1)->pluck('name', 'id')->toArray();
-
+        $subjects = $user->subjects->pluck('name', 'id')->toArray();
         $monthStartDate = Carbon::now()->startOfMonth()->format('Y-m-d 00:00:00');
         $monthEndDate = Carbon::now()->endOfMonth()->format('Y-m-d 23:59:59');
         $allSchedules = Schedule::selectRaw("schedules.*,tutors.name as tutor_name,subjects.name as subject_name ")

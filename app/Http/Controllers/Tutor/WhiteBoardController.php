@@ -17,8 +17,8 @@ class WhiteBoardController extends Controller
         $pageTitle = 'Whiteboard';
         $user = Auth::guard('tutor')->user();
         $type = 'tutor';
-        $sessions = SessionRepository::getTutorSessions($user->id);
         $subject = $user->subject;
+        $sessions = SessionRepository::getTutorSessions($user->id,$subject->id);
 
         $factory = JWTFactory::addClaims([
             'sub'   => $user->id,

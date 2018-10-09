@@ -66,6 +66,7 @@ Route::group(['prefix'=>'tutor','namespace'=>'Tutor'], function() {
         Route::post('/dashboard/get-calender','DashboardController@getCalender');
         Route::post('/dashboard/get-schedule','DashboardController@getSchedule');
         Route::get('/dashboard','DashboardController@index');
+
         Route::get('/','DashboardController@index');
     });
 });
@@ -92,12 +93,16 @@ Route::group(['prefix'=>'student','namespace'=>'Student'], function() {
 });
 
 Route::group(['prefix'=>'utility','middleware'=>'studenttutor'],function(){
+    Route::get('read-notifications', 'UtilityController@readNotifications');
+    Route::get('share-drawing/{type}','UtilityController@shareDrawing');
+    Route::post('share-files/{type}','UtilityController@shareFiles');
     Route::post('save-canvas-image/{type}','UtilityController@saveCanvasImage');
     Route::post('read-sav-file/{type}','UtilityController@readSavFile');
     Route::post('save-canvas-to-sav/{type}','UtilityController@saveCanvasToSav');
     Route::post('send-report/{type}','UtilityController@sendReportToTechTeam');
     Route::get('download-file','UtilityController@downloadFile');
     Route::post('search-logs/{type}','UtilityController@searchSessionLogs');
+    Route::get('/read-cloud-file/{type}','UtilityController@readCloudFile');
 });
 
 //GET FILES FROM STORAGE
@@ -117,7 +122,7 @@ Route::get('storage/{filename}', function ($filename)
 
 Route::get('/home','HomeController@index');
 Route::get('/',function (){
-    return redirect('login');
+    return redirect('student/login');
 });
 
 Route::get('payment/payment', ['as' => 'payment', 'uses' => 'PaymentController@payment']);

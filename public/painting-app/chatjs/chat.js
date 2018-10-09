@@ -23,6 +23,7 @@ $(function () {
         e.preventDefault();
         $(this).parent().find('#attach-file').click();
     });
+
     $chatInput.on('keydown', function (e) {
         var $thist = $(this);
         if (e.keyCode == 13) {
@@ -99,9 +100,9 @@ $(function () {
 
             }
             $onlineUserList.html($html);
-            // if ($onlineUserList.find('li').length > 0) {
-            //     $onlineUserList.find('li:first').click();
-            // }
+            if ($onlineUserList.find('li').length > 0) {
+                $onlineUserList.find('li:first').click();
+            }
 
         });
 
@@ -125,10 +126,10 @@ $(function () {
                 });
                 $onlineUserList.append('<li id="user-' + data.ObjectID.toLowerCase() + '"><span class="js-online-users user-name-span" data-uid="' + data.ObjectID + '"  data-user="' + data.socket + '">' + data.Name + '</span> ' + (user.userType == 'tutor' ? '<span class="js-clear-std-board span-clear">Clear Student Board</span>' : '') + '</li>');
                 if ($onlineUserList.find('li').length == 1) {
-                    //$onlineUserList.find('li:first').click();
-                    // setTimeout(function () {
-                    //     socket.emit('req-student-drawing', {receiver: receiver});
-                    // }, 2000)
+                    $onlineUserList.find('li:first').click();
+                    setTimeout(function () {
+                        socket.emit('req-student-drawing', {receiver: receiver});
+                    }, 2000)
 
                 }
             }
@@ -218,9 +219,9 @@ $(function () {
                 });
 
                 $onlineUserList.append('<li id="user-' + data.ObjectID.toLowerCase() + '"  ><span class="js-online-users user-name-span" data-uid="' + data.ObjectID + '" data-user="' + data.student + '">' + data.Name + '</span>' + (user.userType == 'tutor' ? '<span class="js-clear-std-board span-clear">Clear Student Board</span>' : '') + '</li>');
-                // if ($onlineUserList.find('li').length == 1) {
-                //     $onlineUserList.find('li:first').click();
-                // }
+                if ($onlineUserList.find('li').length == 1) {
+                    $onlineUserList.find('li:first').click();
+                }
             }
         });
 
@@ -228,10 +229,10 @@ $(function () {
             if ($('#user-' + data.student).length > 0) {
                 var activeClass = $('#user-' + data.student).hasClass('active');
                 $('#user-' + data.student).remove();
-                // if (activeClass && $onlineUserList.find('li').length > 0) {
-                //
-                //     $onlineUserList.find('li:first').click();
-                // }
+                if (activeClass && $onlineUserList.find('li').length > 0) {
+
+                    $onlineUserList.find('li:first').click();
+                }
             }
         })
     }
@@ -249,9 +250,9 @@ $(function () {
         if ($('#user-' + data.user.ObjectID.toLowerCase()).length > 0) {
             var activeClass = $('#user-' + data.user.ObjectID.toLowerCase()).hasClass('active');
             $('#user-' + data.user.ObjectID.toLowerCase()).remove();
-            // if (activeClass && $onlineUserList.find('li').length > 0) {
-            //     $onlineUserList.find('li:first').click();
-            // }
+            if (activeClass && $onlineUserList.find('li').length > 0) {
+                $onlineUserList.find('li:first').click();
+            }
         }
     });
 
@@ -319,6 +320,23 @@ $(function () {
         $chatRoom.animate({scrollTop: $chatBoard.height()}, 0);
     });
 
+    //share drawing
+    $('#share-drawing').click(function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        // if($onlineUserList.find('li.active').length<1){
+        //     alert('No users selected to share');
+        //     return false;
+        // }
+        //
+        // var receiverUUID = $onlineUserList.find('li.active').data().uuid;
+        var receiverUUID = '8870a509-8fa1-11e8-90a7-945c124525e9';
+        var sharedUserType = 'tutor';
+        if(user.userType=='tutor'){
+            sharedUserType = 'student';
+        }
+        window.open(url+'?user='+receiverUUID+'&userType='+sharedUserType, '_blank');
+    });
     //refresh participant list
     $('.js-refresh-participant-list').click(function(e){
         e.preventDefault();
@@ -350,26 +368,23 @@ $(function () {
         var url = $(this).url;
         $('.modal').modal('hide');
         var question = $('#support-question').val();
-        if(questio.trim().length<1){
+        if(question.trim().length<1){
             alert('Please write something');
             return false;
         }
-        $.ajax({
-            type : 'post',
-            url : url,
-            data : {question:question},
-            beforeSend : function(){
-                $('#loader').show();
-            },
-            success : function(){
-                $('#loader').hide();
-                $.notify('Message Send to Techinal Support');
-            }
-        })
+        iziToast.show({
+            class: 'success',
+            message: 'Message Send to Techinal Support',
+            color: 'green',
+            icon: '',
+            position: 'topRight',
+            timeout: 5000
+        });
+        socket.emit('notify-admin-tech-support',{message:question});
     });
 
     $('.js-contact-session-monitor').click(function(){
-        socket.emit('call-for-assitant');
+        socket.emit('notify-admin-tech-support',{message:user.Name +' ('+user.userType+') Requests for Support '});
         $chatBoard.append('<li><b>Your request for assistance has been placed. Brainfuse will contact you shortly.</b></li>');
     });
 
