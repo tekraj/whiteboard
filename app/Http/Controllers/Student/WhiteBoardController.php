@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\SessionNote;
 use App\Models\Subject;
+use App\Notification;
 use App\Repositories\SessionRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -41,7 +43,11 @@ class WhiteBoardController extends Controller
         $user->userType = 'student';
         $user->Name = $user->name;
         $user->ObjectID = $user->uuid;
-        return view('whiteboard',compact('pageTitle','user','type','subject','sessions'));
+        $sessionNotes = SessionNote::where('user_type',$type)->where('user_id',$user->id)->where('subject_id',$subject->id)->orderBy('id','desc')->get();
+        $notifications = Notification::where('status',1)->where(function($query) use ($subjetId){
+            $query->where('subject_id',$subjetId)->orWhereNull('subject_id');
+        })->orderBy('id','desc')->get();
+        return view('whiteboard',compact('pageTitle','user','type','subject','sessions','sessionNotes','notifications'));
     }
 
 

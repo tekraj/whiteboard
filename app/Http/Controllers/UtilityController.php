@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SessionNote;
 use App\Models\SharedDocument;
 use App\Models\Student;
 use App\Models\TechSupportMessage;
 use App\Models\Tutor;
 use App\Repositories\SessionRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -193,42 +195,66 @@ class UtilityController extends Controller
 
     public function readCloudFile(Request $request){
 
-        $json = '[{
-            "text": "My Cloudpack",
-            "children": [
-              {
-                "text" : "College"
-        
-              },
-              {
-                "text" : "Alberta K to 12 Lessions",
-                "children" : [
-                  {
-                    "text" : "Class 2 Science",
-                    "a_attr" : {"class":"js-read-cloud-file","file":"'.asset('cloud_files/demoform1.pdf').'"},
-                    "icon" : "images/file-icon.png"
-                  },
-                  {
-                    "text" : "Class 3 Science",
-                    "a_attr" : {"class":"js-read-cloud-file","file":"'.asset('cloud_files/pdf_sample.pdf').'"},
-                    "icon" : "images/file-icon.png"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "text" : "Adobe",
-            "children" : [
-              {
-                "text" : "Adobe"
-              },
-              {
-                "text" : "Illustrator"
-              }
-            ]
-          }]';
-        $data = json_decode($json);
-        return response()->json($data);
+        $files =  array_diff(scandir(public_path("cloud-files")), array('.', '..'));
+        $fileData = [];
+        foreach($files as $file){
+
+            if(!is_dir(public_path("cloud-files/{$file}"))){
+                $fileData[] = [
+                    "text" => $file,
+                    "a_attr" => ["class"=>"js-read-cloud-file","file"=>asset("cloud-files/{$file}")],
+                    "icon" => "images/file-icon.png"
+                ];
+            }else {
+
+                $fileArray = ['text' => $file];
+                $fileArray['children'] = [];
+                $subFile = array_diff(scandir(public_path("cloud-files/{$file}")), array('.', '..'));
+
+                foreach ($subFile as $f) {
+
+                    if (!is_dir(public_path("cloud-files/{$file}/$f"))) {
+
+                        $fileArray['children'][] = [
+                            "text" => $f,
+                            "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("cloud-files/{$file}/$f")],
+                            "icon" => "images/file-icon.png"
+                        ];
+
+                    } else {
+                        $subArray = ['text' => $f];
+                        $subSubFile = array_diff(scandir(public_path("cloud-files/{$file}/{$f}")), array('.', '..'));
+                        foreach ($subSubFile as $sf) {
+                            if (!is_dir(public_path("cloud-files/{$file}/{$f}/{$sf}"))) {
+                                $subArray['children'][] = [
+                                    "text" => $sf,
+                                    "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("cloud-files/{$file}/{$f}/{$sf}")],
+                                    "icon" => "images/file-icon.png"
+                                ];
+                            }
+                        }
+                        $fileArray['children'][] = $subArray;
+                    }
+                }
+                $fileData[] = $fileArray;
+            }
+
+        }
+        return response()->json($fileData);
+    }
+
+    public function saveSessionNote(Request $request){
+        $note = new SessionNote;
+        $note->note = $request->note;
+        $note->user_id = $request->user_id;
+        $note->user_type = $request->user_type;
+        $note->subject_id= $request->subject_id;
+        if($note->save()){
+            $note->date = Carbon::parse($note->created_at)->format('d M Y H:i');
+            return response()->json(['status'=>true,'note'=>$note]);
+
+        }
+
+        return response()->json(['status'=>false]);
     }
 }

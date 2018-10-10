@@ -178,7 +178,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Tzsk\Payu\Provider\PayuServiceProvider::class
+        Tzsk\Payu\Provider\PayuServiceProvider::class,
+        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
 
     ],
 
@@ -232,7 +234,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Payment' => Tzsk\Payu\Facade\Payment::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

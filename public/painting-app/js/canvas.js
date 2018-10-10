@@ -249,9 +249,48 @@ function canvasDrawing(user, socket) {
 
     $('#mouse-cursor').click(function(e){
         e.preventDefault();
-        $('#pencil-tool').click();
+        $('#enable-text-tool').click();
     });
 
+    $('#session-note-form').submit(function(e){
+        e.preventDefault();
+        if($(this).hasClass('sending'))
+            return false;
+
+        var $this = $(this);
+        var url = $(this).attr('action');
+        var data = $(this).serializeArray();
+        $this.addClass('sending');
+
+        $.ajax({
+            type : 'post',
+            url:url,
+            data: data,
+            beforeSend : function(){
+                $this.find('.btn').text('Saving..')
+            },
+            success : function (response) {
+                if(response.status){
+                    $this.removeClass('sending');
+                    $this.find('.btn').text('Save');
+                    $this.find('textarea').text('').val('');
+                    iziToast.show({
+                        class: 'success',
+                        message: 'Session Log Saved',
+                        color: 'green',
+                        icon: '',
+                        position: 'topRight',
+                        timeout: 5000
+                    });
+                    var note = response.note
+                    $('#session-note-data').append('<tr><td>'+note.note+'</td><td>'+note.date+'</td></tr>')
+                }else{
+                    alert('Sorry unable to save note');
+                }
+
+            }
+        })
+    });
     // code for eraser slider
     $('#eraser-slider').slider({
         create: function () {
@@ -350,6 +389,8 @@ function canvasDrawing(user, socket) {
     //browse cloud
     $('#browse-cloud').click(function (e) {
         e.preventDefault();
+        $('.top-nav-tools .btn-square').removeClass('active');
+        $(this).addClass('active');
         var url = $(this).data().url;
         $.ajax({
             type: 'get',
@@ -441,6 +482,7 @@ function canvasDrawing(user, socket) {
         $canvasWrapper.removeClass('no-scroll');
         e.preventDefault();
         $tools.removeClass('.active');
+        $('#browse-cloud').removeClass('active');
         $(this).addClass('active');
         $canvasWrapper.find('canvas').show();
         position = getCoords(drawingC)

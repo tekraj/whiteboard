@@ -147,7 +147,12 @@
                             <i class="fas fa-users"></i>Manage Admins</a>
                     </li>
                     @endif
-
+                    @if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())
+                        <li class="{{$pageTitle=='Subjects'?'active':''}}">
+                            <a href="{{url('admin/subjects')}}">
+                                <i class="fas fa-book"></i>Subjects</a>
+                        </li>
+                    @endif
                     <li class="{{$pageTitle=='Tutors'?'active':''}}">
                         <a href="{{url('admin/tutors')}}">
                             <i class="fas fa-book"></i>Manage Tutors</a>
@@ -156,15 +161,15 @@
                         <a href="{{url('admin/students')}}">
                             <i class="fas fa-book"></i>Manage Students</a>
                     </li>
-                    @if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())
-                    <li class="{{$pageTitle=='Subjects'?'active':''}}">
-                        <a href="{{url('admin/subjects')}}">
-                            <i class="fas fa-book"></i>Subjects</a>
-                    </li>
-                    @endif
+
+
                     <li class="{{$pageTitle=='Mapping Board'?'active':''}}">
                         <a href="{{url('admin/mapping-screen')}}" target="_blank">
                             <i class="fas fa-book"></i>Mapping Board</a>
+                    </li>
+                    <li class="{{$pageTitle=='Cloud Files'?'active':''}}">
+                        <a href="{{url('admin/cloud-files')}}">
+                            <i class="fas fa-cloud"></i>Cloud Files</a>
                     </li>
                 </ul>
             </nav>

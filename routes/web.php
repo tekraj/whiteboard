@@ -27,19 +27,17 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'], function(){
             Route::resource('subjects', 'SubjectController',['except'=>['destroy']]);
             Route::get('/students/payments/{id}','StudentController@payments');
             Route::get('/tutors/payments/{id}','TutorController@payments');
-
-
         });
+
         Route::group(['middlware'=>'superadmin'], function(){
             Route::resource('admins', 'AdminController');
             Route::get('tutors/delete','TutorController@destroy')->name('tutors.destroy');
             Route::delete('students/{id}','StudentController@destroy')->name('students.destroy');
             Route::delete('tutors/{id}','TutorController@destroy')->name('tutors.destroy');
             Route::delete('subjects/{id}','SubjectController@destroy')->name('subjects.destroy');
+            Route::get('cloud-files','CloudFileController@index');
+
         });
-
-
-
 
         Route::get('mapping-screen','MappingScreenController@index');
         Route::post('/dashboard/get-calender','DashboardController@getCalender');
@@ -103,6 +101,7 @@ Route::group(['prefix'=>'utility','middleware'=>'studenttutor'],function(){
     Route::get('download-file','UtilityController@downloadFile');
     Route::post('search-logs/{type}','UtilityController@searchSessionLogs');
     Route::get('/read-cloud-file/{type}','UtilityController@readCloudFile');
+    Route::post('save-session-note/','UtilityController@saveSessionNote');
 });
 
 //GET FILES FROM STORAGE

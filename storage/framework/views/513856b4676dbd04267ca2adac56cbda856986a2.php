@@ -172,10 +172,10 @@
                title="WhiteBoard Cloud">
                 <img src="<?php echo e(asset('painting-app/images/cloud.png')); ?>" style="width:20px;" alt="">
             </a>
-            <a href="#" class="btn btn-primary btn-square" title="Session Note">
+            <a href="#session-note-modal" class="btn btn-primary btn-square" title="Session Note" data-toggle="modal">
                 <span class=""><img src="<?php echo e(asset('painting-app/images/note.png')); ?>"></span>
             </a>
-            <a href="#" class="btn btn-primary btn-square" data-toggle="tooltip" data-placement="bottom"
+            <a href="#notification-modal" class="btn btn-primary btn-square"  data-toggle="modal" data-placement="bottom"
                title="Notifications">
                 <img src="<?php echo e(asset('painting-app/images/email.png')); ?>">
             </a>
@@ -1182,6 +1182,85 @@
 
             </div>
             <div class="modal-footer text-center">
+                <button class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="session-note-modal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:100%;">
+            <div class="modal-header">
+                <h5>New Session Note</h5>
+                <a href="#" class="btn btn-close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <?php echo e(Form::open(['url'=>url("utility/save-session-note"),'method'=>'post','id'=>'session-note-form'])); ?>
+
+                    <div class="text-center">
+                        <?php echo e(Form::textarea('note','',['class'=>'form-control','style'=>'resize:none;height:50px;','required'=>true])); ?>
+
+                        <input type="hidden" name="user_id" value="<?php echo e($user->id); ?>">
+                        <input type="hidden" name="subject_id" value="<?php echo e($subject->id); ?>">
+                        <input type="hidden" name="user_type" value="<?php echo e($type); ?>">
+
+                        <button class="btn btn-default" style="margin-top:10px;">Save</button>
+                    </div>
+                <?php echo e(Form::close()); ?>
+
+                <div class="old-session-notes" style="height:300px;overflow-y: auto;">
+                    <h4>Your Session Notes</h4>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Note</th>
+                                <th>Date</th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="session-note-data">
+                            <?php $__currentLoopData = $sessionNotes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $note): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr>
+                                    <td><?php echo e($note->note); ?></td>
+                                    <td><?php echo e(\Carbon\Carbon::parse($note->create_dat)->format('d M Y H:i')); ?></td>
+                                </tr>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <button class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="notification-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Notifications</h5>
+                <a href="#" class="btn btn-close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Notification</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr>
+                                <td><?php echo e($notification->message); ?></td>
+                                <td><?php echo e(\Carbon\Carbon::parse($notification->created_at)->format('d M Y H:i')); ?></td>
+                            </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer text-right">
                 <button class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

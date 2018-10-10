@@ -147,7 +147,12 @@
                             <i class="fas fa-users"></i>Manage Admins</a>
                     </li>
                     <?php endif; ?>
-
+                    <?php if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin()): ?>
+                        <li class="<?php echo e($pageTitle=='Subjects'?'active':''); ?>">
+                            <a href="<?php echo e(url('admin/subjects')); ?>">
+                                <i class="fas fa-book"></i>Subjects</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="<?php echo e($pageTitle=='Tutors'?'active':''); ?>">
                         <a href="<?php echo e(url('admin/tutors')); ?>">
                             <i class="fas fa-book"></i>Manage Tutors</a>
@@ -156,15 +161,15 @@
                         <a href="<?php echo e(url('admin/students')); ?>">
                             <i class="fas fa-book"></i>Manage Students</a>
                     </li>
-                    <?php if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin()): ?>
-                    <li class="<?php echo e($pageTitle=='Subjects'?'active':''); ?>">
-                        <a href="<?php echo e(url('admin/subjects')); ?>">
-                            <i class="fas fa-book"></i>Subjects</a>
-                    </li>
-                    <?php endif; ?>
+
+
                     <li class="<?php echo e($pageTitle=='Mapping Board'?'active':''); ?>">
                         <a href="<?php echo e(url('admin/mapping-screen')); ?>" target="_blank">
                             <i class="fas fa-book"></i>Mapping Board</a>
+                    </li>
+                    <li class="<?php echo e($pageTitle=='Cloud Files'?'active':''); ?>">
+                        <a href="<?php echo e(url('admin/cloud-files')); ?>">
+                            <i class="fas fa-cloud"></i>Cloud Files</a>
                     </li>
                 </ul>
             </nav>
