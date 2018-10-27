@@ -257,4 +257,17 @@ class UtilityController extends Controller
 
         return response()->json(['status'=>false]);
     }
+
+    public function getUserMessages(Request $request){
+        $fromUser = $request->fromUser;
+        $toUser = $request->toUser;
+        $userType = $request->userType;
+        $query = "SELECT m.message,m.created_at,m.user_name FROM messages as m 
+          INNER JOIN students as s ON s.id = (CASE WHEN m.user_type='student' THEN m.to_id ELSE m.from_id END )
+          INNER JOIN tutors as t ON t.id = (CASE WHEN m.user_type='tutor' THEN m.from_id ELSE m.to_id END) 
+          WHERE (CASE WHEN '{$userType}'='tutor' THEN t.uuid= '{$fromUser}' ELSE t.uuid='{$toUser}' END )
+          AND  (CASE WHEN '{$userType}'='student' THEN s.uuid= '{$fromUser}' ELSE s.uuid='{$toUser}' END) ORDER BY m.id desc LIMIT 100";
+        $messages = DB::select($query);
+        return response()->json(['status'=> true, 'messages'=> $messages]);
+    }
 }

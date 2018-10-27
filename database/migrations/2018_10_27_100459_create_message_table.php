@@ -13,15 +13,16 @@ class CreateMessageTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table){
+       Schema::create('messages', function(Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('from_id');
             $table->unsignedInteger('to_id');
-            $table->enum('user_type',['student','tutor','admin']);
             $table->text('message');
-            $table->softDeletes();
+            $table->enum('user_type',['tutor','student']);
+            $table->string('user_name');
             $table->timestamps();
-        });
+            $table->softDeletes();
+       });
     }
 
     /**

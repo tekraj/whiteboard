@@ -140,7 +140,7 @@ function canvasDrawing(user, socket) {
         }
         pasteHtmlAtCaret('<sub style="color:' + currentColor + ';">&#8203;</sub>', textHolder[0]);
 
-    })
+    });
     //clear math editor
     $('#clear-math-editor').click(function (e) {
         e.preventDefault();
@@ -198,8 +198,11 @@ function canvasDrawing(user, socket) {
         $('.js-color-code').removeClass('active');
         $(this).addClass('active');
         $('#color-indicator').css({'background': color});
+        $('#color-indicator').attr('data-color',color);
+        $('#color-indicator').data().color = color;
         $('#canvas-text-input').css('color', color);
         currentColor = color;
+
         if (currentTool == 'text') {
             if (textHolder.text().trim().length < 1) {
                 textHolder.css('color', currentColor);
@@ -226,6 +229,7 @@ function canvasDrawing(user, socket) {
         }
     });
     $tools.click(function (e) {
+
         e.preventDefault();
         if (pdfEnabled) {
             alert('Currently You are in Read Mode');
@@ -237,9 +241,16 @@ function canvasDrawing(user, socket) {
 
         currentTool = $(this).data().tool;
         var toolCursor = $(this).data().cursor;
+        currentColor = $('#color-indicator').data('color');
         if (currentTool == 'text') {
             textHolder.show();
+            if (textHolder.text().trim().length < 1) {
+                textHolder.css('color', currentColor);
+                textHolder[0].focus();
+            }
         } else {
+            textEnabled = false;
+            textHolder.blur
             textHolder.hide();
         }
         if (toolCursor) {
@@ -583,6 +594,61 @@ function canvasDrawing(user, socket) {
         pencilPoints.push({x: x, y: y});
     }
 
+    $('#input-image').change(function(){
+        if(this.files && this.files[0]) {
+            var file = this.files[0];
+            var fileName = file.name;
+            fileName = fileName.split('.');
+            var extension = fileName[fileName.length-1];
+            if(['jpg','jpeg','png'].indexOf(extension)>=0) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    $enableTextTool.click();
+                    $('#paste-tool').removeClass('active');
+                    var img = new Image;
+                    img.onload = function () {
+                        var width = img.width;
+                        var height = img.height;
+                        var canvasHeight = drawingC.height;
+                        var canvasWidth = drawingC.width;
+                        var left = currentMouse.x + width;
+                        var top = currentMouse.y + height;
+                        if (left > canvasWidth) {
+                            parentDiv.scrollLeft(left);
+                            rC.width = canvasWidth;
+                            rC.height = canvasHeight;
+                            resizeCanvas.drawImage(drawingC, 0, 0);
+                            dc.attr('width', left);
+                            fa.attr('width', left);
+                            drawingCanvas.drawImage(rC, 0, 0);
+                        }
+                        if (top > canvasHeight) {
+                            parentDiv.scrollLeft(top);
+                            rC.width = canvasWidth;
+                            rC.height = canvasHeight;
+                            resizeCanvas.drawImage(drawingC, 0, 0);
+                            dc.attr('height', top);
+                            fa.attr('height', top);
+                            drawingCanvas.drawImage(rC, 0, 0);
+                        }
+                        drawingCanvas.drawImage(img, currentMouse.x, currentMouse.y);
+                        saveCanvasObjects('image', {
+                            startX: currentMouse.x,
+                            startY: currentMouse.y,
+                            endX: currentMouse.x + img.width,
+                            endY: currentMouse.y + img.height,
+                            image: event.target.result
+                        });
+                    };
+
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }else{
+                alert('Please select image');
+            }
+        }
+    });
     /**
      * ======================================================
      * *************** event handlers
@@ -593,6 +659,7 @@ function canvasDrawing(user, socket) {
 
     //mouseDown Event Handler
     dc.mousedown(function (e) {
+        currentColor = $('#color-indicator').data().color;
         eraserPoints = [];
         mouseDown = true;
         var left = e.pageX - position.left,
@@ -647,6 +714,8 @@ function canvasDrawing(user, socket) {
                 redrawCanvas();
                 showDragUIAnimation(left, top);
             }
+        }else if(currentTool=='paste'){
+            $('#input-image').click();
         }
 
 
@@ -917,8 +986,11 @@ function canvasDrawing(user, socket) {
                 });
             } else if (currentTool == 'eraser') {
                 canvasObjects.push({shape: 'eraser', data: eraserPoints});
-                streamCanvasDrawing([{shape: 'eraser', data: eraserPoints}], publicModeEnabled);
+                streamCanvasDrawing([{shape: 'eraser', data: eraserPoints}], publicModeEnabled,false,lineEndPoint);
             }
+        }
+        if(currentTool=='drag'){
+            socket.emit('redraw-foreign',{data:canvasObjects,receiver:receiver});
         }
         fakeCanvas.clearRect(0, 0, fakeC.height, fakeC.width);
         mouseDown = false;
@@ -929,6 +1001,7 @@ function canvasDrawing(user, socket) {
     });
 
     textHolder.on('blur', function () {
+
         if (textEnabled || symbolEnabled)
             return;
         writeTextDivToCanvas(textLeftCord, textTopCord, function () {
@@ -1843,63 +1916,10 @@ function canvasDrawing(user, socket) {
 
 
     $('#paste-tool').click(function () {
-        document.execCommand("Paste");
+        currentTool = 'paste';
+        $('.js-tools').removeClass('active')
+        $(this).addClass('active');
     });
-    // for paste option
-    document.onpaste = function (event) {
-        var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-        var memeType = JSON.stringify(items);
-        for (index in items) {
-            var item = items[index];
-            if (item.kind === 'file') {
-                var blob = item.getAsFile();
-                var reader = new FileReader();
-                reader.onload = function (event) {
-
-                    var img = new Image;
-                    img.onload = function () {
-                        var width = img.width;
-                        var height = img.height;
-                        var canvasHeight = drawingC.height;
-                        var canvasWidth = drawingC.width;
-                        var left = currentMouse.x + width;
-                        var top = currentMouse.y + height;
-                        if (left > canvasWidth) {
-                            parentDiv.scrollLeft(left);
-                            rC.width = canvasWidth;
-                            rC.height = canvasHeight;
-                            resizeCanvas.drawImage(drawingC, 0, 0);
-                            dc.attr('width', left);
-                            fa.attr('width', left);
-                            drawingCanvas.drawImage(rC, 0, 0);
-                        }
-                        if (top > canvasHeight) {
-                            parentDiv.scrollLeft(top);
-                            rC.width = canvasWidth;
-                            rC.height = canvasHeight;
-                            resizeCanvas.drawImage(drawingC, 0, 0);
-                            dc.attr('height', top);
-                            fa.attr('height', top);
-                            drawingCanvas.drawImage(rC, 0, 0);
-                        }
-                        drawingCanvas.drawImage(img, currentMouse.x, currentMouse.y);
-                        saveCanvasObjects('image', {
-                            startX: currentMouse.x,
-                            startY: currentMouse.y,
-                            endX: currentMouse.x + img.width,
-                            endY: currentMouse.y + img.height,
-                            image: event.target.result
-                        });
-                    };
-
-                    img.src = event.target.result;
-
-
-                };
-                reader.readAsDataURL(blob);
-            }
-        }
-    }
 
     /**
      *
@@ -1972,15 +1992,15 @@ function canvasDrawing(user, socket) {
      */
 
     function writeTextDivToCanvas(x, y, callback) {
+
         var styles = textHolder.attr('style');
         var htmlString = textHolder.html();
         if (!htmlString)
             return callback();
         if (htmlString.trim().length < 1)
             return callback();
-
+        setTimeout(function(){
         htmlString = htmlString.replace(/&#8203;/g, ' ');
-
 
         var height = parseInt(textHolder.height()) + 20;
         var width = textHolder.width() + 30;
@@ -1992,9 +2012,7 @@ function canvasDrawing(user, socket) {
             '</foreignObject>' +
             '</svg>';
         var data = encodeURIComponent(svgData);
-
         var img = new Image();
-
         img.onload = function () {
             var width = img.width;
             textDivWidth = img.width;
@@ -2040,21 +2058,25 @@ function canvasDrawing(user, socket) {
                 html: textHolder.html(),
                 cssObj: cssObj
             });
+
             return callback();
         };
         img.src = "data:image/svg+xml," + data
-
+        },100);
     }
 
 
     //undo the canvas state
 
     $('#undo-tool').click(function (e) {
-        textHolder.val('');
+        textHolder.blur();
         //textInput.val('');
         $enableTextTool.removeClass('js-tools border');
         canvasObjects.splice(canvasObjects.length - 1);
         redrawCanvas();
+        if(user.userType=='tutor'){
+            socket.emit('redraw-foreign',{data:canvasObjects,receiver:receiver});
+        }
         $enableTextTool.click();
     });
 
@@ -2105,7 +2127,7 @@ function canvasDrawing(user, socket) {
                 };
                 canvasObjects = canvasStates[currentStateIndex];
                redrawCanvas();
-                streamCanvasDrawing(canvasObjects, false,'redraw-foreign');
+                streamCanvasDrawing(canvasObjects, false,'redraw-foreign',lineEndPoint);
             }else{
                 currentStateIndex = canvasStates.length-1;
             }
@@ -2122,7 +2144,7 @@ function canvasDrawing(user, socket) {
                     canvasStates.push(canvasObjects);
                 }
                 canvasObjects = canvasStates[currentStateIndex];
-                streamCanvasDrawing(canvasObjects, false,'redraw-foreign');
+                streamCanvasDrawing(canvasObjects, false,'redraw-foreign',lineEndPoint);
                 redrawCanvas();
             }else{
                 currentStateIndex =0;
@@ -2142,7 +2164,7 @@ function canvasDrawing(user, socket) {
             canvasObjects = [];
         canvasObjects.push({shape: shape, data: data});
         isNewDrawing = true;
-        streamCanvasDrawing([{shape: shape, data: data}], publicModeEnabled);
+        streamCanvasDrawing([{shape: shape, data: data}], publicModeEnabled,false,lineEndPoint);
     }
 
     /**
@@ -2480,6 +2502,8 @@ function canvasDrawing(user, socket) {
                     type : 'post',
                     url : herokoUrl+'set-public-drawing',
                     data : user,
+                    global:false,
+                    crossDomain : true,
                     success : function (data){
                         if(data.status){
                             $this.addClass('active');
@@ -2506,7 +2530,30 @@ function canvasDrawing(user, socket) {
 
         if (data.user.ObjectID!=user.ObjectID && data.hasOwnProperty('canvasData')) {
 
+            lineEndPoint = data.xy;
+            var left = lineEndPoint.x;
+            var top = lineEndPoint.y;
+            var canvasHeight = drawingC.height;
+            var canvasWidth = drawingC.width;
 
+            if (left > canvasWidth) {
+                parentDiv.scrollLeft(left);
+                rC.width = canvasWidth;
+                rC.height = canvasHeight;
+                resizeCanvas.drawImage(drawingC, 0, 0);
+                dc.attr('width', left);
+                fa.attr('width', left);
+                drawingCanvas.drawImage(rC, 0, 0);
+            }
+            if (top > canvasHeight) {
+                parentDiv.scrollLeft(top);
+                rC.width = canvasWidth;
+                rC.height = canvasHeight;
+                resizeCanvas.drawImage(drawingC, 0, 0);
+                dc.attr('height', top);
+                fa.attr('height', top);
+                drawingCanvas.drawImage(rC, 0, 0);
+            }
             for (var i in data.canvasData) {
                 foreignCanvasData.push(data.canvasData[i]);
                 drawMultipleShapes(data.canvasData[i],true);
@@ -2525,6 +2572,30 @@ function canvasDrawing(user, socket) {
         }
 
         if (data.user.ObjectID!=user.ObjectID && data.hasOwnProperty('canvasData')) {
+            lineEndPoint = data.xy;
+            var left = lineEndPoint.x;
+            var top = lineEndPoint.y;
+            var canvasHeight = drawingC.height;
+            var canvasWidth = drawingC.width;
+
+            if (left > canvasWidth) {
+                parentDiv.scrollLeft(left);
+                rC.width = canvasWidth;
+                rC.height = canvasHeight;
+                resizeCanvas.drawImage(drawingC, 0, 0);
+                dc.attr('width', left);
+                fa.attr('width', left);
+                drawingCanvas.drawImage(rC, 0, 0);
+            }
+            if (top > canvasHeight) {
+                parentDiv.scrollLeft(top);
+                rC.width = canvasWidth;
+                rC.height = canvasHeight;
+                resizeCanvas.drawImage(drawingC, 0, 0);
+                dc.attr('height', top);
+                fa.attr('height', top);
+                drawingCanvas.drawImage(rC, 0, 0);
+            }
 
             if(data.redrawForeign=='redraw-foreign'){
 
@@ -2542,9 +2613,9 @@ function canvasDrawing(user, socket) {
     });
 
     socket.on('req-for-drawing-update', function(){
-       streamCanvasDrawing(canvasObjects,publicModeEnabled);
+       streamCanvasDrawing(canvasObjects,publicModeEnabled,false,lineEndPoint);
     });
-    
+
     socket.on('force-redraw', function(data){
         if(user.userType=='student'){
             if(data.type == 'new-board'){
@@ -2553,6 +2624,10 @@ function canvasDrawing(user, socket) {
             canvasObjects =[];
             redrawCanvas();
         }
+    });
+    socket.on('undo-foreign',function(data){
+        foreignCanvasData = data;
+        redrawCanvas();
     });
     $(document).on('click', '.js-online-users', function () {
         if (!$(this).hasClass('already-selected')){

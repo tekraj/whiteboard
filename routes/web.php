@@ -102,6 +102,7 @@ Route::group(['prefix'=>'utility','middleware'=>'studenttutor'],function(){
     Route::post('search-logs/{type}','UtilityController@searchSessionLogs');
     Route::get('/read-cloud-file/{type}','UtilityController@readCloudFile');
     Route::post('save-session-note/','UtilityController@saveSessionNote');
+    Route::post('get-user-messages','UtilityController@getUserMessages');
 });
 
 //GET FILES FROM STORAGE

@@ -20,7 +20,7 @@ var re = $.map(f, function(v,i) {
 
 $('div').html(function(i,text) {
     $.each(f,function(i,v) {
-        text = text.replace(re[i],"<img src='emoji-js/img/emoji/"+ r[i] +".png'>"); //edit img src here to match where you placed your emoji folder
+        text = text.replace(re[i],"<img src='"+base_url+"/painting-app/emoji-js/img/emoji/"+ r[i] +".png'>"); //edit img src here to match where you placed your emoji folder
     });
     return text;    
 });

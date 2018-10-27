@@ -61,9 +61,12 @@ body {
     background: lightyellow;
     border: 1px solid #ccc;
     margin: 0;
-    left: 35px;
+    left: 100%;
     top: 0;
     z-index: 9999;
+}
+#paste-tool.active{
+    background:#0f9d58;
 }
 .option-menu li a {
     display: block;
@@ -306,7 +309,7 @@ body {
     left:-33px;
 }
 #chat-input-area .list-inline>li{vertical-align: middle;}
-#enable-text-tool.border{background: #1f91f3 !important;}
+/*#enable-text-tool.border{background: #1f91f3 !important;}*/
 .sp-container.sp-light{top:30%!important;}
 .sp-cancel {
     background-color: #eeeeee;

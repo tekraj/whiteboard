@@ -157,7 +157,7 @@
                 &nbsp;
             </button>
             <a href="#" class="btn btn-primary btn-square active" id="enable-drawing" data-toggle="tooltip"
-               data-placement="bottom" title="Switch to Drawing">
+               data-placement="bottom" title="Switch to Whiteboard">
                 <span class="font">Wb</span>
             </a>
             <a href="#" class="btn btn-primary btn-square" id="reader-mode-indicator" data-toggle="tooltip"
@@ -338,7 +338,7 @@
             </div>
             <div class="text-center my-1 option-menu-wrapper">
                 <a href="#" style="background:#000;" class="btn js-tools" data-toggle="tooltip" data-placement="top"
-                   title="Colors" id="color-indicator">
+                   title="Colors" id="color-indicator" data-color="#000">
                     <img src="{{asset('painting-app/images/color-w.png')}}">
                 </a>
                 <div class="option-menu color-menu" style="display: none;">
@@ -394,8 +394,8 @@
                 </div>
             </div>
             <div class="text-center my-1">
-                <a href="#" class="btn btn-default btn-square mx-auto" data-toggle="tooltip" data-placement="top"
-                   title="Just point the mouse where you want to paste the image and Press Ctrl+V">
+                <a href="#" id="paste-tool" class="btn btn-default btn-square mx-auto" data-toggle="tooltip" data-placement="top"
+                   title="Click on paste tool and then click on whiteboard">
                     <img src="{{asset('painting-app/images/paste.png')}}">
                 </a>
             </div>
@@ -953,12 +953,12 @@
 <div class="modal" id="symbol-modal">
     <div class="modal-dialog">
         <div class="modal-container">
-            <div class="modal-content">
+            <div class="modal-content" style="width:inherit;">
                 <div class="modal-header">
                     <h4 class="text-left">Math Editor</h4>
                     <button class="btn btn-close btn-sm" data-dismiss="modal">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="height:auto;max-height:none;">
                     <div id="equation-editor-wrapper">
                     </div>
                     <div class="modal-footer">
@@ -1260,6 +1260,7 @@
         </div>
     </div>
 </div>
+<input type="file" id="input-image" style="display:none">
 <ul class="student-request-list"></ul>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -1274,6 +1275,7 @@
         }
     });
     var base_url = '{{url('/')}}';
+
 </script>
 <script src="{{asset('painting-app/emoji-js/emoji.js')}}"></script>
 <script src="{{asset('painting-app/izitoast/js/iziToast.min.js')}}"></script>

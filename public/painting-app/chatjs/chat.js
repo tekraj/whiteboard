@@ -164,8 +164,10 @@ $(function () {
 
     if (user.userType == 'tutor') {
         socket.on('class-join-req', function (data) {
-
-            $('.student-request-list').show().append('<li><span class="pull-left">' + data.Name + ' wants to join your class</span> <span class="pull-right" style="margin-top:-5px;"><button class="btn btn-default js-accept-reject-std-req" data-student="' + data.student + '" data-value="reject">Reject</button>\n' +
+            if($('#std-req-'+data.ObjectID).length>0){
+                $('#std-req-'+data.ObjectID).remove();
+            }
+            $('.student-request-list').show().append('<li id="std-req-'+data.ObjectID+'"><span class="pull-left">' + data.Name + ' wants to join your class</span> <span class="pull-right" style="margin-top:-5px;"><button class="btn btn-default js-accept-reject-std-req" data-student="' + data.student + '" data-value="reject">Reject</button>\n' +
                 '                <button class="btn btn-primary js-accept-reject-std-req" data-student="' + data.student + '" data-value="accept">Accept</button></span></li>');
         });
 
@@ -426,21 +428,22 @@ $(function () {
 
 });
 
-function streamCanvasDrawing(data, publicModeEnabled, redrawForeign) {
+function streamCanvasDrawing(data, publicModeEnabled, redrawForeign,xy) {
     //console.log(data,publicModeEnabled,redrawForeign);
     var redrawForeign = redrawForeign ? redrawForeign : 'no';
+    var xy = xy? xy :{x:0,y:0};
     if (publicModeEnabled) {
         if (user.userType == 'student') {
             checkPublicMethodEnabled(function (response) {
                 if (response.status) {
-                    socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data});
+                    socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data,xy:xy});
                 } else {
                     alert('Sorry currently public option is not avilable');
                     $('.js-public-mode').click();
                 }
             });
         } else {
-            socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data});
+            socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data,xy:xy});
         }
 
     } else {
@@ -448,7 +451,8 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign) {
             user: user,
             receiver: receiver,
             canvasData: data,
-            redrawForeign: redrawForeign
+            redrawForeign: redrawForeign,
+            xy:xy
         });
     }
 }
@@ -479,7 +483,7 @@ function getUserMessages(userId, receiverId, userType) {
     $('#chat-board').html('');
     $.ajax({
         type: 'post',
-        url: herokoUrl + 'get-user-messages',
+        url: base_url + '/utility/get-user-messages',
         data: {fromUser: userId.replace(/\s+/, ''), toUser: receiverId.replace(/\s+/, ''), userType: userType},
         success: function (response) {
             if (response.status) {
@@ -487,11 +491,11 @@ function getUserMessages(userId, receiverId, userType) {
                 var html = '';
                 for (var i in messages) {
                     var message = messages[i];
-                    html += '<li class="' + (message.UserName == user.Name ? 'mine' : '') + '">\n' +
+                    html += '<li class="' + (message.user_name == user.name ? 'mine' : '') + '">\n' +
                         ' <div>\n' +
-                        ' <p class="clearfix"><span class="pull-left username">' + message.UserName + '</span> <span class="pull-left time">' + moment(message.CreatedAt).format('MMM DD h:mm A') + '</span></p>\n' +
+                        ' <p class="clearfix"><span class="pull-left username">' + message.user_name + '</span> <span class="pull-left time">' + moment(message.created_at).format('MMM DD h:mm A') + '</span></p>\n' +
                         ' <p class="message">\n' +
-                        decodeHtml(message.Message) +
+                        decodeHtml(message.message) +
                         ' </p>\n' +
                         '     </div>\n' +
                         ' </li>';
