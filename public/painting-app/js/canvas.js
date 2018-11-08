@@ -458,9 +458,13 @@ function canvasDrawing(user, socket) {
                 loader.hide();
                 if(response.status){
                     canvasData = response.data;
+                    streamCanvasDrawing(canvasData, publicModeEnabled,false,lineEndPoint);
                     canvasData.forEach(function(element){
+                        canvasObjects.push(element);
                         drawMultipleShapes(element,true);
-                    })
+
+                    });
+
                 }
             }
         })
