@@ -1,7 +1,7 @@
 "use strict";
 var socket;
 var receiver = '';
-var herokoUrl = 'http://localhost:8000/';//'https://chatappwhiteboard.herokuapp.com/';
+var herokoUrl = 'http://ec2-34-244-233-250.eu-west-1.compute.amazonaws.com:8000/';
 var canvasObjects = [];
 var currentStudentID = '';
 var canvasStates = [];
