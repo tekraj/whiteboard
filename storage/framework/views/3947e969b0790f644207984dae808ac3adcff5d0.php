@@ -49,7 +49,7 @@
                         <tr>
                             <td><?php echo e($tutor->name); ?></td>
                             <td><?php echo e($tutor->email); ?></td>
-                            <td><?php echo e(ucfirst($tutor->subject->name)); ?></td>
+                            <td><?php echo e($tutor->subject ? ucfirst($tutor->subject->name):''); ?></td>
                             <td><?php echo e($tutor->contact_no); ?></td>
                             <td>
                                 <?php if($tutor->status): ?>

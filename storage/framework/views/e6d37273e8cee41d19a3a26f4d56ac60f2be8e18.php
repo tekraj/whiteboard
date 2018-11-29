@@ -19,14 +19,21 @@
         <?php endif; ?>
         <div class="card">
             <div class="card-header">
-                <?php echo e($subject->id > 0 ? "Edit {$subject->name}" : "Add new Student"); ?>
 
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b><?php echo e($subject->id > 0 ? "Edit {$subject->name}" : "Add new Subject"); ?></b>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a href="<?php echo e(url('admin/subjects')); ?>" class="btn btn-default"><b>Back</b></a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <?php echo Form::label('name', 'Name', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px']); ?>
+                            <?php echo Form::label('name', 'Name*', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px']); ?>
 
                             <div class="col-sm-9">
                                 <?php echo Form::text('name',$subject->name, ['class' => 'form-control','required'=>true]); ?>
@@ -37,7 +44,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <?php echo e(Form::label('status', 'Status', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
+                            <?php echo e(Form::label('status', 'Status*', ['class' => 'col-sm-3 text-right','style'=>'margin-top:8px'])); ?>
 
                             <div class="col-sm-9">
                                 <?php echo e(Form::select('status',[''=>'Select','1'=>'Active','0'=>'In-active'],$subject->status, ['class' => 'form-control'])); ?>

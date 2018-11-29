@@ -47,7 +47,7 @@
                         <tr>
                             <td>{{$tutor->name}}</td>
                             <td>{{$tutor->email}}</td>
-                            <td>{{ucfirst($tutor->subject->name)}}</td>
+                            <td>{{$tutor->subject ? ucfirst($tutor->subject->name):''}}</td>
                             <td>{{$tutor->contact_no}}</td>
                             <td>
                                 @if($tutor->status)
