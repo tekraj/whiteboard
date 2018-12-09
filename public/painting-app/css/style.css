@@ -73,6 +73,18 @@ body {
     margin-bottom: 10px;
     padding:3px 0;
 }
+.notif-span {
+    display: inline-block;
+    float: right;
+    height: 15px;
+    width: 15px;
+    background: #F44336;
+    text-align: center;
+    border-radius: 100%;
+    color: #fff;
+    font-size: 12px;
+    padding-top: 1px;
+}
 .option-menu li a span{border-bottom:solid #000;display: block; }
 .option-menu li a:hover,.option-menu li a.active {
     box-shadow: 0px 0px 1px 1px #0c0cc0d9;

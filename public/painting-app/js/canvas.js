@@ -69,7 +69,7 @@ function canvasDrawing(user, socket) {
         textEnabled = false,
 
         draggingShape = {},
-        eraserSize = lineSize,
+        eraserSize = lineSize * 10,
         dc = $('#drawing-board'),
         parentDiv = dc.parent(),
         fa = $('#fake-canvas'),
@@ -198,7 +198,7 @@ function canvasDrawing(user, socket) {
         $('.js-color-code').removeClass('active');
         $(this).addClass('active');
         $('#color-indicator').css({'background': color});
-        $('#color-indicator').attr('data-color',color);
+        $('#color-indicator').attr('data-color', color);
         $('#color-indicator').data().color = color;
         $('#canvas-text-input').css('color', color);
         currentColor = color;
@@ -258,14 +258,14 @@ function canvasDrawing(user, socket) {
         }
     });
 
-    $('#mouse-cursor').click(function(e){
+    $('#mouse-cursor').click(function (e) {
         e.preventDefault();
         $('#enable-text-tool').click();
     });
 
-    $('#session-note-form').submit(function(e){
+    $('#session-note-form').submit(function (e) {
         e.preventDefault();
-        if($(this).hasClass('sending'))
+        if ($(this).hasClass('sending'))
             return false;
 
         var $this = $(this);
@@ -274,14 +274,14 @@ function canvasDrawing(user, socket) {
         $this.addClass('sending');
 
         $.ajax({
-            type : 'post',
-            url:url,
+            type: 'post',
+            url: url,
             data: data,
-            beforeSend : function(){
+            beforeSend: function () {
                 $this.find('.btn').text('Saving..')
             },
-            success : function (response) {
-                if(response.status){
+            success: function (response) {
+                if (response.status) {
                     $this.removeClass('sending');
                     $this.find('.btn').text('Save');
                     $this.find('textarea').text('').val('');
@@ -294,8 +294,8 @@ function canvasDrawing(user, socket) {
                         timeout: 5000
                     });
                     var note = response.note
-                    $('#session-note-data').append('<tr><td>'+note.note+'</td><td>'+note.date+'</td></tr>')
-                }else{
+                    $('#session-note-data').append('<tr><td>' + note.note + '</td><td>' + note.date + '</td></tr>')
+                } else {
                     alert('Sorry unable to save note');
                 }
 
@@ -309,7 +309,7 @@ function canvasDrawing(user, socket) {
         },
         slide: function (event, ui) {
             $('#eraser-slider .ui-slider-handle').text(ui.value)
-            eraserSize = ui.value;
+            eraserSize = ui.value * 10;
         },
         range: "max",
         min: 2,
@@ -430,38 +430,38 @@ function canvasDrawing(user, socket) {
         pdfEnabled = true;
         var width = $canvasWrapper.width();
         var height = $canvasWrapper.height();
-        pdfReaderWrapper.html(' <object data="' + file + '" type="application/pdf" width="'+width+'" height="'+height+'"></object>');
+        pdfReaderWrapper.html(' <object data="' + file + '" type="application/pdf" width="' + width + '" height="' + height + '"></object>');
     });
 
     //read sav file
 
-    $('.js-load-whiteboard-click').click(function(e){
+    $('.js-load-whiteboard-click').click(function (e) {
         e.preventDefault();
         $(this).siblings('.js-load-whiteboard').click();
     });
 
-    $('.js-load-whiteboard').change(function(){
+    $('.js-load-whiteboard').change(function () {
         var file = this.files[0];
         var url = $(this).data().url;
         var fd = new FormData();
-        fd.append('sav-file',file);
+        fd.append('sav-file', file);
         $.ajax({
-            type:'post',
-            url : url,
-            data:fd,
-            processData:false,
-            contentType:false,
-            beforeSend: function (){
+            type: 'post',
+            url: url,
+            data: fd,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
                 loader.show();
             },
-            success : function(response){
+            success: function (response) {
                 loader.hide();
-                if(response.status){
+                if (response.status) {
                     canvasData = response.data;
-                    streamCanvasDrawing(canvasData, publicModeEnabled,false,lineEndPoint);
-                    canvasData.forEach(function(element){
+                    streamCanvasDrawing(canvasData, publicModeEnabled, false, lineEndPoint);
+                    canvasData.forEach(function (element) {
                         canvasObjects.push(element);
-                        drawMultipleShapes(element,true);
+                        drawMultipleShapes(element, true);
 
                     });
 
@@ -472,23 +472,23 @@ function canvasDrawing(user, socket) {
 
 
     //save to sav file
-    $('.js-save-whiteboard').click(function(){
+    $('.js-save-whiteboard').click(function () {
         var url = $(this).data().url;
-        if(canvasObjects.length<1)
+        if (canvasObjects.length < 1)
             return false;
 
         $.ajax({
-            type:'post',
-            url : url,
-            data:{data:canvasObjects},
-            beforeSend: function (){
+            type: 'post',
+            url: url,
+            data: {data: canvasObjects},
+            beforeSend: function () {
                 loader.show();
             },
-            success : function(response){
+            success: function (response) {
                 loader.hide();
-               if(response.status){
-                   window.location.href = base_url+'/utility/download-file?file='+response.file;
-               }
+                if (response.status) {
+                    window.location.href = base_url + '/utility/download-file?file=' + response.file;
+                }
             }
         })
     });
@@ -531,9 +531,9 @@ function canvasDrawing(user, socket) {
                     canvasObjects = [];
                     foreignCanvasData = [];
                     redrawCanvas();
-                    if(user.userType=='tutor' && $onlineUsers.find('li.active').length>0){
+                    if (user.userType == 'tutor' && $onlineUsers.find('li.active').length > 0) {
                         var rec = $onlineUsers.find('li.active').find('.js-online-users').data().user;
-                        socket.emit('redraw-canvas', {receiver: rec,type:'new-board'});
+                        socket.emit('redraw-canvas', {receiver: rec, type: 'new-board'});
                     }
 
                     $enableTextTool.click();
@@ -544,14 +544,14 @@ function canvasDrawing(user, socket) {
                 }
             });
 
-        }else{
+        } else {
             drawingCanvas.clearRect(0, 0, drawingC.width, drawingC.height);
             canvasObjects = [];
             foreignCanvasData = [];
             redrawCanvas();
-            if(user.userType=='tutor' && $onlineUsers.find('li.active').length>0){
+            if (user.userType == 'tutor' && $onlineUsers.find('li.active').length > 0) {
                 var rec = $onlineUsers.find('li.active').find('.js-online-users').data().user;
-                socket.emit('redraw-canvas', {receiver: rec,type:'new-board'});
+                socket.emit('redraw-canvas', {receiver: rec, type: 'new-board'});
             }
 
             $enableTextTool.click();
@@ -598,13 +598,13 @@ function canvasDrawing(user, socket) {
         pencilPoints.push({x: x, y: y});
     }
 
-    $('#input-image').change(function(){
-        if(this.files && this.files[0]) {
+    $('#input-image').change(function () {
+        if (this.files && this.files[0]) {
             var file = this.files[0];
             var fileName = file.name;
             fileName = fileName.split('.');
-            var extension = fileName[fileName.length-1];
-            if(['jpg','jpeg','png'].indexOf(extension)>=0) {
+            var extension = fileName[fileName.length - 1];
+            if (['jpg', 'jpeg', 'png'].indexOf(extension) >= 0) {
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     $enableTextTool.click();
@@ -648,7 +648,7 @@ function canvasDrawing(user, socket) {
                     img.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
-            }else{
+            } else {
                 alert('Please select image');
             }
         }
@@ -718,7 +718,7 @@ function canvasDrawing(user, socket) {
                 redrawCanvas();
                 showDragUIAnimation(left, top);
             }
-        }else if(currentTool=='paste'){
+        } else if (currentTool == 'paste') {
             $('#input-image').click();
         }
 
@@ -815,8 +815,7 @@ function canvasDrawing(user, socket) {
                 drawXYGraphAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize);
             } else if (currentTool == 'rectangle-filled') {
                 drawRectangleAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize, false, true);
-            }
-            else if (currentTool == 'oval-filled') {
+            } else if (currentTool == 'oval-filled') {
                 drawCircleAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize, false, true);
             } else if (currentTool == 'line-sarrow') {
                 drawLineAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize, false, 'single');
@@ -990,11 +989,11 @@ function canvasDrawing(user, socket) {
                 });
             } else if (currentTool == 'eraser') {
                 canvasObjects.push({shape: 'eraser', data: eraserPoints});
-                streamCanvasDrawing([{shape: 'eraser', data: eraserPoints}], publicModeEnabled,false,lineEndPoint);
+                streamCanvasDrawing([{shape: 'eraser', data: eraserPoints}], publicModeEnabled, false, lineEndPoint);
             }
         }
-        if(currentTool=='drag'){
-            socket.emit('redraw-foreign',{data:canvasObjects,receiver:receiver});
+        if (currentTool == 'drag') {
+            socket.emit('redraw-foreign', {data: canvasObjects, receiver: receiver});
         }
         fakeCanvas.clearRect(0, 0, fakeC.height, fakeC.width);
         mouseDown = false;
@@ -1558,13 +1557,13 @@ function canvasDrawing(user, socket) {
         if (noAnimation) {
             var pointsArray = {};
             var i = x2 > x1 ? x1 : x2;
-            var endP = ( x2 > x1 ? x2 : x1) + 2;
+            var endP = (x2 > x1 ? x2 : x1) + 2;
             var factor = w / 10;
             var counter = 0;
             while (i <= endP) {
-                pointsArray[counter]={x: Math.floor(i), y: y1};
+                pointsArray[counter] = {x: Math.floor(i), y: y1};
                 i += factor;
-               if(counter>10)
+                if (counter > 10)
                     break;
                 counter++;
             }
@@ -1675,12 +1674,12 @@ function canvasDrawing(user, socket) {
 
             var counterx = 0;
             var i = (x2 > x1 ? x1 : x2) + 10,
-                endPX = ( x2 > x1 ? x2 : x1);
+                endPX = (x2 > x1 ? x2 : x1);
             while (i <= endPX) {
                 var factor = (w / 20) - 1;
-                pointsArrayX[counterx]={x: Math.floor(i), y: my};
+                pointsArrayX[counterx] = {x: Math.floor(i), y: my};
                 i += factor;
-                if(counterx>20)
+                if (counterx > 20)
                     break;
                 counterx++;
             }
@@ -1722,18 +1721,18 @@ function canvasDrawing(user, socket) {
 
 
             }
-            pointsArrayX ={};
+            pointsArrayX = {};
 
             //draw horizontal lines
             var pointsArrayY = {};
             var countery = 0;
             var k = (y2 > y1 ? y1 : y2) + 10,
-                endPY = ( y2 > y1 ? y2 : y1);
+                endPY = (y2 > y1 ? y2 : y1);
             while (k <= endPY) {
                 var factor = (h / 20) - 1;
-                pointsArrayY[countery]={x: mx, y: Math.floor(k)};
+                pointsArrayY[countery] = {x: mx, y: Math.floor(k)};
                 k += factor;
-                if(countery>20)
+                if (countery > 20)
                     break;
                 countery++;
             }
@@ -1836,46 +1835,46 @@ function canvasDrawing(user, socket) {
         var printValue = $('input[name="print_option"]:checked').val();
         var printMode = $('input[name="print_mode"]:checked').val();
         var printContent = '';
-        let style  = '';
-        if(printMode=='landscape'){
+        let style = '';
+        if (printMode == 'landscape') {
             style = '<style type="text/css" >\n' +
                 '  @media print{@page {size: landscape}}\n' +
                 '</style>'
         }
 
-        if(printValue=='current-slide' || printValue=='all-slides'){
+        if (printValue == 'current-slide' || printValue == 'all-slides') {
             var dataUrl = drawingC.toDataURL();
-             printContent = '<!Doctype html>' +
+            printContent = '<!Doctype html>' +
                 '<html>' +
                 '<head><title></title>' +
-                 style+
-                 '</head>' +
+                style +
+                '</head>' +
                 '<body>' +
                 '<img src="' + dataUrl + '">' +
                 '</body>' +
                 '</html>';
-        }else{
+        } else {
             let chatContent = $('.chat-room').html();
             printContent = '<!Doctype html>' +
                 '<html>' +
                 '<head><title></title>' +
-                style+
+                style +
                 '</head>' +
                 '<body>' +
                 chatContent
-                '</body>' +
-                '</html>';
+            '</body>' +
+            '</html>';
         }
 
         var printWindow = window.open('', '', width = $('#drawing-board').width(), height = $('#drawing-board').height());
         printWindow.document.write(printContent);
         printWindow.document.addEventListener('load', function () {
-            setTimeout(function(){
+            setTimeout(function () {
                 printWindow.focus();
                 printWindow.print();
                 printWindow.document.close();
                 printWindow.close();
-            },500);
+            }, 500);
 
         }, true)
 
@@ -2003,70 +2002,71 @@ function canvasDrawing(user, socket) {
             return callback();
         if (htmlString.trim().length < 1)
             return callback();
-        setTimeout(function(){
-        htmlString = htmlString.replace(/&#8203;/g, ' ');
+        setTimeout(function () {
+            htmlString = htmlString.replace(/&#8203;/g, ' ');
 
-        var height = parseInt(textHolder.height()) + 20;
-        var width = textHolder.width() + 30;
-        var svgData = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">' +
-            '<foreignObject width="100%" height="100%">' +
-            '<div xmlns="http://www.w3.org/1999/xhtml" style="' + styles + '">' +
-            htmlString +
-            '</div>' +
-            '</foreignObject>' +
-            '</svg>';
-        var data = encodeURIComponent(svgData);
-        var img = new Image();
-        img.onload = function () {
-            var width = img.width;
-            textDivWidth = img.width;
-            var height = img.height;
-            var canvasHeight = drawingC.height;
-            var canvasWidth = drawingC.width;
-            var left = x + width;
-            var top = y + height;
-            if (left > canvasWidth) {
-                parentDiv.scrollLeft(left);
-                rC.width = canvasWidth;
-                rC.height = canvasHeight;
-                resizeCanvas.drawImage(drawingC, 0, 0);
-                dc.attr('width', left);
-                fa.attr('width', left);
-                drawingCanvas.drawImage(rC, 0, 0);
-            }
-            if (top > canvasHeight) {
-                parentDiv.scrollLeft(top);
-                rC.width = canvasWidth;
-                rC.height = canvasHeight;
-                resizeCanvas.drawImage(drawingC, 0, 0);
-                dc.attr('height', top);
-                fa.attr('height', top);
-                drawingCanvas.drawImage(rC, 0, 0);
-            }
-            drawingCanvas.drawImage(img, x, y + 2);
-            var cssObj = {
-                'color': textHolder.css('color'),
-                'font-size': textHolder.css('font-size'),
-                'font-family': textHolder.css('font-family'),
-                'font-weight': textHolder.css('font-weight'),
-                'font-style': textHolder.css('font-style')
+            var height = parseInt(textHolder.height()) + 20;
+            var width = textHolder.width() + 30;
+            var svgData = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">' +
+                '<foreignObject width="100%" height="100%">' +
+                '<div xmlns="http://www.w3.org/1999/xhtml" style="' + styles + '">' +
+                htmlString +
+                '</div>' +
+                '</foreignObject>' +
+                '</svg>';
+
+            var data = encodeURIComponent(svgData);
+            var img = new Image();
+            img.onload = function () {
+                var width = img.width;
+                textDivWidth = img.width;
+                var height = img.height;
+                var canvasHeight = drawingC.height;
+                var canvasWidth = drawingC.width;
+                var left = x + width;
+                var top = y + height + 4;
+                if (left > canvasWidth) {
+                    parentDiv.scrollLeft(left);
+                    rC.width = canvasWidth;
+                    rC.height = canvasHeight;
+                    resizeCanvas.drawImage(drawingC, 0, 0);
+                    dc.attr('width', left);
+                    fa.attr('width', left);
+                    drawingCanvas.drawImage(rC, 0, 0);
+                }
+                if (top > canvasHeight) {
+                    parentDiv.scrollLeft(top);
+                    rC.width = canvasWidth;
+                    rC.height = canvasHeight;
+                    resizeCanvas.drawImage(drawingC, 0, 0);
+                    dc.attr('height', top);
+                    fa.attr('height', top);
+                    drawingCanvas.drawImage(rC, 0, 0);
+                }
+                drawingCanvas.drawImage(img, x, y + 3);
+                var cssObj = {
+                    'color': textHolder.css('color'),
+                    'font-size': textHolder.css('font-size'),
+                    'font-family': textHolder.css('font-family'),
+                    'font-weight': textHolder.css('font-weight'),
+                    'font-style': textHolder.css('font-style')
+                };
+                saveCanvasObjects('image-text', {
+                    textLeftCord: x,
+                    textTopCord: y + 2,
+                    startX: x - 10,
+                    startY: y - 10,
+                    endX: x + img.width + 2,
+                    endY: y - 40 + img.height,
+                    image: "data:image/svg+xml," + data,
+                    html: textHolder.html(),
+                    cssObj: cssObj
+                });
+
+                return callback();
             };
-            saveCanvasObjects('image-text', {
-                textLeftCord: x,
-                textTopCord: y + 2,
-                startX: x - 10,
-                startY: y - 10,
-                endX: x + img.width + 2,
-                endY: y - 40 + img.height,
-                image: "data:image/svg+xml," + data,
-                html: textHolder.html(),
-                cssObj: cssObj
-            });
-
-            return callback();
-        };
-        img.src = "data:image/svg+xml," + data
-        },100);
+            img.src = "data:image/svg+xml," + data
+        }, 200);
     }
 
 
@@ -2078,8 +2078,8 @@ function canvasDrawing(user, socket) {
         $enableTextTool.removeClass('js-tools border');
         canvasObjects.splice(canvasObjects.length - 1);
         redrawCanvas();
-        if(user.userType=='tutor'){
-            socket.emit('redraw-foreign',{data:canvasObjects,receiver:receiver});
+        if (user.userType == 'tutor') {
+            socket.emit('redraw-foreign', {data: canvasObjects, receiver: receiver});
         }
         $enableTextTool.click();
     });
@@ -2101,8 +2101,8 @@ function canvasDrawing(user, socket) {
 
         $enableTextTool.click();
         $('#color-indicator').css('background', '#000');
-        if(user.userType=='tutor'){
-            if(canvasObjects.length>1){
+        if (user.userType == 'tutor') {
+            if (canvasObjects.length > 1) {
                 canvasStates.push(canvasObjects);
                 currentStateIndex = canvasStates.length;
             }
@@ -2112,49 +2112,50 @@ function canvasDrawing(user, socket) {
         canvasObjects = [];
         foreignCanvasData = [];
         redrawCanvas();
-        if(user.userType=='tutor' && $onlineUsers.find('li.active').length>0){
+        if (user.userType == 'tutor' && $onlineUsers.find('li.active').length > 0) {
             var rec = $onlineUsers.find('li.active').find('.js-online-users').data().user;
-            socket.emit('redraw-canvas', {receiver: rec,type:'new-board'});
+            socket.emit('redraw-canvas', {receiver: rec, type: 'new-board'});
         }
 
     });
-    if(user.userType=='tutor'){
-        $('#canvas-next-state').click(function(e){
+    if (user.userType == 'tutor') {
+        $('#canvas-next-state').click(function (e) {
             e.preventDefault();
 
             currentStateIndex++;
-            if(currentStateIndex<canvasStates.length){
+            if (currentStateIndex < canvasStates.length) {
 
-                if(canvasObjects && canvasObjects.length>0 && isNewDrawing){
+                if (canvasObjects && canvasObjects.length > 0 && isNewDrawing) {
                     isNewDrawing = false;
                     canvasStates.push(canvasObjects);
-                };
+                }
+                ;
                 canvasObjects = canvasStates[currentStateIndex];
-               redrawCanvas();
-                streamCanvasDrawing(canvasObjects, false,'redraw-foreign',lineEndPoint);
-            }else{
-                currentStateIndex = canvasStates.length-1;
+                redrawCanvas();
+                streamCanvasDrawing(canvasObjects, false, 'redraw-foreign', lineEndPoint);
+            } else {
+                currentStateIndex = canvasStates.length - 1;
             }
         });
 
-        $('#canvas-back-state').click(function(e){
+        $('#canvas-back-state').click(function (e) {
             e.preventDefault();
             currentStateIndex--;
 
-            if(currentStateIndex>=0){
+            if (currentStateIndex >= 0) {
 
-                if(canvasObjects && canvasObjects.length>0 && isNewDrawing){
+                if (canvasObjects && canvasObjects.length > 0 && isNewDrawing) {
                     isNewDrawing = false;
                     canvasStates.push(canvasObjects);
                 }
                 canvasObjects = canvasStates[currentStateIndex];
-                streamCanvasDrawing(canvasObjects, false,'redraw-foreign',lineEndPoint);
+                streamCanvasDrawing(canvasObjects, false, 'redraw-foreign', lineEndPoint);
                 redrawCanvas();
-            }else{
-                currentStateIndex =0;
+            } else {
+                currentStateIndex = 0;
             }
         });
-    }else{
+    } else {
         $('#canvas-next-state,#canvas-back-state').hide();
     }
 
@@ -2164,11 +2165,11 @@ function canvasDrawing(user, socket) {
      * @param data
      */
     function saveCanvasObjects(shape, data) {
-        if(!canvasObjects)
+        if (!canvasObjects)
             canvasObjects = [];
         canvasObjects.push({shape: shape, data: data});
         isNewDrawing = true;
-        streamCanvasDrawing([{shape: shape, data: data}], publicModeEnabled,false,lineEndPoint);
+        streamCanvasDrawing([{shape: shape, data: data}], publicModeEnabled, false, lineEndPoint);
     }
 
     /**
@@ -2196,8 +2197,7 @@ function canvasDrawing(user, socket) {
                 x2 = pPoints.maxX + 5;
                 y1 = pPoints.minY;
                 y2 = pPoints.maxY + 5;
-            }
-            else {
+            } else {
                 x1 = Math.min(shapeData.startX, shapeData.endX);
                 x2 = Math.max(shapeData.startX, shapeData.endX);
                 y1 = Math.min(shapeData.startY, shapeData.endY);
@@ -2253,7 +2253,7 @@ function canvasDrawing(user, socket) {
      */
     function redrawCanvas() {
         drawingCanvas.clearRect(0, 0, drawingC.width, drawingC.height);
-        if(canvasObjects) {
+        if (canvasObjects) {
 
             for (var i = 0; i < canvasObjects.length; i++) {
 
@@ -2266,7 +2266,7 @@ function canvasDrawing(user, socket) {
 
             }
         }
-        if(foreignCanvasData) {
+        if (foreignCanvasData) {
             for (var i = 0; i < foreignCanvasData.length; i++) {
 
                 var canvasShape = foreignCanvasData[i];
@@ -2439,7 +2439,7 @@ function canvasDrawing(user, socket) {
 
     //check for text edit option
     function checkTextEdit(x, y) {
-        if(canvasObjects) {
+        if (canvasObjects) {
             for (var i = 0; i < canvasObjects.length; i++) {
                 var canvasShape = canvasObjects[i];
                 if (canvasShape.shape !== 'image-text')
@@ -2474,48 +2474,48 @@ function canvasDrawing(user, socket) {
             $this.removeClass('active')
             publicModeEnabled = false;
             foreignCanvasData = [];
-            canvasObjects =[];
+            canvasObjects = [];
             redrawCanvas();
-            if(user.userType=='tutor'){
+            if (user.userType == 'tutor') {
                 $.ajax({
-                    type : 'post',
-                    url : herokoUrl+'unset-public-drawing',
-                    data : user,
-                    success : function (data){
+                    type: 'post',
+                    url: herokoUrl + 'unset-public-drawing',
+                    data: user,
+                    success: function (data) {
 
                     }
                 });
 
             }
         } else {
-            if(user.userType=='student'){
+            if (user.userType == 'student') {
 
-                checkPublicMethodEnabled(function(data){
-                    if(data.status){
+                checkPublicMethodEnabled(function (data) {
+                    if (data.status) {
                         $this.addClass('active');
                         publicModeEnabled = true;
                         foreignCanvasData = [];
-                        canvasObjects =[];
+                        canvasObjects = [];
                         redrawCanvas();
-                    }else{
+                    } else {
                         alert('Sorry currently no public option avilable');
                     }
                 });
-            }else{
+            } else {
                 $.ajax({
-                    type : 'post',
-                    url : herokoUrl+'set-public-drawing',
-                    data : user,
-                    global:false,
-                    crossDomain : true,
-                    success : function (data){
-                        if(data.status){
+                    type: 'post',
+                    url: herokoUrl + 'set-public-drawing',
+                    data: user,
+                    global: false,
+                    crossDomain: true,
+                    success: function (data) {
+                        if (data.status) {
                             $this.addClass('active');
                             publicModeEnabled = true;
                             foreignCanvasData = [];
-                            canvasObjects =[];
+                            canvasObjects = [];
                             redrawCanvas();
-                        }else{
+                        } else {
                             alert('Sorry You are currently Offline. Please refresh the page');
                         }
 
@@ -2528,11 +2528,11 @@ function canvasDrawing(user, socket) {
     });
 
     socket.on('get-public-drawing', function (data) {
-        if (!publicModeEnabled){
+        if (!publicModeEnabled) {
             return false;
         }
 
-        if (data.user.ObjectID!=user.ObjectID && data.hasOwnProperty('canvasData')) {
+        if (data.user.ObjectID != user.ObjectID && data.hasOwnProperty('canvasData')) {
 
             lineEndPoint = data.xy;
             var left = lineEndPoint.x;
@@ -2560,7 +2560,7 @@ function canvasDrawing(user, socket) {
             }
             for (var i in data.canvasData) {
                 foreignCanvasData.push(data.canvasData[i]);
-                drawMultipleShapes(data.canvasData[i],true);
+                drawMultipleShapes(data.canvasData[i], true);
             }
 
         }
@@ -2568,14 +2568,14 @@ function canvasDrawing(user, socket) {
 
     socket.on('get-private-drawing', function (data) {
         //console.log(data);
-        if (publicModeEnabled){
+        if (publicModeEnabled) {
             return false;
         }
-        if(user.userType=='tutor' && data.user.ObjectID !=currentStudentID){
+        if (user.userType == 'tutor' && data.user.ObjectID != currentStudentID) {
             return false;
         }
 
-        if (data.user.ObjectID!=user.ObjectID && data.hasOwnProperty('canvasData')) {
+        if (data.user.ObjectID != user.ObjectID && data.hasOwnProperty('canvasData')) {
             lineEndPoint = data.xy;
             var left = lineEndPoint.x;
             var top = lineEndPoint.y;
@@ -2601,14 +2601,14 @@ function canvasDrawing(user, socket) {
                 drawingCanvas.drawImage(rC, 0, 0);
             }
 
-            if(data.redrawForeign=='redraw-foreign'){
+            if (data.redrawForeign == 'redraw-foreign') {
 
                 foreignCanvasData = data.canvasData;
                 redrawCanvas();
-            }else{
+            } else {
                 for (var i in data.canvasData) {
                     foreignCanvasData.push(data.canvasData[i]);
-                    drawMultipleShapes(data.canvasData[i],true);
+                    drawMultipleShapes(data.canvasData[i], true);
                 }
             }
 
@@ -2616,43 +2616,43 @@ function canvasDrawing(user, socket) {
         }
     });
 
-    socket.on('req-for-drawing-update', function(){
-       streamCanvasDrawing(canvasObjects,publicModeEnabled,false,lineEndPoint);
+    socket.on('req-for-drawing-update', function () {
+        streamCanvasDrawing(canvasObjects, publicModeEnabled, false, lineEndPoint);
     });
 
-    socket.on('force-redraw', function(data){
-        if(user.userType=='student'){
-            if(data.type == 'new-board'){
-                foreignCanvasData =[];
+    socket.on('force-redraw', function (data) {
+        if (user.userType == 'student') {
+            if (data.type == 'new-board') {
+                foreignCanvasData = [];
             }
-            canvasObjects =[];
+            canvasObjects = [];
             redrawCanvas();
         }
     });
-    socket.on('undo-foreign',function(data){
+    socket.on('undo-foreign', function (data) {
         foreignCanvasData = data;
         redrawCanvas();
     });
     $(document).on('click', '.js-online-users', function () {
-        if (!$(this).hasClass('already-selected')){
+        if (!$(this).hasClass('already-selected')) {
             $('.js-online-users').removeClass('already-selected');
             $(this).addClass('already-selected');
             canvasObjects = [];
             foreignCanvasData = [];
             redrawCanvas();
             var rec = $(this).data().user;
-            socket.emit('req-student-drawing',{receiver:rec});
+            socket.emit('req-student-drawing', {receiver: rec});
         }
 
     });
 
 
-    $(document).on('click','.js-clear-std-board',function(e){
+    $(document).on('click', '.js-clear-std-board', function (e) {
         e.preventDefault();
 
-        if(user.userType=='tutor'){
+        if (user.userType == 'tutor') {
             var rec = $(this).parent().find('.js-online-users').data().user;
-            socket.emit('redraw-canvas', {receiver: rec,type:'std-board'});
+            socket.emit('redraw-canvas', {receiver: rec, type: 'std-board'});
             foreignCanvasData = [];
             redrawCanvas();
         }

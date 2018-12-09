@@ -268,6 +268,9 @@ $(function () {
     $onlineUserList.on('click', 'li', function () {
         if (!$(this).hasClass('active')) {
             var $this = $(this);
+            if($this.find('.notif-span').length>0){
+                $this.find('.notif-span').remove();
+            }
             var $onlineUser = $this.find('.js-online-users');
             if (user.userType == 'tutor') {
                 $onlineUserList.find('li').removeClass('active');
@@ -285,6 +288,7 @@ $(function () {
                 user.tutor = $onlineUser.data().user;
                 //console.log(user);
                 socket.emit('req-for-join-class', user);
+                getUserMessages(user.ObjectID, receiverId, user.userType);
             }
 
         }
@@ -410,19 +414,29 @@ $(function () {
         var date = new Date();
         receiver = data.socket;
         var senderName = data.senderName;
-        $('.js-online-users').removeClass('active');
-        $('#user-' + data.socket).addClass('active');
-        var html = '<li class="from">\n' +
-            ' <div>\n' +
-            ' <p class="clearfix"><span class="username">' + senderName + '</span> <span class="time">' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '</span></p>\n' +
-            ' <p class="message">\n' +
-            data.message +
-            ' </p>\n' +
-            '     </div>\n' +
-            ' </li>';
+        var senderId = data.id;
+        var userId =  $('#user-'+senderId);
+        if(userId.hasClass('active')){
+            var html = '<li class="from">\n' +
+                ' <div>\n' +
+                ' <p class="clearfix"><span class="username">' + senderName + '</span> <span class="time">' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '</span></p>\n' +
+                ' <p class="message">\n' +
+                data.message +
+                ' </p>\n' +
+                '     </div>\n' +
+                ' </li>';
 
-        $chatBoard.append(html);
-        $chatRoom.animate({scrollTop: $chatBoard.height()}, 0);
+            $chatBoard.append(html);
+            $chatRoom.animate({scrollTop: $chatBoard.height()}, 0);
+        }else{
+            if(userId.find('.notif-span').length>0){
+                var counter = parseInt(userId.find('.notif-span').text())+1;
+                userId.find('.notif-span').text(counter);
+            }else{
+                userId.append('<span class="notif-span">1</span>');
+            }
+        }
+
     });
 
 
