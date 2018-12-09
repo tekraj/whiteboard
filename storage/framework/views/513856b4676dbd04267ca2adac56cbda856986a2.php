@@ -32,6 +32,9 @@
 
 </head>
 <body data-imageurl="<?php echo e(url("utility/save-canvas-image/{$type}")); ?>">
+<div id="loader" style="background: rgba(3, 122, 245, 0.63);padding:150px;position:absolute;top:0;bottom:0;left:0;right:0;z-index: 99999999;text-align: center;">
+    <img src="<?php echo e(asset('images/loader.gif')); ?>" alt="">
+</div>
 <header>
     <nav class="navbar navbar-default">
         <div class="container-fluid" style="padding:0;">
@@ -63,10 +66,10 @@
                                    data-url="<?php echo e(url("utility/save-canvas-to-sav/{$type}")); ?>">Save WhiteBoard As</a>
                             </li>
                             <li role="separator" class="divider"></li>
-                            
-                            
+                            <li>
+                            <a href="#" >Properties</a>
 
-                            
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li>
                                 <a href="<?php echo e(url($type)); ?>">End Session</a>
@@ -204,9 +207,9 @@
     </div>
 </div>
 
-<div class="container-fluid can" style="padding-left:0;padding-right:0;">
+<div class="container-fluid can">
     <div class="row">
-        <div class="col-md-1 tools-list">
+        <div class="col-md-1 tools-list" >
             <div class="text-center my-1 option-menu-wrapper">
                 <a href="#" class="btn btn-default js-tools" id="pencil-tool" data-tool="pencil" data-toggle="tooltip"
                    data-placement="top" title="Pencil"
@@ -802,9 +805,9 @@
 
         <div class="col-md-11 border px-0 canvas-list">
 
-            <div class="canvas-writing writing">
+            <div class="canvas-writing writing" style="height:70%;">
 
-                <div class="canvas-wrapper" style="height:60vh;">
+                <div style="height: 100%;" class="canvas-wrapper">
                     <canvas class="drawing-board" id="drawing-board"></canvas>
                     <canvas id="fake-canvas" class="fake-canvas"></canvas>
                     <canvas id="resize-canvas" style="display: none;"></canvas>
@@ -820,7 +823,7 @@
 
             </div>
 
-            <div class="card chat-card">
+            <div class="card chat-card" style="height: 30%;margin-bottom: 0;">
                 <div class="header">
                     <div class="row ">
                         <div class="col-sm-4">
@@ -842,7 +845,7 @@
                 <div class="body">
                     <div class="row">
                         <div class="col-sm-3">
-                            <div class="participant-list" style="height:23vh;">
+                            <div class="participant-list" style="height:20vh;">
                                 <ul id="online-users">
 
                                 </ul>
@@ -850,7 +853,7 @@
                         </div>
                         <div class="col-sm-9">
 
-                            <div class="chat-room" style="height: 18vh;">
+                            <div class="chat-room" style="height: 16vh;">
                                 <ul id="chat-board">
 
                                 </ul>
@@ -1281,7 +1284,11 @@
         }
     });
     var base_url = '<?php echo e(url('/')); ?>';
-
+    $(document).ready(function(){
+        var totalHeight = window.innerHeight;
+        $('#loader').hide();
+        $('.canvas-list').css('height',totalHeight-90);
+    })
 </script>
 <script src="<?php echo e(asset('painting-app/emoji-js/emoji.js')); ?>"></script>
 <script src="<?php echo e(asset('painting-app/izitoast/js/iziToast.min.js')); ?>"></script>

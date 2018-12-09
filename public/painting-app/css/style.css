@@ -3,8 +3,10 @@
 }
 body {
     background-color: #eeeeee75;
-    max-height:100vh;
     width:100%;
+
+    height:100%;
+    padding-bottom:0;
 }
 .first_section {
     padding-left:42px;
@@ -284,11 +286,13 @@ body {
     min-width:36px;
 }
 .tools-list .btn:hover,.tools-list .btn.active{background:#009688 !important}
-.top-functions{padding:0px 15px 5px 6px;}
-.tools-list .btn img {
-    width: 90%!important;
-    height: 90%!important;
+.top-functions {
+    padding: 0px 35px 8px 21px;
 }
+/*.tools-list .btn img {*/
+    /*width: 90%!important;*/
+    /*height: 90%!important;*/
+/*}*/
 .canvas-list{width:95%!important;}
 .modal-header{position: relative;}
 
