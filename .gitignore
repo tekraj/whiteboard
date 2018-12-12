@@ -1,5 +1,4 @@
 /node_modules
-/public/storage
 /storage/*.key
 /vendor
 /.idea
@@ -14,7 +13,7 @@ Homestead.yaml
 /mailoutput
 /vendor
 /node_modules
-/storage
+
 composer.lock
 .env
 .idea
