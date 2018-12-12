@@ -167,8 +167,19 @@ $(function () {
             if($('#std-req-'+data.ObjectID).length>0){
                 $('#std-req-'+data.ObjectID).remove();
             }
-            $('.student-request-list').show().append('<li id="std-req-'+data.ObjectID+'"><span class="pull-left">' + data.Name + ' wants to join your class</span> <span class="pull-right" style="margin-top:-5px;"><button class="btn btn-default js-accept-reject-std-req" data-student="' + data.student + '" data-value="reject">Reject</button>\n' +
-                '                <button class="btn btn-primary js-accept-reject-std-req" data-student="' + data.student + '" data-value="accept">Accept</button></span></li>');
+            var audio = new Audio(base_url+'/painting-app/alert-bell.mp3').play();
+            $('.student-request-list').show().append('<li id="std-req-'+data.ObjectID+'">' +
+                '<div class="card text-center  ">' +
+                '<div class="card-body peach-gradient">' +
+                '<h4 class="card-title" style="color:#fff;">New Message</h4>' +
+                '<p class="card-text text-center" style="font-size:16px;color:#fff;">' + data.Name + ' wants to join your class</p>' +
+                '</div>' +
+                '<div class="rounded-bottom mdb-color lighten-3 text-center pt-3" style="padding-bottom:10px;"> ' +
+                '<button class="btn btn-default js-accept-reject-std-req" data-student="' + data.student + '" data-value="reject">Reject</button>\n' +
+                '                <button class="btn btn-primary js-accept-reject-std-req" data-student="' + data.student + '" data-value="accept">Accept</button>' +
+                '</div>' +
+                '</div>' +
+                '</li>');
         });
 
         //accept reject request

@@ -636,23 +636,61 @@ body{
     display: block;
     clear:both;
 }
-.student-request-list{
-    position:fixed;
-    top:100px;
-    right:10px;
-    width: 35%;
+.student-request-list {
+    position: fixed;
+    top: 0;
+    right: 0;
     display: none;
+    left: 0;
+    list-style: none;
+    bottom: 0;
+    background: rgba(245, 236, 236, 0.48);
+    z-index: 9999;
+    padding-top: 35px;
 }
 .student-request-list li {
-    background: #4CAF50;
-    padding: 10px 20px;
-    border: 1px solid #dedede;
-    text-align: left;
     clear: both;
+    width: 25%;
+    margin: auto;
     margin-bottom: 15px;
-    color: #fff;
-    border-radius: 2px;
-    box-shadow: 1px 1px 2px 2px #f1eded;
-    font-weight: bold;
-    text-transform: capitalize;
+    text-align: center;
+}
+.mdb-color.lighten-3 {
+    background-color: #929fba!important;
+}
+.card .card-body .card-text {
+    color: #747373;
+    font-size: .9rem;
+    font-weight: 400;
+}
+.card-body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    -webkit-border-radius: 0!important;
+    border-radius: 0!important;
+}
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+.pt-3, .py-3 {
+    padding-top: 1rem!important;
+}
+.rounded-bottom {
+    border-bottom-right-radius: .25rem!important;
+    border-bottom-left-radius: .25rem!important;
+}
+.peach-gradient {
+    background: -webkit-linear-gradient(50deg,#ffd86f,#fc6262)!important;
+    background: -o-linear-gradient(50deg,#ffd86f,#fc6262)!important;
+    background: linear-gradient(40deg,#ffd86f,#fc6262)!important;
 }
