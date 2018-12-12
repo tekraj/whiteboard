@@ -15,7 +15,14 @@ if (!HTMLCanvasElement.prototype.toBlob) {
         }
     });
 }
-
+String.prototype.replaceHtmlEntites = function() {
+    var s = this;
+    var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+    var translate = {"nbsp": "","amp" : "&","quot": "\"","lt"  : "<","gt"  : ">"};
+    return ( s.replace(translate_re, function(match, entity) {
+        return translate[entity];
+    }) );
+};
 //plugin to move cursor
 $.fn.selectRange = function (start, end) {
     if (end == undefined) {
@@ -258,10 +265,7 @@ function canvasDrawing(user, socket) {
         }
     });
 
-    $('#mouse-cursor').click(function (e) {
-        e.preventDefault();
-        $('#enable-text-tool').click();
-    });
+
 
     $('#session-note-form').submit(function (e) {
         e.preventDefault();
@@ -672,6 +676,11 @@ function canvasDrawing(user, socket) {
         lineStartPoint.y = top;
         lineEndPoint.x = left;
         lineEndPoint.y = top;
+        let lastShape = canvasObjects[canvasObjects.length-1];
+        if(lastShape && lastShape.shape=='select'){
+            canvasObjects.splice(canvasObjects.length - 1);
+            redrawCanvas();
+        }
         if (currentTool === 'pencil') {
             pushPencilPoints(left, top)
             drawPencil(drawingCanvas, currentColor, lineSize);
@@ -720,12 +729,31 @@ function canvasDrawing(user, socket) {
             }
         } else if (currentTool == 'paste') {
             $('#input-image').click();
+        }else if(currentTool=='select'){
+            fa.show();
+            lineStartPoint.x = left;
+            lineStartPoint.y = top;
         }
 
 
     }).mouseleave(function () {
         textEnabled = false;
         textwritten = false;
+    });
+
+    //press entr event to clear selected area
+    $(document).keydown(function(e){
+
+       if(currentTool=='select' && e.keyCode==13){
+           let lastShape = canvasObjects[canvasObjects.length-1];
+           let x1= lastShape.data.startX;
+           let y1 =  lastShape.data.startY;
+           let x2 = lastShape.data.endX;
+           let y2 = lastShape.data.endY;
+           canvasObjects.splice(canvasObjects.length - 1);
+           drawRectangleAnimation(x1-5,y1-5,x2+5,y2+5,'#fff',1,true,true);
+
+       }
     });
     //mousemove
     $('body').on('mousemove', function (e) {
@@ -821,6 +849,8 @@ function canvasDrawing(user, socket) {
                 drawLineAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize, false, 'single');
             } else if (currentTool == 'line-darrow') {
                 drawLineAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize, false, 'double');
+            }else if(currentTool=='select'){
+                drawSelectAnimation(lineStartPoint.x, lineStartPoint.y, left, top,false);
             }
         }
 
@@ -990,6 +1020,14 @@ function canvasDrawing(user, socket) {
             } else if (currentTool == 'eraser') {
                 canvasObjects.push({shape: 'eraser', data: eraserPoints});
                 streamCanvasDrawing([{shape: 'eraser', data: eraserPoints}], publicModeEnabled, false, lineEndPoint);
+            }else if(currentTool=='select'){
+                drawSelectAnimation(lineStartPoint.x, lineStartPoint.y, left, top,true);
+                saveCanvasObjects('select', {
+                    startX: lineStartPoint.x,
+                    startY: lineStartPoint.y,
+                    endX: left,
+                    endY: top
+                });
             }
         }
         if (currentTool == 'drag') {
@@ -1295,6 +1333,28 @@ function canvasDrawing(user, socket) {
 
     }
 
+    function drawSelectAnimation(x1, y1, x2, y2,noAnimation) {
+        fakeCanvas.clearRect(0, 0, fakeCanvasMaxLenght, fakeCanvasMaxLenght);
+        var filled = filled ? filled : false;
+        width = x2 - x1;
+        height = y2 - y1;
+        if (shiftPressed) {
+            height = ((x2 - x1) / Math.abs(x2 - x1)) * width;
+        }
+        var ctx = noAnimation ? drawingCanvas : fakeCanvas;
+        ctx.beginPath();
+        ctx.globalCompositeOperation = "source-over";
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#ccc';
+        ctx.rect(x1, y1, width, height);
+        ctx.stroke();
+        if (filled) {
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+        ctx.closePath();
+
+    }
     /**
      * ======================================================
      * *************** function to draw cube
@@ -2002,11 +2062,13 @@ function canvasDrawing(user, socket) {
             return callback();
         if (htmlString.trim().length < 1)
             return callback();
-        setTimeout(function () {
-            htmlString = htmlString.replace(/&#8203;/g, ' ');
 
-            var height = parseInt(textHolder.height()) + 20;
-            var width = textHolder.width() + 30;
+        var height = parseInt(textHolder.height()) + 20;
+        var width = textHolder.width() + 30;
+
+        setTimeout(function () {
+            htmlString = htmlString.replaceHtmlEntites();
+            console.log(htmlString);
             var svgData = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">' +
                 '<foreignObject width="100%" height="100%">' +
                 '<div xmlns="http://www.w3.org/1999/xhtml" style="' + styles + '">' +
@@ -2018,8 +2080,9 @@ function canvasDrawing(user, socket) {
             var data = encodeURIComponent(svgData);
             var img = new Image();
             img.onload = function () {
-                var width = img.width;
-                textDivWidth = img.width;
+                var width =img.width;
+                console.log(width);
+                textDivWidth =img.width;
                 var height = img.height;
                 var canvasHeight = drawingC.height;
                 var canvasWidth = drawingC.width;

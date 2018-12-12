@@ -312,7 +312,7 @@ $(function () {
             userType: user.userType,
             id: user.ObjectID
         });
-        $chatInput.blur();
+
         $chatInput.html('');
         var html = '<li class="mine">\n' +
             ' <div>\n' +
@@ -324,6 +324,7 @@ $(function () {
             ' </li>';
         $chatBoard.append(html);
         $chatRoom.animate({scrollTop: $chatBoard.height()}, 0);
+        $chatInput.focus();
     });
 
     //share drawing

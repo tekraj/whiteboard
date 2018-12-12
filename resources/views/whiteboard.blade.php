@@ -150,7 +150,7 @@
 <div class="container-fluid top-functions">
     <div class="row">
         <div class="col-sm-6 top-nav-tools">
-            <a href="#" class="btn btn-primary btn-square" id="mouse-cursor">
+            <a href="#" class="btn btn-primary btn-square js-tools" data-cursor="url({{asset('painting-app/images/computer-mouse-cursor.png')}}), auto" data-tool="select">
                 <img src="{{asset('painting-app/images/computer-mouse-cursor.png')}}">
             </a>
             <button class="btn btn-primary btn-square js-tools" data-tool="drag" data-toggle="tooltip"
