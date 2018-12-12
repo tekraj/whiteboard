@@ -145,6 +145,10 @@
                         <a href="#whiteboard-process-modal" data-toggle="modal">
                             <i class="fas fa-book"></i>Whiteboard</a>
                     </li>
+                    <li>
+                        <a href="{{url('student/practice-board')}}" target="_blank">
+                            <i class="fas fa-book"></i>Practice Board</a>
+                    </li>
                 </ul>
             </nav>
         </div>

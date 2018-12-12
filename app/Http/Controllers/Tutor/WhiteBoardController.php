@@ -47,4 +47,37 @@ class WhiteBoardController extends Controller
         })->orderBy('id','desc')->get();
         return view('whiteboard',compact('pageTitle','user','type','subject','sessions','sessionNotes','notifications'));
     }
+
+    public function showPracticeBoard(){
+        $pageTitle = 'Practice Board';
+        $user = Auth::guard('tutor')->user();
+        $type = 'practice';
+        $subject = $user->subject;
+        $sessions = SessionRepository::getTutorSessions($user->id,$subject->id);
+
+        $factory = JWTFactory::addClaims([
+            'sub'   => $user->id,
+            'iss'   => url('/'),
+            'iat'   => Carbon::now()->timestamp,
+            'exp'   => JWTFactory::getTTL(),
+            'nbf'   => Carbon::now()->timestamp,
+            'jti'   => uniqid(),
+            'ObjectID'=>$user->uuid,
+            'Name'=>$user->name,
+            'subject'=>$subject->id,
+            'subject_name'=>$subject->name,
+            'userType'=>'practice'
+        ]);
+        $payload = $factory->make();
+        $token = JWTAuth::encode($payload)->get();
+        $user->token = $token;
+        $user->userType = 'practice';
+        $user->Name = $user->name;
+        $user->ObjectID = $user->uuid;
+        $sessionNotes = SessionNote::where('user_type',$type)->where('user_id',$user->id)->where('subject_id',$subject->id)->orderBy('id','desc')->get();
+        $notifications = Notification::where('status',1)->where(function($query) use ($subject){
+            $query->where('subject_id',$subject->id)->orWhereNull('subject_id');
+        })->orderBy('id','desc')->get();
+        return view('whiteboard',compact('pageTitle','user','type','subject','sessions','sessionNotes','notifications'));
+    }
 }

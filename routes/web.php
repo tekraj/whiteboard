@@ -60,6 +60,7 @@ Route::group(['prefix'=>'tutor','namespace'=>'Tutor'], function() {
     Route::get('logout','LoginController@logout');
 
     Route::group(['middleware'=>'tutor'], function(){
+        Route::get('practice-board','WhiteBoardController@showPracticeBoard');
         Route::get('whiteboard','WhiteBoardController@index');
         Route::post('/dashboard/get-calender','DashboardController@getCalender');
         Route::post('/dashboard/get-schedule','DashboardController@getSchedule');
@@ -80,17 +81,18 @@ Route::group(['prefix'=>'student','namespace'=>'Student'], function() {
     Route::get('logout','LoginController@logout');
 
     Route::group(['middleware'=>'student'], function() {
+        Route::get('practice-board','WhiteBoardController@showPracticeBoard');
         Route::get('whiteboard', 'WhiteBoardController@index');
         Route::post('/dashboard/get-calender', 'DashboardController@getCalender');
         Route::post('/dashboard/get-schedule', 'DashboardController@getSchedule');
         Route::get('/dashboard', 'DashboardController@index');
         Route::get('process-whiteboard-request', 'DashboardController@processDashboard');
-
         Route::get('/', 'DashboardController@index');
     });
 });
 
 Route::group(['prefix'=>'utility','middleware'=>'studenttutor'],function(){
+    Route::post('save-session-image/{type}','UtilityController@saveUsersDrawing');
     Route::get('read-notifications', 'UtilityController@readNotifications');
     Route::get('share-drawing/{type}','UtilityController@shareDrawing');
     Route::post('share-files/{type}','UtilityController@shareFiles');

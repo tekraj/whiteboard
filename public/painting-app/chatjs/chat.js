@@ -470,6 +470,21 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign,xy) {
             xy:xy
         });
     }
+    var canvas = document.getElementById('drawing-board');
+    if(canvas){
+        var image = canvas.toDataURL();
+        $.ajax({
+            type: "POST",
+            url: base_url+'/utility/save-session-image/'+user.userType,
+            data: {
+                imageData: image
+            }
+        }).done(function(o) {
+            console.log('saved');
+        });
+    }
+
+
 }
 
 function decodeHtml(str) {

@@ -15,13 +15,13 @@ if (!HTMLCanvasElement.prototype.toBlob) {
         }
     });
 }
-String.prototype.replaceHtmlEntites = function() {
+String.prototype.replaceHtmlEntites = function () {
     var s = this;
     var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
-    var translate = {"nbsp": "","amp" : "&","quot": "\"","lt"  : "<","gt"  : ">"};
-    return ( s.replace(translate_re, function(match, entity) {
+    var translate = {"nbsp": "", "amp": "&", "quot": "\"", "lt": "<", "gt": ">"};
+    return (s.replace(translate_re, function (match, entity) {
         return translate[entity];
-    }) );
+    }));
 };
 //plugin to move cursor
 $.fn.selectRange = function (start, end) {
@@ -264,7 +264,6 @@ function canvasDrawing(user, socket) {
             dc.css({'cursor': toolCursor});
         }
     });
-
 
 
     $('#session-note-form').submit(function (e) {
@@ -676,8 +675,8 @@ function canvasDrawing(user, socket) {
         lineStartPoint.y = top;
         lineEndPoint.x = left;
         lineEndPoint.y = top;
-        let lastShape = canvasObjects[canvasObjects.length-1];
-        if(lastShape && lastShape.shape=='select'){
+        let lastShape = canvasObjects[canvasObjects.length - 1];
+        if (lastShape && lastShape.shape == 'select') {
             canvasObjects.splice(canvasObjects.length - 1);
             redrawCanvas();
         }
@@ -729,7 +728,7 @@ function canvasDrawing(user, socket) {
             }
         } else if (currentTool == 'paste') {
             $('#input-image').click();
-        }else if(currentTool=='select'){
+        } else if (currentTool == 'select') {
             fa.show();
             lineStartPoint.x = left;
             lineStartPoint.y = top;
@@ -742,18 +741,26 @@ function canvasDrawing(user, socket) {
     });
 
     //press entr event to clear selected area
-    $(document).keydown(function(e){
+    $(document).keydown(function (e) {
 
-       if(currentTool=='select' && e.keyCode==13){
-           let lastShape = canvasObjects[canvasObjects.length-1];
-           let x1= lastShape.data.startX;
-           let y1 =  lastShape.data.startY;
-           let x2 = lastShape.data.endX;
-           let y2 = lastShape.data.endY;
-           canvasObjects.splice(canvasObjects.length - 1);
-           drawRectangleAnimation(x1-5,y1-5,x2+5,y2+5,'#fff',1,true,true);
-
-       }
+        if (currentTool == 'select' && e.keyCode == 13) {
+            let lastShape = canvasObjects[canvasObjects.length - 1];
+            let x1 = lastShape.data.startX - 5;
+            let y1 = lastShape.data.startY - 5;
+            let x2 = lastShape.data.endX + 5;
+            let y2 = lastShape.data.endY + 5;
+            canvasObjects.splice(canvasObjects.length - 1);
+            drawRectangleAnimation(x1, y1, x2, y2, '#fff', 1, true, true);
+            saveCanvasObjects('rectangle-filled', {
+                startX: x1,
+                startY: y1,
+                endX: x2,
+                endY: y2,
+                shift: false,
+                color: '#fff',
+                lineSize: 1
+            });
+        }
     });
     //mousemove
     $('body').on('mousemove', function (e) {
@@ -849,8 +856,8 @@ function canvasDrawing(user, socket) {
                 drawLineAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize, false, 'single');
             } else if (currentTool == 'line-darrow') {
                 drawLineAnimation(lineStartPoint.x, lineStartPoint.y, left, top, currentColor, lineSize, false, 'double');
-            }else if(currentTool=='select'){
-                drawSelectAnimation(lineStartPoint.x, lineStartPoint.y, left, top,false);
+            } else if (currentTool == 'select') {
+                drawSelectAnimation(lineStartPoint.x, lineStartPoint.y, left, top, false);
             }
         }
 
@@ -1020,8 +1027,8 @@ function canvasDrawing(user, socket) {
             } else if (currentTool == 'eraser') {
                 canvasObjects.push({shape: 'eraser', data: eraserPoints});
                 streamCanvasDrawing([{shape: 'eraser', data: eraserPoints}], publicModeEnabled, false, lineEndPoint);
-            }else if(currentTool=='select'){
-                drawSelectAnimation(lineStartPoint.x, lineStartPoint.y, left, top,true);
+            } else if (currentTool == 'select') {
+                drawSelectAnimation(lineStartPoint.x, lineStartPoint.y, left, top, true);
                 saveCanvasObjects('select', {
                     startX: lineStartPoint.x,
                     startY: lineStartPoint.y,
@@ -1333,7 +1340,7 @@ function canvasDrawing(user, socket) {
 
     }
 
-    function drawSelectAnimation(x1, y1, x2, y2,noAnimation) {
+    function drawSelectAnimation(x1, y1, x2, y2, noAnimation) {
         fakeCanvas.clearRect(0, 0, fakeCanvasMaxLenght, fakeCanvasMaxLenght);
         var filled = filled ? filled : false;
         width = x2 - x1;
@@ -1355,6 +1362,7 @@ function canvasDrawing(user, socket) {
         ctx.closePath();
 
     }
+
     /**
      * ======================================================
      * *************** function to draw cube
@@ -2080,9 +2088,9 @@ function canvasDrawing(user, socket) {
             var data = encodeURIComponent(svgData);
             var img = new Image();
             img.onload = function () {
-                var width =img.width;
+                var width = img.width;
                 console.log(width);
-                textDivWidth =img.width;
+                textDivWidth = img.width;
                 var height = img.height;
                 var canvasHeight = drawingC.height;
                 var canvasWidth = drawingC.width;
@@ -2136,15 +2144,21 @@ function canvasDrawing(user, socket) {
     //undo the canvas state
 
     $('#undo-tool').click(function (e) {
+        e.preventDefault();
         textHolder.blur();
-        //textInput.val('');
-        $enableTextTool.removeClass('js-tools border');
-        canvasObjects.splice(canvasObjects.length - 1);
-        redrawCanvas();
-        if (user.userType == 'tutor') {
-            socket.emit('redraw-foreign', {data: canvasObjects, receiver: receiver});
-        }
-        $enableTextTool.click();
+        setTimeout(function(){
+            $enableTextTool.removeClass('js-tools border');
+            canvasObjects.splice(canvasObjects.length - 1);
+            redrawCanvas();
+            if (user.userType == 'tutor') {
+                socket.emit('redraw-foreign', {data: canvasObjects, receiver: receiver});
+            }
+        },100)
+
+        setTimeout(function () {
+            $enableTextTool.click();
+        }, 5000);
+
     });
 
     $('#new-board').click(function () {

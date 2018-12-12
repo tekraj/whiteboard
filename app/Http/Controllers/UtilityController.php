@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CanvasImage;
 use App\Models\SessionNote;
 use App\Models\SharedDocument;
 use App\Models\Student;
@@ -22,18 +23,17 @@ class UtilityController extends Controller
 {
     public function saveCanvasImage(Request $request, $type)
     {
-
         $user = Auth::guard($type)->user();
         $time = time();
         $base64 = $request->imageData;
         $image_base64 = base64_decode($base64);
-        if (!realpath(storage_path("uploads/{$type}s/canvas_images/{$user->id}"))) {
-            mkdir(storage_path("uploads/{$type}s/canvas_images/{$user->id}/"), 777);
-            @chmod(storage_path("uploads/{$type}s/canvas_images/{$user->id}/"), 777);
+        if (!realpath(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}"))) {
+            mkdir(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}/"), 777);
+            @chmod(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}/"), 777);
         }
         $uploadDir = "{$type}s/canvas_images/{$user->id}/{$time}_{$user->id}_canvas_image.png";
 
-        $file = storage_path("uploads/{$uploadDir}");
+        $file = storage_path("app/public/uploads/{$uploadDir}");
         file_put_contents($file, $image_base64);
         $uploadPath = preg_replace('/\/+/', '-', $uploadDir);
         return response()->json(['status' => true, 'file' => url("storage/{$uploadPath}")]);
@@ -45,7 +45,7 @@ class UtilityController extends Controller
         if ($file = $request->file('sav-file')) {
             $ext = $file->getClientOriginalExtension();
             $file_name = 'read-sav-file' . time() . '.' . $ext;
-            $dest = storage_path("uploads/sav_files/{$type}s/{$user->id}/");
+            $dest = storage_path("app/public/uploads/sav_files/{$type}s/{$user->id}/");
             if (!realpath($dest)) {
                 mkdir($dest);
                 @chmod($dest, 777);
@@ -95,7 +95,7 @@ class UtilityController extends Controller
             ],
             'variables' => $data
         ]);
-        $dest = storage_path("uploads/sav_files/{$type}s/{$user->id}/");
+        $dest = storage_path("app/public/uploads/sav_files/{$type}s/{$user->id}/");
         if (!realpath($dest)) {
             mkdir($dest);
             @chmod($dest, 777);
@@ -141,7 +141,7 @@ class UtilityController extends Controller
             'Content-Type' => 'application/sav',
         ];
 
-        return response()->download(storage_path($fileName), 'canvas-file.sav', $headers)->deleteFileAfterSend(true);
+        return response()->download(storage_path("app/public//{$fileName}"), 'canvas-file.sav', $headers)->deleteFileAfterSend(true);
     }
 
     public function readNotifications()
@@ -186,7 +186,7 @@ class UtilityController extends Controller
         $docs = [];
         foreach ($request->file('files') as $file) {
             $image = time() . '_' . $user->id . '_shared.' . $file->getClientOriginalExtension();
-            $file->move(storage_path('uploads/shared_docs'), $image);
+            $file->move(storage_path('app/public/uploads/shared_docs'), $image);
             $docs[] = ['user_id' => $user->id, 'user_type' => $type, 'image' => $image, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'shared_user_type' => $sharedType, 'shared_user_id' => $sharedUserId];
         }
         SharedDocument::insert($docs);
@@ -195,40 +195,40 @@ class UtilityController extends Controller
 
     public function readCloudFile(Request $request){
 
-        $files =  array_diff(scandir(public_path("cloud-files")), array('.', '..'));
+        $files =  array_diff(scandir(storage_path("app/public/cloud-files")), array('.', '..'));
         $fileData = [];
         foreach($files as $file){
 
-            if(!is_dir(public_path("cloud-files/{$file}"))){
+            if(!is_dir(storage_path("app/public/cloud-files/{$file}"))){
                 $fileData[] = [
                     "text" => $file,
-                    "a_attr" => ["class"=>"js-read-cloud-file","file"=>asset("cloud-files/{$file}")],
+                    "a_attr" => ["class"=>"js-read-cloud-file","file"=>asset("storage/cloud-files/{$file}")],
                     "icon" => "images/file-icon.png"
                 ];
             }else {
 
                 $fileArray = ['text' => $file];
                 $fileArray['children'] = [];
-                $subFile = array_diff(scandir(public_path("cloud-files/{$file}")), array('.', '..'));
+                $subFile = array_diff(scandir(storage_path("app/public/cloud-files/{$file}")), array('.', '..'));
 
                 foreach ($subFile as $f) {
 
-                    if (!is_dir(public_path("cloud-files/{$file}/$f"))) {
+                    if (!is_dir(storage_path("app/public/cloud-files/{$file}/$f"))) {
 
                         $fileArray['children'][] = [
                             "text" => $f,
-                            "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("cloud-files/{$file}/$f")],
+                            "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("storage/cloud-files/{$file}/$f")],
                             "icon" => "images/file-icon.png"
                         ];
 
                     } else {
                         $subArray = ['text' => $f];
-                        $subSubFile = array_diff(scandir(public_path("cloud-files/{$file}/{$f}")), array('.', '..'));
+                        $subSubFile = array_diff(scandir(storage_path("app/public/cloud-files/{$file}/{$f}")), array('.', '..'));
                         foreach ($subSubFile as $sf) {
-                            if (!is_dir(public_path("cloud-files/{$file}/{$f}/{$sf}"))) {
+                            if (!is_dir(storage_path("app/public/cloud-files/{$file}/{$f}/{$sf}"))) {
                                 $subArray['children'][] = [
                                     "text" => $sf,
-                                    "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("cloud-files/{$file}/{$f}/{$sf}")],
+                                    "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("storage/cloud-files/{$file}/{$f}/{$sf}")],
                                     "icon" => "images/file-icon.png"
                                 ];
                             }
@@ -265,9 +265,36 @@ class UtilityController extends Controller
         $query = "SELECT m.message,m.created_at,m.user_name FROM messages as m 
           INNER JOIN students as s ON s.id = (CASE WHEN m.user_type='student' THEN m.to_id ELSE m.from_id END )
           INNER JOIN tutors as t ON t.id = (CASE WHEN m.user_type='tutor' THEN m.from_id ELSE m.to_id END) 
-          WHERE (CASE WHEN '{$userType}'='tutor' THEN t.uuid= '{$fromUser}' ELSE t.uuid='{$toUser}' END )
+          WHERE m.created_at BETWEEN DATE_SUB(now(),INTERVAL 1 HOUR) AND now() AND   (CASE WHEN '{$userType}'='tutor' THEN t.uuid= '{$fromUser}' ELSE t.uuid='{$toUser}' END )
           AND  (CASE WHEN '{$userType}'='student' THEN s.uuid= '{$fromUser}' ELSE s.uuid='{$toUser}' END) ORDER BY m.id desc LIMIT 100";
         $messages = DB::select($query);
         return response()->json(['status'=> true, 'messages'=> $messages]);
+    }
+
+    public function saveUsersDrawing(Request $request,$type){
+        try{
+            $user = Auth::guard($type)->user();
+            $time = time();
+            $base64 = $request->imageData;
+            $base64 =  str_replace('data:image/png;base64,', '', $base64);
+            $image_base64 = base64_decode($base64);
+            if (!realpath(storage_path("app/public/session-images/{$type}s"))) {
+                mkdir(storage_path("app/public/session-images/{$type}s/"), 777);
+            }
+            $fileName = "{$time}_{$user->id}_canvas_image.png";
+
+            $file = storage_path("app/public/session-images/{$type}s/{$fileName}");
+
+                file_put_contents($file, $image_base64);
+            $image = new CanvasImage();
+            $image->image = $fileName;
+            $image->user_type = $type;
+            $image->user_id = $user->id;
+            $image->save();
+            return response()->json(['status' => true]);
+        }catch (\Exception $e){
+            return response()->json(['status' => false]);
+        }
+
     }
 }

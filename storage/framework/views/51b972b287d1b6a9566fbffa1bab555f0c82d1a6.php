@@ -143,7 +143,11 @@
 
                     <li>
                         <a href="<?php echo e(url('tutor/whiteboard')); ?>" target="_blank">
-                            <i class="fas fa-book"></i>Whiteboard</a>
+                            <i class="fas fa-book"></i>White Board</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo e(url('tutor/practice-board')); ?>" target="_blank">
+                            <i class="fas fa-book"></i>Practice Board</a>
                     </li>
                 </ul>
             </nav>
