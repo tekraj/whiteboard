@@ -1225,7 +1225,7 @@
                             <?php $__currentLoopData = $sessionNotes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $note): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
                                     <td><?php echo e($note->note); ?></td>
-                                    <td><?php echo e(\Carbon\Carbon::parse($note->create_dat)->format('d M Y H:i')); ?></td>
+                                    <td><?php echo e(\Carbon\Carbon::parse($note->created_at)->format('d M Y H:i')); ?></td>
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
@@ -1284,6 +1284,7 @@
         }
     });
     var base_url = '<?php echo e(url('/')); ?>';
+    var herokoUrl = '<?php echo e(env('CHAT_URL')); ?>';
     $(document).ready(function(){
         var totalHeight = window.innerHeight;
         $('#loader').hide();

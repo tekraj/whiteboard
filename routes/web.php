@@ -105,6 +105,7 @@ Route::group(['prefix'=>'utility','middleware'=>'studenttutor'],function(){
     Route::get('/read-cloud-file/{type}','UtilityController@readCloudFile');
     Route::post('save-session-note/','UtilityController@saveSessionNote');
     Route::post('get-user-messages','UtilityController@getUserMessages');
+    Route::get('get-last-session/{type}','UtilityController@getLastSession');
 });
 
 //GET FILES FROM STORAGE

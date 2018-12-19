@@ -1,12 +1,12 @@
 "use strict";
 var socket;
 var receiver = '';
-var herokoUrl = 'http://ec2-34-244-233-250.eu-west-1.compute.amazonaws.com:8000/';
 var canvasObjects = [];
 var currentStudentID = '';
 var canvasStates = [];
 var currentStateIndex = 1;
 var $sessionCanvasWrapper;
+var sessionId;
 
 $(function () {
     // $('#user-input-modal').modal('show');
@@ -64,6 +64,9 @@ $(function () {
     //save user socket data on connection
     socket.on('save-socket', function (data) {
         user.socket = data;
+        $.get(base_url+'/utility/get-last-session/'+user.userType,function(response){
+            sessionId = response.id;
+        });
     });
 
     var updateEvent = 'update-online-tutors';
@@ -96,8 +99,6 @@ $(function () {
                 if (u.user.ObjectID !== user.ObjectID && $('#user-' + u.user.ObjectID.toLowerCase()).length < 1) {
                     $html += '<li id="user-' + u.user.ObjectID.toLowerCase() + '"><span class="js-online-users user-name-span"  data-user="' + u.socket + '" data-uid="' + u.ObjectID + '">' + u.user.Name + '</span> ' + (user.userType == 'tutor' ? '<span class="js-clear-std-board span-clear">Clear Student Board</span>' : '') + '</li>';
                 }
-
-
             }
             $onlineUserList.html($html);
             if ($onlineUserList.find('li').length > 0) {
@@ -154,7 +155,11 @@ $(function () {
             var index = $this.index();
             user.tutor = receiver;
             socket.emit('req-student-drawing', {receiver: receiver});
-            getUserMessages(user.ObjectID, receiverId, user.userType);
+            $.get(base_url+'/utility/get-last-session/'+user.userType,function(response){
+                sessionId = response.id;
+                getUserMessages(user.ObjectID, receiverId, user.userType,sessionId);
+            });
+
         });
 
         socket.on('student-req-rejected', function (data) {
@@ -164,11 +169,11 @@ $(function () {
 
     if (user.userType == 'tutor') {
         socket.on('class-join-req', function (data) {
-            if($('#std-req-'+data.ObjectID).length>0){
-                $('#std-req-'+data.ObjectID).remove();
+            if ($('#std-req-' + data.ObjectID).length > 0) {
+                $('#std-req-' + data.ObjectID).remove();
             }
-            var audio = new Audio(base_url+'/painting-app/alert-bell.mp3').play();
-            $('.student-request-list').show().append('<li id="std-req-'+data.ObjectID+'">' +
+            var audio = new Audio(base_url + '/painting-app/alert-bell.mp3').play();
+            $('.student-request-list').show().append('<li id="std-req-' + data.ObjectID + '">' +
                 '<div class="card text-center  ">' +
                 '<div class="card-body peach-gradient">' +
                 '<h4 class="card-title" style="color:#fff;">New Message</h4>' +
@@ -279,7 +284,7 @@ $(function () {
     $onlineUserList.on('click', 'li', function () {
         if (!$(this).hasClass('active')) {
             var $this = $(this);
-            if($this.find('.notif-span').length>0){
+            if ($this.find('.notif-span').length > 0) {
                 $this.find('.notif-span').remove();
             }
             var $onlineUser = $this.find('.js-online-users');
@@ -294,12 +299,12 @@ $(function () {
                 var index = $this.index();
                 user.student = receiver;
                 socket.emit('send-drawing', user);
-                getUserMessages(user.ObjectID, receiverId, user.userType);
+                getUserMessages(user.ObjectID, receiverId, user.userType,sessionId);
             } else {
                 user.tutor = $onlineUser.data().user;
                 //console.log(user);
                 socket.emit('req-for-join-class', user);
-                getUserMessages(user.ObjectID, receiverId, user.userType);
+                getUserMessages(user.ObjectID, receiverId, user.userType,sessionId);
             }
 
         }
@@ -321,7 +326,8 @@ $(function () {
             message: message,
             userName: user.Name,
             userType: user.userType,
-            id: user.ObjectID
+            id: user.ObjectID,
+            session_id:sessionId
         });
 
         $chatInput.html('');
@@ -339,7 +345,7 @@ $(function () {
     });
 
     //share drawing
-    $('#share-drawing').click(function(e){
+    $('#share-drawing').click(function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
         // if($onlineUserList.find('li.active').length<1){
@@ -350,43 +356,43 @@ $(function () {
         // var receiverUUID = $onlineUserList.find('li.active').data().uuid;
         var receiverUUID = '8870a509-8fa1-11e8-90a7-945c124525e9';
         var sharedUserType = 'tutor';
-        if(user.userType=='tutor'){
+        if (user.userType == 'tutor') {
             sharedUserType = 'student';
         }
-        window.open(url+'?user='+receiverUUID+'&userType='+sharedUserType, '_blank');
+        window.open(url + '?user=' + receiverUUID + '&userType=' + sharedUserType, '_blank');
     });
     //refresh participant list
-    $('.js-refresh-participant-list').click(function(e){
+    $('.js-refresh-participant-list').click(function (e) {
         e.preventDefault();
-        if(user.userType=='student'){
+        if (user.userType == 'student') {
             socket.emit('get-online-users', type);
         }
 
     });
-    $('.js-refresh-session').click(function(){
-        if(socket){
+    $('.js-refresh-session').click(function () {
+        if (socket) {
             socket.emit('client-disconnect');
         }
 
         var $this = $(this);
         $this.addClass('disbled');
-        setTimeout(function(){
+        setTimeout(function () {
             $this.removeClass('disabled');
             socket = new io(herokoUrl, connectionOptions);
-        },1000)
+        }, 1000)
     });
 
-    $('.js-wrap-up-session').click(function(e){
+    $('.js-wrap-up-session').click(function (e) {
         e.preventDefault();
         socket.emit('client-disconnect');
         alert('Not in session');
     });
-    $('#send-tech-report').submit(function(e){
+    $('#send-tech-report').submit(function (e) {
         e.preventDefault();
         var url = $(this).url;
         $('.modal').modal('hide');
         var question = $('#support-question').val();
-        if(question.trim().length<1){
+        if (question.trim().length < 1) {
             alert('Please write something');
             return false;
         }
@@ -398,24 +404,24 @@ $(function () {
             position: 'topRight',
             timeout: 5000
         });
-        socket.emit('notify-admin-tech-support',{message:question});
+        socket.emit('notify-admin-tech-support', {message: question});
     });
 
-    $('.js-contact-session-monitor').click(function(){
-        socket.emit('notify-admin-tech-support',{message:user.Name +' ('+user.userType+') Requests for Support '});
+    $('.js-contact-session-monitor').click(function () {
+        socket.emit('notify-admin-tech-support', {message: user.Name + ' (' + user.userType + ') Requests for Support '});
         $chatBoard.append('<li><b>Your request for assistance has been placed. Brainfuse will contact you shortly.</b></li>');
     });
 
-    $('#session-lod-form').submit(function(e){
+    $('#session-lod-form').submit(function (e) {
         e.preventDefault();
         var url = $(this).attr('action');
         var data = $(this).serializeArray();
         $.ajax({
-            type : 'post',
-            url : url,
-            data : data,
-            success : function(response){
-                if(response.status){
+            type: 'post',
+            url: url,
+            data: data,
+            success: function (response) {
+                if (response.status) {
                     $("#session-log-data").html(response.view);
                 }
             }
@@ -427,8 +433,8 @@ $(function () {
         receiver = data.socket;
         var senderName = data.senderName;
         var senderId = data.id;
-        var userId =  $('#user-'+senderId);
-        if(userId.hasClass('active')){
+        var userId = $('#user-' + senderId);
+        if (userId.hasClass('active')) {
             var html = '<li class="from">\n' +
                 ' <div>\n' +
                 ' <p class="clearfix"><span class="username">' + senderName + '</span> <span class="time">' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '</span></p>\n' +
@@ -440,11 +446,11 @@ $(function () {
 
             $chatBoard.append(html);
             $chatRoom.animate({scrollTop: $chatBoard.height()}, 0);
-        }else{
-            if(userId.find('.notif-span').length>0){
-                var counter = parseInt(userId.find('.notif-span').text())+1;
+        } else {
+            if (userId.find('.notif-span').length > 0) {
+                var counter = parseInt(userId.find('.notif-span').text()) + 1;
                 userId.find('.notif-span').text(counter);
-            }else{
+            } else {
                 userId.append('<span class="notif-span">1</span>');
             }
         }
@@ -454,22 +460,22 @@ $(function () {
 
 });
 
-function streamCanvasDrawing(data, publicModeEnabled, redrawForeign,xy) {
+function streamCanvasDrawing(data, publicModeEnabled, redrawForeign, xy) {
     //console.log(data,publicModeEnabled,redrawForeign);
     var redrawForeign = redrawForeign ? redrawForeign : 'no';
-    var xy = xy? xy :{x:0,y:0};
+    var xy = xy ? xy : {x: 0, y: 0};
     if (publicModeEnabled) {
         if (user.userType == 'student') {
             checkPublicMethodEnabled(function (response) {
                 if (response.status) {
-                    socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data,xy:xy});
+                    socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data, xy: xy});
                 } else {
                     alert('Sorry currently public option is not avilable');
                     $('.js-public-mode').click();
                 }
             });
         } else {
-            socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data,xy:xy});
+            socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data, xy: xy});
         }
 
     } else {
@@ -478,19 +484,19 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign,xy) {
             receiver: receiver,
             canvasData: data,
             redrawForeign: redrawForeign,
-            xy:xy
+            xy: xy
         });
     }
     var canvas = document.getElementById('drawing-board');
-    if(canvas){
+    if (canvas) {
         var image = canvas.toDataURL();
         $.ajax({
             type: "POST",
-            url: base_url+'/utility/save-session-image/'+user.userType,
+            url: base_url + '/utility/save-session-image/' + user.userType,
             data: {
                 imageData: image
             }
-        }).done(function(o) {
+        }).done(function (o) {
             console.log('saved');
         });
     }
@@ -516,7 +522,7 @@ function decodeHtml(str) {
     return str;
 }
 
-function getUserMessages(userId, receiverId, userType) {
+function getUserMessages(userId, receiverId, userType,sessionId) {
     if (!receiverId)
         return false;
     if (!userId)
@@ -525,7 +531,7 @@ function getUserMessages(userId, receiverId, userType) {
     $.ajax({
         type: 'post',
         url: base_url + '/utility/get-user-messages',
-        data: {fromUser: userId.replace(/\s+/, ''), toUser: receiverId.replace(/\s+/, ''), userType: userType},
+        data: {user_id: userId.replace(/\s+/, ''), receiver_id: receiverId.replace(/\s+/, ''), userType: userType,session_id:sessionId},
         success: function (response) {
             if (response.status) {
                 var messages = response.messages;

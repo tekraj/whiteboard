@@ -6,8 +6,10 @@ use App\Models\CanvasImage;
 use App\Models\SessionNote;
 use App\Models\SharedDocument;
 use App\Models\Student;
+use App\Models\StudentSession;
 use App\Models\TechSupportMessage;
 use App\Models\Tutor;
+use App\Models\TutorSession;
 use App\Repositories\SessionRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -259,15 +261,19 @@ class UtilityController extends Controller
     }
 
     public function getUserMessages(Request $request){
-        $fromUser = $request->fromUser;
-        $toUser = $request->toUser;
+
+        $fromUser = $request->user_id;
+        $toUser = $request->receiver_id;
         $userType = $request->userType;
+        $sessionId = $request->session_id;
         $query = "SELECT m.message,m.created_at,m.user_name FROM messages as m 
-          INNER JOIN students as s ON s.id = (CASE WHEN m.user_type='student' THEN m.to_id ELSE m.from_id END )
+          INNER JOIN students as s ON s.id = (CASE WHEN m.user_type='student' THEN m.from_id ELSE m.to_id END )
           INNER JOIN tutors as t ON t.id = (CASE WHEN m.user_type='tutor' THEN m.from_id ELSE m.to_id END) 
-          WHERE m.created_at BETWEEN DATE_SUB(now(),INTERVAL 1 HOUR) AND now() AND   (CASE WHEN '{$userType}'='tutor' THEN t.uuid= '{$fromUser}' ELSE t.uuid='{$toUser}' END )
-          AND  (CASE WHEN '{$userType}'='student' THEN s.uuid= '{$fromUser}' ELSE s.uuid='{$toUser}' END) ORDER BY m.id desc LIMIT 100";
-        $messages = DB::select($query);
+          WHERE   (CASE WHEN '{$userType}'='tutor' THEN t.uuid= '{$fromUser}' ELSE t.uuid='{$toUser}' END )
+          AND  (CASE WHEN '{$userType}'='student' THEN s.uuid= '{$fromUser}' ELSE s.uuid='{$toUser}' END) 
+          AND   m.session_id = {$sessionId}
+          ORDER BY m.id desc LIMIT 100";
+        $messages = array_reverse(DB::select($query));
         return response()->json(['status'=> true, 'messages'=> $messages]);
     }
 
@@ -296,5 +302,16 @@ class UtilityController extends Controller
             return response()->json(['status' => false]);
         }
 
+    }
+
+    public function getLastSession($type){
+        $user = Auth::guard($type)->user();
+        if($type=='tutor'){
+            $lastSession = TutorSession::where('tutor_id',$user->id)->orderByDesc('id')->first();
+        }else{
+            $lastSession = StudentSession::where('student_id',$user->id)->orderByDesc('id')->first();
+
+        }
+        return response()->json($lastSession);
     }
 }

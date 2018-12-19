@@ -1219,7 +1219,7 @@
                             @foreach($sessionNotes as $note)
                                 <tr>
                                     <td>{{$note->note}}</td>
-                                    <td>{{\Carbon\Carbon::parse($note->create_dat)->format('d M Y H:i')}}</td>
+                                    <td>{{\Carbon\Carbon::parse($note->created_at)->format('d M Y H:i')}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -1278,6 +1278,7 @@
         }
     });
     var base_url = '{{url('/')}}';
+    var herokoUrl = '{{env('CHAT_URL')}}';
     $(document).ready(function(){
         var totalHeight = window.innerHeight;
         $('#loader').hide();
