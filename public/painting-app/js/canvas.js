@@ -222,19 +222,7 @@ function canvasDrawing(user, socket) {
 
     });
 
-    //change tools
-    $('.option-menu-wrapper').mouseover(function () {
-        //show options if exists
-        var optionMenu = $(this).find('.option-menu');
-        if (optionMenu.length > 0) {
-            optionMenu.show();
-        }
-    }).mouseleave(function () {
-        var optionMenu = $(this).find('.option-menu');
-        if (optionMenu.length > 0) {
-            optionMenu.hide();
-        }
-    });
+  
     $tools.click(function (e) {
 
         e.preventDefault();
@@ -257,8 +245,7 @@ function canvasDrawing(user, socket) {
             }
         } else {
             textEnabled = false;
-            textHolder.blur
-            textHolder.hide();
+            textHolder.blur();
         }
         if (toolCursor) {
             dc.css({'cursor': toolCursor});
@@ -2074,70 +2061,69 @@ function canvasDrawing(user, socket) {
         var height = parseInt(textHolder.height()) + 20;
         var width = textHolder.width() + 30;
 
-        setTimeout(function () {
-            htmlString = htmlString.replaceHtmlEntites();
-            console.log(htmlString);
-            var svgData = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">' +
-                '<foreignObject width="100%" height="100%">' +
-                '<div xmlns="http://www.w3.org/1999/xhtml" style="' + styles + '">' +
-                htmlString +
-                '</div>' +
-                '</foreignObject>' +
-                '</svg>';
 
-            var data = encodeURIComponent(svgData);
-            var img = new Image();
-            img.onload = function () {
-                var width = img.width;
-                console.log(width);
-                textDivWidth = img.width;
-                var height = img.height;
-                var canvasHeight = drawingC.height;
-                var canvasWidth = drawingC.width;
-                var left = x + width;
-                var top = y + height + 4;
-                if (left > canvasWidth) {
-                    parentDiv.scrollLeft(left);
-                    rC.width = canvasWidth;
-                    rC.height = canvasHeight;
-                    resizeCanvas.drawImage(drawingC, 0, 0);
-                    dc.attr('width', left);
-                    fa.attr('width', left);
-                    drawingCanvas.drawImage(rC, 0, 0);
-                }
-                if (top > canvasHeight) {
-                    parentDiv.scrollLeft(top);
-                    rC.width = canvasWidth;
-                    rC.height = canvasHeight;
-                    resizeCanvas.drawImage(drawingC, 0, 0);
-                    dc.attr('height', top);
-                    fa.attr('height', top);
-                    drawingCanvas.drawImage(rC, 0, 0);
-                }
-                drawingCanvas.drawImage(img, x, y + 3);
-                var cssObj = {
-                    'color': textHolder.css('color'),
-                    'font-size': textHolder.css('font-size'),
-                    'font-family': textHolder.css('font-family'),
-                    'font-weight': textHolder.css('font-weight'),
-                    'font-style': textHolder.css('font-style')
-                };
-                saveCanvasObjects('image-text', {
-                    textLeftCord: x,
-                    textTopCord: y + 2,
-                    startX: x - 10,
-                    startY: y - 10,
-                    endX: x + img.width + 2,
-                    endY: y - 40 + img.height,
-                    image: "data:image/svg+xml," + data,
-                    html: textHolder.html(),
-                    cssObj: cssObj
-                });
+        htmlString = htmlString.replaceHtmlEntites();
+        var svgData = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">' +
+            '<foreignObject width="100%" height="100%">' +
+            '<div xmlns="http://www.w3.org/1999/xhtml" style="' + styles + '">' +
+            htmlString +
+            '</div>' +
+            '</foreignObject>' +
+            '</svg>';
 
-                return callback();
+        var data = encodeURIComponent(svgData);
+        var img = new Image();
+        img.onload = function () {
+            var width = img.width;
+            console.log(width);
+            textDivWidth = img.width;
+            var height = img.height;
+            var canvasHeight = drawingC.height;
+            var canvasWidth = drawingC.width;
+            var left = x + width;
+            var top = y + height + 4;
+            if (left > canvasWidth) {
+                parentDiv.scrollLeft(left);
+                rC.width = canvasWidth;
+                rC.height = canvasHeight;
+                resizeCanvas.drawImage(drawingC, 0, 0);
+                dc.attr('width', left);
+                fa.attr('width', left);
+                drawingCanvas.drawImage(rC, 0, 0);
+            }
+            if (top > canvasHeight) {
+                parentDiv.scrollLeft(top);
+                rC.width = canvasWidth;
+                rC.height = canvasHeight;
+                resizeCanvas.drawImage(drawingC, 0, 0);
+                dc.attr('height', top);
+                fa.attr('height', top);
+                drawingCanvas.drawImage(rC, 0, 0);
+            }
+            drawingCanvas.drawImage(img, x, y + 3);
+            var cssObj = {
+                'color': textHolder.css('color'),
+                'font-size': textHolder.css('font-size'),
+                'font-family': textHolder.css('font-family'),
+                'font-weight': textHolder.css('font-weight'),
+                'font-style': textHolder.css('font-style')
             };
-            img.src = "data:image/svg+xml," + data
-        }, 200);
+            saveCanvasObjects('image-text', {
+                textLeftCord: x,
+                textTopCord: y + 2,
+                startX: x - 10,
+                startY: y - 10,
+                endX: x + img.width + 2,
+                endY: y - 40 + img.height,
+                image: "data:image/svg+xml," + data,
+                html: textHolder.html(),
+                cssObj: cssObj
+            });
+
+            return callback();
+        };
+        img.src = "data:image/svg+xml," + data
+
     }
 
 
@@ -2146,14 +2132,14 @@ function canvasDrawing(user, socket) {
     $('#undo-tool').click(function (e) {
         e.preventDefault();
         textHolder.blur();
-        setTimeout(function(){
+        setTimeout(function () {
             $enableTextTool.removeClass('js-tools border');
             canvasObjects.splice(canvasObjects.length - 1);
             redrawCanvas();
             if (user.userType == 'tutor') {
                 socket.emit('redraw-foreign', {data: canvasObjects, receiver: receiver});
             }
-        },100)
+        }, 100)
 
         setTimeout(function () {
             $enableTextTool.click();

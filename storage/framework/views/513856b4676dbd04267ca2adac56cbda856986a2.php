@@ -119,9 +119,9 @@
                     <li>
                         <a class="nav-link" href="#session-log-modal" data-toggle="modal">Session Log</a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="#">Favorites</a>
-                    </li>
+                    
+                        
+                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right prev-next-navbar">
                     <li>
@@ -150,55 +150,45 @@
 <div class="container-fluid top-functions">
     <div class="row">
         <div class="col-sm-6 top-nav-tools">
-            <a href="#" class="btn btn-primary btn-square js-tools" data-cursor="url(<?php echo e(asset('painting-app/images/computer-mouse-cursor.png')); ?>), auto" data-tool="select">
-                <img src="<?php echo e(asset('painting-app/images/computer-mouse-cursor.png')); ?>">
-            </a>
+            <a href="#" class="btn btn-primary btn-square js-tools" data-cursor="url(<?php echo e(asset('painting-app/images/computer-mouse-cursor.png')); ?>), auto" data-tool="select" style="background: url(<?php echo e(asset('painting-app/images/computer-mouse-cursor.png')); ?>) no-repeat center;"></a>
             <button class="btn btn-primary btn-square js-tools" data-tool="drag" data-toggle="tooltip"
                     data-placement="top" title="Drag Shapes"
                     data-cursor="url(<?php echo e(asset('painting-app/images/drag.png')); ?>), auto"
-                    style="background:url(<?php echo e(asset('painting-app/images/drag.png')); ?>) no-repeat center;width:35px;height:26px;position:relative;">
+                    style="background:url(<?php echo e(asset('painting-app/images/drag.png')); ?>) no-repeat center;">
                 &nbsp;
             </button>
             <a href="#" class="btn btn-primary btn-square active" id="enable-drawing" data-toggle="tooltip"
                data-placement="bottom" title="Switch to Whiteboard">
-                <span class="font">Wb</span>
+                <span class="font" style="font-size:15px;line-height: 30px;">Wb</span>
             </a>
             <a href="#" class="btn btn-primary btn-square" id="reader-mode-indicator" data-toggle="tooltip"
-               data-placement="bottom" title="Switch To Webshare">
-                <img src="<?php echo e(asset('painting-app/images/internet.png')); ?>">
+               data-placement="bottom" title="Switch To Webshare" style="background: url(<?php echo e(asset('painting-app/images/internet.png')); ?>) no-repeat center;">
             </a>
             <!--<a href="#" class="btn btn-primary btn-square">-->
             <!--<span class=""><i class="fa fa-pie-chart" aria-hidden="true"></i></span>-->
             <!--</a>-->
             <a href="#" class="btn btn-primary btn-square" id="browse-cloud"
                data-url="<?php echo e(url("utility/read-cloud-file/{$type}")); ?>" data-toggle="tooltip" data-placement="bottom"
-               title="WhiteBoard Cloud">
-                <img src="<?php echo e(asset('painting-app/images/cloud.png')); ?>" style="width:20px;" alt="">
+               title="WhiteBoard Cloud" style="background:url(<?php echo e(asset('painting-app/images/cloud.png')); ?>) no-repeat center;">
             </a>
-            <a href="#session-note-modal" class="btn btn-primary btn-square" title="Session Note" data-toggle="modal">
-                <span class=""><img src="<?php echo e(asset('painting-app/images/note.png')); ?>"></span>
-            </a>
+            <a href="#session-note-modal" class="btn btn-primary btn-square" title="Session Note" data-toggle="modal" style="background:url(<?php echo e(asset('painting-app/images/note.png')); ?>) no-repeat center;"></a>
             <a href="#notification-modal" class="btn btn-primary btn-square"  data-toggle="modal" data-placement="bottom"
-               title="Notifications">
-                <img src="<?php echo e(asset('painting-app/images/email.png')); ?>">
+               title="Notifications" style="background: url(<?php echo e(asset('painting-app/images/email.png')); ?>) no-repeat center;">
             </a>
             <a href="#" class="btn btn-primary btn-square" data-toggle="modal" data-target="#print-modal"
-               title="Print This drawing">
-                <img src="<?php echo e(asset('painting-app/images/printer-.png')); ?>">
+               title="Print This drawing" style="background: url(<?php echo e(asset('painting-app/images/printer-.png')); ?>) no-repeat center;">
             </a>
             <a href="<?php echo e(url('utility/share-drawing/'.$type)); ?>"  class="btn btn-primary btn-square" id="share-drawing"  data-toggle="tooltip" data-placement="bottom"
-               title="Share drawing">
-                <img src="<?php echo e(asset('painting-app/images/share-connection-sing.png')); ?>">
+               title="Share drawing" style="background: url(<?php echo e(asset('painting-app/images/share-connection-sing.png')); ?>) no-repeat center;">
             </a>
 
             <a target="_blank" href="http://www.brainfuse.com/jsp/user/emailTranscriptQC.jsp?e=26e1afc948a1ad6d&u=ee1be66ef9286547" class="btn btn-primary btn-square" data-toggle="tooltip" data-placement="bottom"
-               title="Send to mail">
-                <img src="<?php echo e(asset('painting-app/images/black-back-closed-envelope-shape.png')); ?>">
+               title="Send to mail" style="background: url(<?php echo e(asset('painting-app/images/black-back-closed-envelope-shape.png')); ?>) no-repeat center;">
             </a>
-            <a href="#" class="btn btn-primary btn-square" data-toggle="tooltip" data-placement="bottom"
-               title="Slide View Mode">
-                <img src="<?php echo e(asset('painting-app/images/monitor.png')); ?>">
-            </a>
+            
+               
+                
+            
             <span style="font-size:12px;"><b>Slide 1/1</b></span>
         </div>
         <div class="col-sm-6 text-right">
@@ -213,8 +203,7 @@
             <div class="text-center my-1 option-menu-wrapper">
                 <a href="#" class="btn btn-default js-tools" id="pencil-tool" data-tool="pencil" data-toggle="tooltip"
                    data-placement="top" title="Pencil"
-                   data-cursor="url(<?php echo e(asset('painting-app/images/pencil.png')); ?>), auto">
-                    <img src="<?php echo e(asset('painting-app/images/pencil-w.png')); ?>">
+                   data-cursor="url(<?php echo e(asset('painting-app/images/pencil.png')); ?>), auto" style="background: url(<?php echo e(asset('painting-app/images/pencil-w.png')); ?>) no-repeat center;">
                 </a>
                 <ul class="option-menu" style="display: none;">
                     <li>
@@ -241,8 +230,7 @@
             </div>
             <div class="text-center my-1 option-menu-wrapper">
                 <a href="#" class="btn btn-default js-tools" data-tool="eraser" data-toggle="tooltip"
-                   data-placement="top" title="Eraser" data-cursor="crosshair">
-                    <img src="<?php echo e(asset('painting-app/images/eraser-w.png')); ?>">
+                   data-placement="top" title="Eraser" data-cursor="crosshair" style="background: url(<?php echo e(asset('painting-app/images/eraser-w.png')); ?>) no-repeat center;">
                 </a>
                 <div class="option-menu eraser-slider" style="display: none;">
                     <div id="eraser-slider"></div>
@@ -252,13 +240,11 @@
             <div class="text-center my-1 ">
                 <a href="#" class="btn btn-default js-tools" id="enable-text-tool" data-tool="text"
                    data-cursor="url(<?php echo e(asset('painting-app/images/text.png')); ?>), auto" data-toggle="tooltip"
-                   data-placement="top" title="Text">
-                    <img src="<?php echo e(asset('painting-app/images/text-w.png')); ?>" style="width:42px">
+                   data-placement="top" title="Text" style="background: url(<?php echo e(asset('painting-app/images/text-w.png')); ?>) no-repeat center;">
                 </a>
             </div>
             <div class="text-center my-1 font-menu-wrapper  option-menu-wrapper">
-                <a href="#" class="btn btn-default btn-square mx-auto js-fonts js-tools">
-                    <img src="<?php echo e(asset('painting-app/images/1.png')); ?>" style="width:42px">
+                <a href="#" class="btn btn-default btn-square mx-auto js-fonts js-tools" style="background: url(<?php echo e(asset('painting-app/images/1.png')); ?>) no-repeat center;">
                 </a>
                 <div class="option-menu font-menu" style="display: none;">
                     <h4>Font Properties</h4>
@@ -340,9 +326,8 @@
                 </div>
             </div>
             <div class="text-center my-1 option-menu-wrapper">
-                <a href="#" style="background:#000;" class="btn js-tools" data-toggle="tooltip" data-placement="top"
-                   title="Colors" id="color-indicator" data-color="#000">
-                    <img src="<?php echo e(asset('painting-app/images/color-w.png')); ?>">
+                <a href="#" style="background:url(<?php echo e(asset('painting-app/images/color-w.png')); ?>) no-repeat center #000;" class="btn js-tools" data-toggle="tooltip" data-placement="top"
+                   title="Colors" id="color-indicator" data-color="#000" >
                 </a>
                 <div class="option-menu color-menu" style="display: none;">
                     <ul class="color-pallet row">
@@ -398,22 +383,19 @@
             </div>
             <div class="text-center my-1">
                 <a href="#" id="paste-tool" class="btn btn-default btn-square mx-auto" data-toggle="tooltip" data-placement="top"
-                   title="Click on paste tool and then click on whiteboard">
-                    <img src="<?php echo e(asset('painting-app/images/paste.png')); ?>">
+                   title="Click on paste tool and then click on whiteboard" style="url(<?php echo e(asset('painting-app/images/paste.png')); ?>) no-repeat center;">
                 </a>
             </div>
             <div class="text-center my-1">
-                <a href="#" class="btn btn-default js-tools text-center" style="line-height: 30px;" data-tool="line"
+                <a href="#" class="btn btn-default js-tools text-center" style="line-height: 30px;background:url(<?php echo e(asset('painting-app/images/line-icon.png')); ?>) no-repeat center;" data-tool="line"
                    data-cursor="url(<?php echo e(asset('painting-app/images/line-icon.png')); ?>), auto" data-toggle="tooltip"
-                   data-placement="top" title="Draw Line">
-                    <img src="<?php echo e(asset('painting-app/images/line-icon.png')); ?>" style="width:20px;height:20px;">
+                   data-placement="top" title="Draw Line" >
                 </a>
             </div>
 
             <div class="text-center my-1 option-menu-wrapper">
-                <a href="#" style="background:#000;" class="btn btn-default js-tools" data-toggle="tooltip"
-                   data-placement="top" title="Graphs" id="color-indicator">
-                    <img src="<?php echo e(asset('painting-app/images/graph-w.png')); ?>" alt="">
+                <a href="#" style="background:url(<?php echo e(asset('painting-app/images/graph-w.png')); ?>) no-repeat center;" class="btn btn-default js-tools" data-toggle="tooltip"
+                   data-placement="top" title="Graphs" id="color-indicator" >
                 </a>
 
                 <ul class="option-menu graph-menu" style="display: none;">
@@ -431,8 +413,7 @@
 
             </div>
             <div class="text-center my-1 option-menu-wrapper">
-                <a href="#" class="btn btn-default js-tools" data-toggle="tooltip" data-placement="top" title="Shapes">
-                    <img src="<?php echo e(asset('painting-app/images/shapes-w.png')); ?>">
+                <a href="#" class="btn btn-default js-tools" data-toggle="tooltip" data-placement="top" title="Shapes" style="background: url(<?php echo e(asset('painting-app/images/shapes-w.png')); ?>) no-repeat center;">
                 </a>
                 <ul class="option-menu shape-menu" style="display: none">
                     <li>
@@ -495,8 +476,7 @@
             </div>
             <div class="text-center my-1">
                 <a href="#" class="btn btn-default js-tools" data-toggle="tooltip" data-placement="top" title="Undo"
-                   id="undo-tool">
-                    <img src="<?php echo e(asset('painting-app/images/undo-w.png')); ?>" style="width: 42px;">
+                   id="undo-tool" style="background: url(<?php echo e(asset('painting-app/images/undo-w.png')); ?>) no-repeat center;">
                 </a>
             </div>
             <div class="text-center my-1">
@@ -506,8 +486,7 @@
                 </a>
             </div>
             <div class="text-center my-1 science-menu-wrapper  js-enable-symbol">
-                <a href="#" class="btn btn-default btn-square mx-auto">
-                    <img src="<?php echo e(asset('painting-app/images/science-w.png')); ?>" style="width: 42px;">
+                <a href="#" class="btn btn-default btn-square mx-auto" style="background: url(<?php echo e(asset('painting-app/images/science-w.png')); ?>) no-repeat center;">
                 </a>
                 <ul class="option-menu symbol-dropdown" style="display:none;">
                     <li>
@@ -780,16 +759,14 @@
 
             <div class="text-center my-1">
                 <a href="#" class="btn btn-default btn-square mx-auto" id="enable-subscript" data-toggle="tooltip"
-                   data-placement="top" title="Click here to type subscript">
-                    <img src="<?php echo e(asset('painting-app/images/asub-w.png')); ?>" alt="">
+                   data-placement="top" title="Click here to type subscript" style="background: url(<?php echo e(asset('painting-app/images/asub-w.png')); ?>) no-repeat center;">
                 </a>
 
             </div>
 
             <div class="text-center my-1">
                 <a href="#" class="btn btn-default btn-square mx-auto" id="enable-superscript" data-toggle="tooltip"
-                   data-placement="top" title="Click here to type superscript">
-                    <img src="<?php echo e(asset('painting-app/images/a2-w.png')); ?>" alt="">
+                   data-placement="top" title="Click here to type superscript" style="background: url(<?php echo e(asset('painting-app/images/a2-w.png')); ?>) no-repeat center;">
                 </a>
             </div>
 
