@@ -279,7 +279,7 @@ body {
     margin: 0;
     padding: 5px 14px;
 }
-.navbar.navbar-default{position:relative;margin-bottom:5px;min-height: 30px;}
+.navbar.navbar-default{position:relative;margin-bottom:5px;min-height: 30px;z-index: 99999;}
 .tools-list .btn {
     width: 85%;
     height: 4vh;
@@ -374,7 +374,7 @@ body {
 .modal-header h3,.modal-header h4, .modal-header h5{margin:0;}
 .pad-tb-10{padding-top:10px;padding-bottom:10px;}
 .sub-dropdown-menu{top:initial!important;}
-.top-navbar>li>.dropdown-menu{margin-top:0!important;z-index: 999999;}
+.top-navbar>li>.dropdown-menu{margin-top:0!important;z-index: 9999999999;}
 .top-navbar>li>.dropdown-menu>li>a{
     padding-top:2px;padding-bottom:2px;
 }
