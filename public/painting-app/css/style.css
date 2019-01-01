@@ -214,7 +214,8 @@ body {
     padding-left: 20px;
     z-index: 999;
 }
-.tools-list .my-1{text-align: left!important;}
+.tools-list .my-1{text-align: left!important;position: relative;
+    left: -8px;}
 .graph-menu{width:50px;}
 
 
