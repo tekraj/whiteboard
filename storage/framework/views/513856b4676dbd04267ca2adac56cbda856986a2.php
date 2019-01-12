@@ -159,7 +159,7 @@
             </button>
             <a href="#" class="btn btn-primary btn-square active" id="enable-drawing" data-toggle="tooltip"
                data-placement="bottom" title="Switch to Whiteboard">
-                <span class="font" style="font-size:15px;line-height: 30px;">Wb</span>
+                <span class="font" style="ont-size: 12px;  vertical-align: middle;  display: inline-block; height: fit-content;">Wb</span>
             </a>
             <a href="#" class="btn btn-primary btn-square" id="reader-mode-indicator" data-toggle="tooltip"
                data-placement="bottom" title="Switch To Webshare" style="background: url(<?php echo e(asset('painting-app/images/internet.png')); ?>) no-repeat center;">
@@ -830,7 +830,7 @@
                         </div>
                         <div class="col-sm-9">
 
-                            <div class="chat-room" style="height: 16vh;">
+                            <div class="chat-room" style="height: 15vh;">
                                 <ul id="chat-board">
 
                                 </ul>

@@ -159,7 +159,7 @@
             </button>
             <a href="#" class="btn btn-primary btn-square active" id="enable-drawing" data-toggle="tooltip"
                data-placement="bottom" title="Switch to Whiteboard">
-                <span class="font" style="font-size:12px;line-height: 20px;">Wb</span>
+                <span class="font" style="ont-size: 12px;  vertical-align: middle;  display: inline-block; height: fit-content;">Wb</span>
             </a>
             <a href="#" class="btn btn-primary btn-square" id="reader-mode-indicator" data-toggle="tooltip"
                data-placement="bottom" title="Switch To Webshare" style="background: url({{asset('painting-app/images/internet.png')}}) no-repeat center;">

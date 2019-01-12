@@ -489,7 +489,7 @@ function canvasDrawing(user, socket) {
         $tools.removeClass('.active');
         $('#browse-cloud').removeClass('active');
         $(this).addClass('active');
-        $canvasWrapper.find('canvas').show();
+        dc.show();
         position = getCoords(drawingC)
         pdfReaderWrapper.hide();
         pdfEnabled = false;
