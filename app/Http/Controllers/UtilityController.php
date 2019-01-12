@@ -197,14 +197,14 @@ class UtilityController extends Controller
 
     public function readCloudFile(Request $request){
 
-        $files =  array_diff(scandir(storage_path("app/public/cloud-files")), array('.', '..'));
+        $files =  array_diff(scandir(storage_path("app/public/cloud-files/shares")), array('.', '..'));
         $fileData = [];
         foreach($files as $file){
 
             if(!is_dir(storage_path("app/public/cloud-files/{$file}"))){
                 $fileData[] = [
                     "text" => $file,
-                    "a_attr" => ["class"=>"js-read-cloud-file","file"=>asset("storage/cloud-files/{$file}")],
+                    "a_attr" => ["class"=>"js-read-cloud-file","file"=>asset("storage/cloud-files/shares/{$file}")],
                     "icon" => "images/file-icon.png"
                 ];
             }else {
@@ -219,7 +219,7 @@ class UtilityController extends Controller
 
                         $fileArray['children'][] = [
                             "text" => $f,
-                            "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("storage/cloud-files/{$file}/$f")],
+                            "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("storage/cloud-files/shares/{$file}/$f")],
                             "icon" => "images/file-icon.png"
                         ];
 
@@ -230,7 +230,7 @@ class UtilityController extends Controller
                             if (!is_dir(storage_path("app/public/cloud-files/{$file}/{$f}/{$sf}"))) {
                                 $subArray['children'][] = [
                                     "text" => $sf,
-                                    "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("storage/cloud-files/{$file}/{$f}/{$sf}")],
+                                    "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("storage/cloud-files/shares/{$file}/{$f}/{$sf}")],
                                     "icon" => "images/file-icon.png"
                                 ];
                             }
