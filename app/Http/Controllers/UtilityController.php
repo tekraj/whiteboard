@@ -201,7 +201,7 @@ class UtilityController extends Controller
         $fileData = [];
         foreach($files as $file){
 
-            if(!is_dir(storage_path("app/public/cloud-files/{$file}"))){
+            if(!is_dir(storage_path("app/public/cloud-files/shares/{$file}"))){
                 $fileData[] = [
                     "text" => $file,
                     "a_attr" => ["class"=>"js-read-cloud-file","file"=>asset("storage/cloud-files/shares/{$file}")],
@@ -211,11 +211,11 @@ class UtilityController extends Controller
 
                 $fileArray = ['text' => $file];
                 $fileArray['children'] = [];
-                $subFile = array_diff(scandir(storage_path("app/public/cloud-files/{$file}")), array('.', '..'));
+                $subFile = array_diff(scandir(storage_path("app/public/cloud-files/shares/{$file}")), array('.', '..'));
 
                 foreach ($subFile as $f) {
 
-                    if (!is_dir(storage_path("app/public/cloud-files/{$file}/$f"))) {
+                    if (!is_dir(storage_path("app/public/cloud-files/shares/{$file}/$f"))) {
 
                         $fileArray['children'][] = [
                             "text" => $f,
@@ -225,9 +225,9 @@ class UtilityController extends Controller
 
                     } else {
                         $subArray = ['text' => $f];
-                        $subSubFile = array_diff(scandir(storage_path("app/public/cloud-files/{$file}/{$f}")), array('.', '..'));
+                        $subSubFile = array_diff(scandir(storage_path("app/public/cloud-files/shares/{$file}/{$f}")), array('.', '..'));
                         foreach ($subSubFile as $sf) {
-                            if (!is_dir(storage_path("app/public/cloud-files/{$file}/{$f}/{$sf}"))) {
+                            if (!is_dir(storage_path("app/public/cloud-files/shares/{$file}/{$f}/{$sf}"))) {
                                 $subArray['children'][] = [
                                     "text" => $sf,
                                     "a_attr" => ["class" => "js-read-cloud-file", "file" => asset("storage/cloud-files/shares/{$file}/{$f}/{$sf}")],
