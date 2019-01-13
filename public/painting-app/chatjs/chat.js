@@ -7,7 +7,7 @@ var canvasStates = [];
 var currentStateIndex = 1;
 var $sessionCanvasWrapper;
 var sessionId;
-
+var groupMode=false;
 $(function () {
     // $('#user-input-modal').modal('show');
 
@@ -252,6 +252,18 @@ $(function () {
                     $onlineUserList.find('li:first').click();
                 }
             }
+        });
+
+        $('.js-group-mode').click(function(e){
+            e.preventDefault();
+            var $this = $(this);
+            if($this.hasClass('active')){
+                groupMode = false;
+                $this.removeClass('active');
+            }else{
+                $this.addClass('active');
+                groupMode = true;
+            }
         })
     }
 
@@ -327,7 +339,8 @@ $(function () {
             userName: user.Name,
             userType: user.userType,
             id: user.ObjectID,
-            session_id:sessionId
+            session_id:sessionId,
+            groupMode:groupMode
         });
 
         $chatInput.html('');
@@ -484,7 +497,8 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign, xy) {
             receiver: receiver,
             canvasData: data,
             redrawForeign: redrawForeign,
-            xy: xy
+            xy: xy,
+            groupMode:groupMode
         });
     }
     var canvas = document.getElementById('drawing-board');

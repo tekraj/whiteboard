@@ -555,10 +555,10 @@ body {
 .prev-next-navbar .btn.btn-back span{display: inline-block;position:relative;left:-5px;}
 .prev-next-navbar .btn.btn-next span{display: inline-block;position:relative;left:5px;}
 .btn.btn-public {
-    padding: 8px 20px;
+    padding: 5px 20px;
     /* font-size: 12px!important; */
     position: relative;
-    top: 5px;
+    top: 0;
 }
 
 .top-nav-tools .btn-square {

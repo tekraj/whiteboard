@@ -32,7 +32,8 @@
 
 </head>
 <body data-imageurl="{{url("utility/save-canvas-image/{$type}")}}">
-<div id="loader" style="background: rgba(3, 122, 245, 0.63);padding:150px;position:absolute;top:0;bottom:0;left:0;right:0;z-index: 99999999;text-align: center;">
+<div id="loader"
+     style="background: rgba(3, 122, 245, 0.63);padding:150px;position:absolute;top:0;bottom:0;left:0;right:0;z-index: 99999999;text-align: center;">
     <img src="{{asset('images/loader.gif')}}" alt="">
 </div>
 <header>
@@ -47,7 +48,6 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav top-navbar">
@@ -67,7 +67,7 @@
                             </li>
                             <li role="separator" class="divider"></li>
                             <li>
-                            <a href="#" >Properties</a>
+                                <a href="#">Properties</a>
 
                             </li>
                             <li role="separator" class="divider"></li>
@@ -120,7 +120,7 @@
                         <a class="nav-link" href="#session-log-modal" data-toggle="modal">Session Log</a>
                     </li>
                     {{--<li>--}}
-                        {{--<a class="nav-link" href="#">Favorites</a>--}}
+                    {{--<a class="nav-link" href="#">Favorites</a>--}}
                     {{--</li>--}}
                 </ul>
                 <ul class="nav navbar-nav navbar-right prev-next-navbar">
@@ -149,8 +149,10 @@
 
 <div class="container-fluid top-functions">
     <div class="row">
-        <div class="col-sm-6 top-nav-tools">
-            <a href="#" class="btn btn-primary btn-square js-tools" data-cursor="url({{asset('painting-app/images/computer-mouse-cursor.png')}}), auto" data-tool="select" style="background: url({{asset('painting-app/images/computer-mouse-cursor.png')}}) no-repeat center;"></a>
+        <div class="col-sm-6 top-nav-tools" style="padding-left:7px;">
+            <a href="#" class="btn btn-primary btn-square js-tools"
+               data-cursor="url({{asset('painting-app/images/computer-mouse-cursor.png')}}), auto" data-tool="select"
+               style="background: url({{asset('painting-app/images/computer-mouse-cursor.png')}}) no-repeat center;"></a>
             <button class="btn btn-primary btn-square js-tools" data-tool="drag" data-toggle="tooltip"
                     data-placement="top" title="Drag Shapes"
                     data-cursor="url({{asset('painting-app/images/drag.png')}}), auto"
@@ -159,51 +161,66 @@
             </button>
             <a href="#" class="btn btn-primary btn-square active" id="enable-drawing" data-toggle="tooltip"
                data-placement="bottom" title="Switch to Whiteboard">
-                <span class="font" style="ont-size: 12px;  vertical-align: middle;  display: inline-block; height: fit-content;">Wb</span>
+                <span class="font"
+                      style="ont-size: 12px;  vertical-align: middle;  display: inline-block; height: fit-content;">Wb</span>
             </a>
             <a href="#" class="btn btn-primary btn-square" id="reader-mode-indicator" data-toggle="tooltip"
-               data-placement="bottom" title="Switch To Webshare" style="background: url({{asset('painting-app/images/internet.png')}}) no-repeat center;">
+               data-placement="bottom" title="Switch To Webshare"
+               style="background: url({{asset('painting-app/images/internet.png')}}) no-repeat center;">
             </a>
             <!--<a href="#" class="btn btn-primary btn-square">-->
             <!--<span class=""><i class="fa fa-pie-chart" aria-hidden="true"></i></span>-->
             <!--</a>-->
             <a href="#" class="btn btn-primary btn-square" id="browse-cloud"
                data-url="{{url("utility/read-cloud-file/{$type}")}}" data-toggle="tooltip" data-placement="bottom"
-               title="WhiteBoard Cloud" style="background:url({{asset('painting-app/images/cloud.png')}}) no-repeat center;">
+               title="WhiteBoard Cloud"
+               style="background:url({{asset('painting-app/images/cloud.png')}}) no-repeat center;">
             </a>
-            <a href="#session-note-modal" class="btn btn-primary btn-square" title="Session Note" data-toggle="modal" style="background:url({{asset('painting-app/images/note.png')}}) no-repeat center;"></a>
-            <a href="#notification-modal" class="btn btn-primary btn-square"  data-toggle="modal" data-placement="bottom"
-               title="Notifications" style="background: url({{asset('painting-app/images/email.png')}}) no-repeat center;">
+            <a href="#session-note-modal" class="btn btn-primary btn-square" title="Session Note" data-toggle="modal"
+               style="background:url({{asset('painting-app/images/note.png')}}) no-repeat center;"></a>
+            <a href="#notification-modal" class="btn btn-primary btn-square" data-toggle="modal" data-placement="bottom"
+               title="Notifications"
+               style="background: url({{asset('painting-app/images/email.png')}}) no-repeat center;">
             </a>
             <a href="#" class="btn btn-primary btn-square" data-toggle="modal" data-target="#print-modal"
-               title="Print This drawing" style="background: url({{asset('painting-app/images/printer-.png')}}) no-repeat center;">
+               title="Print This drawing"
+               style="background: url({{asset('painting-app/images/printer-.png')}}) no-repeat center;">
             </a>
-            <a href="{{url('utility/share-drawing/'.$type)}}"  class="btn btn-primary btn-square" id="share-drawing"  data-toggle="tooltip" data-placement="bottom"
-               title="Share drawing" style="background: url({{asset('painting-app/images/share-connection-sing.png')}}) no-repeat center;">
+            <a href="{{url('utility/share-drawing/'.$type)}}" class="btn btn-primary btn-square" id="share-drawing"
+               data-toggle="tooltip" data-placement="bottom"
+               title="Share drawing"
+               style="background: url({{asset('painting-app/images/share-connection-sing.png')}}) no-repeat center;">
             </a>
 
-            <a target="_blank" href="http://www.brainfuse.com/jsp/user/emailTranscriptQC.jsp?e=26e1afc948a1ad6d&u=ee1be66ef9286547" class="btn btn-primary btn-square" data-toggle="tooltip" data-placement="bottom"
-               title="Send to mail" style="background: url({{asset('painting-app/images/black-back-closed-envelope-shape.png')}}) no-repeat center;">
+            <a target="_blank"
+               href="http://www.brainfuse.com/jsp/user/emailTranscriptQC.jsp?e=26e1afc948a1ad6d&u=ee1be66ef9286547"
+               class="btn btn-primary btn-square" data-toggle="tooltip" data-placement="bottom"
+               title="Send to mail"
+               style="background: url({{asset('painting-app/images/black-back-closed-envelope-shape.png')}}) no-repeat center;">
             </a>
             {{--<a href="#" class="btn btn-primary btn-square" data-toggle="tooltip" data-placement="bottom"--}}
-               {{--title="Slide View Mode">--}}
-                {{--<img src="{{asset('painting-app/images/monitor.png')}}">--}}
+            {{--title="Slide View Mode">--}}
+            {{--<img src="{{asset('painting-app/images/monitor.png')}}">--}}
             {{--</a>--}}
             <span style="font-size:12px;"><b>Slide 1/1</b></span>
         </div>
         <div class="col-sm-6 text-right">
-            <button class="btn btn-warning btn-public js-public-mode">Public</button>
+            @if($type=='tutor')
+                <button class="btn btn-success btn-public js-group-mode">Group Mode</button>
+            @endif
+            <button class="btn btn-warning btn-public js-public-mode">Public Mode</button>
         </div>
     </div>
 </div>
 
 <div class="container-fluid can">
     <div class="row">
-        <div class="col-md-1 tools-list" >
+        <div class="col-md-1 tools-list">
             <div class="text-center my-1 option-menu-wrapper">
                 <a href="#" class="btn btn-default js-tools" id="pencil-tool" data-tool="pencil" data-toggle="tooltip"
                    data-placement="top" title="Pencil"
-                   data-cursor="url({{asset('painting-app/images/pencil.png')}}), auto" style="background: url({{asset('painting-app/images/pencil-w.png')}}) no-repeat center;">
+                   data-cursor="url({{asset('painting-app/images/pencil.png')}}), auto"
+                   style="background: url({{asset('painting-app/images/pencil-w.png')}}) no-repeat center;">
                 </a>
                 <ul class="option-menu" style="display: none;">
                     <li>
@@ -230,7 +247,8 @@
             </div>
             <div class="text-center my-1 option-menu-wrapper">
                 <a href="#" class="btn btn-default js-tools" data-tool="eraser" data-toggle="tooltip"
-                   data-placement="top" title="Eraser" data-cursor="crosshair" style="background: url({{asset('painting-app/images/eraser-w.png')}}) no-repeat center;">
+                   data-placement="top" title="Eraser" data-cursor="crosshair"
+                   style="background: url({{asset('painting-app/images/eraser-w.png')}}) no-repeat center;">
                 </a>
                 <div class="option-menu eraser-slider" style="display: none;">
                     <div id="eraser-slider"></div>
@@ -240,11 +258,13 @@
             <div class="text-center my-1 ">
                 <a href="#" class="btn btn-default js-tools" id="enable-text-tool" data-tool="text"
                    data-cursor="url({{asset('painting-app/images/text.png')}}), auto" data-toggle="tooltip"
-                   data-placement="top" title="Text" style="background: url({{asset('painting-app/images/text-w.png')}}) no-repeat center;">
+                   data-placement="top" title="Text"
+                   style="background: url({{asset('painting-app/images/text-w.png')}}) no-repeat center;">
                 </a>
             </div>
             <div class="text-center my-1 font-menu-wrapper  option-menu-wrapper">
-                <a href="#" class="btn btn-default btn-square mx-auto js-fonts js-tools" style="background: url({{asset('painting-app/images/1.png')}}) no-repeat center;">
+                <a href="#" class="btn btn-default btn-square mx-auto js-fonts js-tools"
+                   style="background: url({{asset('painting-app/images/1.png')}}) no-repeat center;">
                 </a>
                 <div class="option-menu font-menu" style="display: none;">
                     <h4>Font Properties</h4>
@@ -326,8 +346,9 @@
                 </div>
             </div>
             <div class="text-center my-1 option-menu-wrapper">
-                <a href="#" style="background:url({{asset('painting-app/images/color-w.png')}}) no-repeat center #000;" class="btn js-tools" data-toggle="tooltip" data-placement="top"
-                   title="Colors" id="color-indicator" data-color="#000" >
+                <a href="#" style="background:url({{asset('painting-app/images/color-w.png')}}) no-repeat center #000;"
+                   class="btn js-tools" data-toggle="tooltip" data-placement="top"
+                   title="Colors" id="color-indicator" data-color="#000">
                 </a>
                 <div class="option-menu color-menu" style="display: none;">
                     <ul class="color-pallet row">
@@ -382,20 +403,25 @@
                 </div>
             </div>
             <div class="text-center my-1">
-                <a href="#" id="paste-tool" class="btn btn-default btn-square mx-auto" data-toggle="tooltip" data-placement="top"
-                   title="Click on paste tool and then click on whiteboard" style="url({{asset('painting-app/images/paste.png')}}) no-repeat center;">
+                <a href="#" id="paste-tool" class="btn btn-default btn-square mx-auto" data-toggle="tooltip"
+                   data-placement="top"
+                   title="Click on paste tool and then click on whiteboard"
+                   style="url({{asset('painting-app/images/paste.png')}}) no-repeat center;">
                 </a>
             </div>
             <div class="text-center my-1">
-                <a href="#" class="btn btn-default js-tools text-center" style="line-height: 30px;background:url({{asset('painting-app/images/line-icon.png')}}) no-repeat center;" data-tool="line"
+                <a href="#" class="btn btn-default js-tools text-center"
+                   style="line-height: 30px;background:url({{asset('painting-app/images/line-icon.png')}}) no-repeat center;"
+                   data-tool="line"
                    data-cursor="url({{asset('painting-app/images/line-icon.png')}}), auto" data-toggle="tooltip"
-                   data-placement="top" title="Draw Line" >
+                   data-placement="top" title="Draw Line">
                 </a>
             </div>
 
             <div class="text-center my-1 option-menu-wrapper">
-                <a href="#" style="background:url({{asset('painting-app/images/graph-w.png')}}) no-repeat center;" class="btn btn-default js-tools" data-toggle="tooltip"
-                   data-placement="top" title="Graphs" id="color-indicator" >
+                <a href="#" style="background:url({{asset('painting-app/images/graph-w.png')}}) no-repeat center;"
+                   class="btn btn-default js-tools" data-toggle="tooltip"
+                   data-placement="top" title="Graphs" id="color-indicator">
                 </a>
 
                 <ul class="option-menu graph-menu" style="display: none;">
@@ -413,7 +439,8 @@
 
             </div>
             <div class="text-center my-1 option-menu-wrapper">
-                <a href="#" class="btn btn-default js-tools" data-toggle="tooltip" data-placement="top" title="Shapes" style="background: url({{asset('painting-app/images/shapes-w.png')}}) no-repeat center;">
+                <a href="#" class="btn btn-default js-tools" data-toggle="tooltip" data-placement="top" title="Shapes"
+                   style="background: url({{asset('painting-app/images/shapes-w.png')}}) no-repeat center;">
                 </a>
                 <ul class="option-menu shape-menu" style="display: none">
                     <li>
@@ -476,7 +503,8 @@
             </div>
             <div class="text-center my-1">
                 <a href="#" class="btn btn-default js-tools" data-toggle="tooltip" data-placement="top" title="Undo"
-                   id="undo-tool" style="background: url({{asset('painting-app/images/undo-w.png')}}) no-repeat center;">
+                   id="undo-tool"
+                   style="background: url({{asset('painting-app/images/undo-w.png')}}) no-repeat center;">
                 </a>
             </div>
             <div class="text-center my-1">
@@ -486,7 +514,8 @@
                 </a>
             </div>
             <div class="text-center my-1 science-menu-wrapper  js-enable-symbol">
-                <a href="#" class="btn btn-default btn-square mx-auto" style="background: url({{asset('painting-app/images/science-w.png')}}) no-repeat center;">
+                <a href="#" class="btn btn-default btn-square mx-auto"
+                   style="background: url({{asset('painting-app/images/science-w.png')}}) no-repeat center;">
                 </a>
                 <ul class="option-menu symbol-dropdown" style="display:none;">
                     <li>
@@ -759,14 +788,16 @@
 
             <div class="text-center my-1">
                 <a href="#" class="btn btn-default btn-square mx-auto" id="enable-subscript" data-toggle="tooltip"
-                   data-placement="top" title="Click here to type subscript" style="background: url({{asset('painting-app/images/asub-w.png')}}) no-repeat center;">
+                   data-placement="top" title="Click here to type subscript"
+                   style="background: url({{asset('painting-app/images/asub-w.png')}}) no-repeat center;">
                 </a>
 
             </div>
 
             <div class="text-center my-1">
                 <a href="#" class="btn btn-default btn-square mx-auto" id="enable-superscript" data-toggle="tooltip"
-                   data-placement="top" title="Click here to type superscript" style="background: url({{asset('painting-app/images/a2-w.png')}}) no-repeat center;">
+                   data-placement="top" title="Click here to type superscript"
+                   style="background: url({{asset('painting-app/images/a2-w.png')}}) no-repeat center;">
                 </a>
             </div>
 
@@ -1096,20 +1127,20 @@
 </div>
 <div class="modal" id="tech-support-modal">
     <div class="modal-dialog">
-        <form method="post"  id="send-tech-report" data-url="{{url("utility/send-report/{$type}")}}">
+        <form method="post" id="send-tech-report" data-url="{{url("utility/send-report/{$type}")}}">
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="margin-0 text-center"> Send Tech Support Report</h5>
-                        <a href="#" class="btn btn-close" data-dismiss="modal">&times;</a>
-                    </div>
-                    <div class="modal-body">
-                        {{Form::textarea('tech_support',null,['class'=>'form-control','id'=>'support-question','style'=>'resize:none;height:100px','required'=>'true'])}}
-                    </div>
-                    <div class="modal-footer text-center pad-tb-10">
-                        <button type="submit" class="btn btn-default btn-lg">Send</button>
-                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="margin-0 text-center"> Send Tech Support Report</h5>
+                    <a href="#" class="btn btn-close" data-dismiss="modal">&times;</a>
                 </div>
+                <div class="modal-body">
+                    {{Form::textarea('tech_support',null,['class'=>'form-control','id'=>'support-question','style'=>'resize:none;height:100px','required'=>'true'])}}
+                </div>
+                <div class="modal-footer text-center pad-tb-10">
+                    <button type="submit" class="btn btn-default btn-lg">Send</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -1127,7 +1158,8 @@
                         <div class="input-group">
                             <span class="input-group-addon" id="end-date-label ">Date Range</span>
                             <input name="daterange" type="text" class="form-control js-daterangepicker"
-                                   aria-describedby="end-date-label" value="{{date('m/d/Y')}}" style="padding:2px 10px;">
+                                   aria-describedby="end-date-label" value="{{date('m/d/Y')}}"
+                                   style="padding:2px 10px;">
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -1173,32 +1205,32 @@
             </div>
             <div class="modal-body">
                 {{Form::open(['url'=>url("utility/save-session-note"),'method'=>'post','id'=>'session-note-form'])}}
-                    <div class="text-center">
-                        {{Form::textarea('note','',['class'=>'form-control','style'=>'resize:none;height:50px;','required'=>true])}}
-                        <input type="hidden" name="user_id" value="{{$user->id}}">
-                        <input type="hidden" name="subject_id" value="{{$subject->id}}">
-                        <input type="hidden" name="user_type" value="{{$type}}">
+                <div class="text-center">
+                    {{Form::textarea('note','',['class'=>'form-control','style'=>'resize:none;height:50px;','required'=>true])}}
+                    <input type="hidden" name="user_id" value="{{$user->id}}">
+                    <input type="hidden" name="subject_id" value="{{$subject->id}}">
+                    <input type="hidden" name="user_type" value="{{$type}}">
 
-                        <button class="btn btn-default" style="margin-top:10px;">Save</button>
-                    </div>
+                    <button class="btn btn-default" style="margin-top:10px;">Save</button>
+                </div>
                 {{Form::close()}}
                 <div class="old-session-notes" style="height:300px;overflow-y: auto;">
                     <h4>Your Session Notes</h4>
                     <table class="table table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th>Note</th>
-                                <th>Date</th>
-                            </tr>
+                        <tr>
+                            <th>Note</th>
+                            <th>Date</th>
+                        </tr>
 
                         </thead>
                         <tbody id="session-note-data">
-                            @foreach($sessionNotes as $note)
-                                <tr>
-                                    <td>{{$note->note}}</td>
-                                    <td>{{\Carbon\Carbon::parse($note->created_at)->format('d M Y H:i')}}</td>
-                                </tr>
-                            @endforeach
+                        @foreach($sessionNotes as $note)
+                            <tr>
+                                <td>{{$note->note}}</td>
+                                <td>{{\Carbon\Carbon::parse($note->created_at)->format('d M Y H:i')}}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -1219,18 +1251,18 @@
             <div class="modal-body">
                 <table class="table table-striped table-hover">
                     <thead>
-                        <tr>
-                            <th>Notification</th>
-                            <th>Date</th>
-                        </tr>
+                    <tr>
+                        <th>Notification</th>
+                        <th>Date</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach($notifications as $notification)
-                            <tr>
-                                <td>{{$notification->message}}</td>
-                                <td>{{\Carbon\Carbon::parse($notification->created_at)->format('d M Y H:i')}}</td>
-                            </tr>
-                        @endforeach
+                    @foreach($notifications as $notification)
+                        <tr>
+                            <td>{{$notification->message}}</td>
+                            <td>{{\Carbon\Carbon::parse($notification->created_at)->format('d M Y H:i')}}</td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -1256,10 +1288,10 @@
     });
     var base_url = '{{url('/')}}';
     var herokoUrl = '{{env('CHAT_URL')}}';
-    $(document).ready(function(){
+    $(document).ready(function () {
         var totalHeight = window.innerHeight;
         $('#loader').hide();
-        $('.canvas-list').css('height',totalHeight-90);
+        $('.canvas-list').css('height', totalHeight - 90);
     })
 </script>
 <script src="{{asset('painting-app/emoji-js/emoji.js')}}"></script>
@@ -1286,11 +1318,9 @@
     $(document).ready(function () {
         var start = moment().subtract(29, 'days');
         var end = moment();
-
         function cb(start, end) {
             $('.js-daterangepicker').find('span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
         }
-
         $('.js-daterangepicker').daterangepicker({
             startDate: start,
             endDate: end,
@@ -1315,7 +1345,3 @@
 <script src="{{asset('painting-app/js/canvas.js?ver=1.2')}}"></script>
 </body>
 </html>
-
-
-
-
