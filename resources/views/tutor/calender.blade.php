@@ -48,13 +48,13 @@
                 <a href="#" data-date="{{$date}}" data-url="{{$url}}" class="js-calender-date">
                     <p>{{$i<10 ? '0'.$i:$i}}</p>
 
-                        @foreach($allSchedules as $schedule)
-                            @if($date === \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d'))
-                            <p style="font-size:11px;margin:0;font-weight: normal;">
-                                <span class="text-danger"><i class="fa fa-circle"></i></span> {{$schedule->subject->name}}    {{\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A')}}
-                            </p>
-                            @endif
-                        @endforeach
+                    @foreach($allSchedules as $schedule)
+                        @if($date === \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d'))
+                        <span style="font-size:11px;margin:0;font-weight: normal;">
+                            <span class="text-danger"><i class="fa fa-circle"></i></span> {{$schedule->subject->name}}    {{\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A')}}
+                        </span>
+                        @endif
+                    @endforeach
                 </a>
             </td>
             @if($count%7==0)
