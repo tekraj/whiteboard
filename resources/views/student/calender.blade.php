@@ -49,7 +49,7 @@
                     <span style="display: block;">{{$i<10 ? '0'.$i:$i}}</span>
                     @foreach($allSchedules as $schedule)
                         @if($date == \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d'))
-                            <span style="font-size:10px;max-width:150px;margin:0;font-weight: normal;">
+                            <span style="font-size:10px;max-width:150px;margin:0;font-weight: normal;display: inline-block;">
                             <span class="text-danger"><i
                                         class="fa fa-circle"></i></span> {{$schedule->subject->name}}    {{\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A')}}
                         </span>
