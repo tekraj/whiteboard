@@ -54,7 +54,6 @@
                             </span>
                         @endif
                     @endforeach
-
                 </a>
             </td>
             @if($count%7==0)
