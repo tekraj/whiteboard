@@ -46,8 +46,7 @@
 
             <td class="{{$today==$i ? 'today':''}}">
                 <a href="#" data-date="{{$date}}" data-url="{{$url}}" class="js-calender-date">
-                    <p>{{$i<10 ? '0'.$i:$i}}</p>
-
+                    <span>{{$i<10 ? '0'.$i:$i}}</>
                     @foreach($allSchedules as $schedule)
                         @if($date === \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d'))
                         <span style="font-size:11px;margin:0;font-weight: normal;">
