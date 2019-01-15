@@ -484,7 +484,7 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign, xy) {
                     socket.emit('send-public-drawing', {user: user, receiver: receiver, canvasData: data, xy: xy});
                 } else {
                     alert('Sorry currently public option is not avilable');
-                    $('.js-public-mode').click();
+
                 }
             });
         } else {

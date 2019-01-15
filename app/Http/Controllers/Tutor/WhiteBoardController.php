@@ -15,13 +15,14 @@ use Carbon\Carbon;
 
 class WhiteBoardController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $pageTitle = 'Whiteboard';
         $user = Auth::guard('tutor')->user();
         $type = 'tutor';
         $subject = $user->subject;
         $sessions = SessionRepository::getTutorSessions($user->id,$subject->id);
-
+        $domain = $request->getHttpHost();
+        $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 'false' : 'true';
         $factory = JWTFactory::addClaims([
             'sub'   => $user->id,
             'iss'   => url('/'),
@@ -45,7 +46,7 @@ class WhiteBoardController extends Controller
         $notifications = Notification::where('status',1)->where(function($query) use ($subject){
             $query->where('subject_id',$subject->id)->orWhereNull('subject_id');
         })->orderBy('id','desc')->get();
-        return view('whiteboard',compact('pageTitle','user','type','subject','sessions','sessionNotes','notifications'));
+        return view('whiteboard',compact('pageTitle','user','type','subject','sessions','sessionNotes','notifications','isPublic'));
     }
 
     public function showPracticeBoard(){

@@ -14,13 +14,14 @@ use JWTFactory;
 use Carbon\Carbon;
 class WhiteBoardController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $pageTitle = 'Whiteboard';
         $user = Auth::guard('student')->user();
         $subjetId = session('student_subject');
         $sessions = SessionRepository::getStudentSessions($user->id,$subjetId);
         $type = 'student';
-
+        $domain = $request->getHttpHost();
+        $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 'false' : 'true';
         $subject = Subject::find($subjetId);
         if(!$subject)
             return redirect('student/dashboard');
@@ -47,7 +48,7 @@ class WhiteBoardController extends Controller
         $notifications = Notification::where('status',1)->where(function($query) use ($subjetId){
             $query->where('subject_id',$subjetId)->orWhereNull('subject_id');
         })->orderBy('id','desc')->get();
-        return view('whiteboard',compact('pageTitle','user','type','subject','sessions','sessionNotes','notifications'));
+        return view('whiteboard',compact('pageTitle','user','type','subject','sessions','sessionNotes','notifications','isPublic'));
     }
 
     public function showPracticeBoard(){

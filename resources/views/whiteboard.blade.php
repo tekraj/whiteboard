@@ -205,10 +205,9 @@
             <span style="font-size:12px;"><b>Slide 1/1</b></span>
         </div>
         <div class="col-sm-6 text-right">
-            @if($type=='tutor')
+            @if($type=='tutor' && !$isPublic)
                 <button class="btn btn-success btn-public js-group-mode">Group Mode</button>
             @endif
-            <button class="btn btn-warning btn-public js-public-mode">Public Mode</button>
         </div>
     </div>
 </div>
@@ -1279,7 +1278,9 @@
 <script>
     var user = {!! $user !!};
 </script>
+
 <script src="{{asset('painting-app/js/jquery.min.js')}}"></script>
+<script src="{{asset('painting-app/LaTeX/latex.js')}}"></script>
 <script>
     $.ajaxSetup({
         headers: {
@@ -1288,6 +1289,7 @@
     });
     var base_url = '{{url('/')}}';
     var herokoUrl = '{{env('CHAT_URL')}}';
+    var publicModeEnabled = {{$isPublic?'true':'false'}};
     $(document).ready(function () {
         var totalHeight = window.innerHeight;
         $('#loader').hide();

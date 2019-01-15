@@ -109,7 +109,6 @@ function canvasDrawing(user, socket) {
         pdfReaderWrapper = $('#pdf-reader'),
         background = '#fff',
         eraserPoints = [],
-        publicModeEnabled = false,
         $onlineUsers = $('#online-users'),
         isNewDrawing = false,
         loader = $('#loader'),
@@ -222,7 +221,7 @@ function canvasDrawing(user, socket) {
 
     });
 
-  
+
     $tools.click(function (e) {
 
         e.preventDefault();
@@ -1986,6 +1985,7 @@ function canvasDrawing(user, socket) {
      */
     function insertSymbols(callback) {
         var latex = mathEditor.getLatex();
+        console.log(latex);
         //$.get(',function(response){
         domtoimage.toSvg($('#equation-editor-wrapper .mq-root-block')[0])
             .then(function (dataUrl) {
@@ -2531,64 +2531,35 @@ function canvasDrawing(user, socket) {
     }
 
     //enable public mode
-    $('.js-public-mode').click(function () {
-        var $this = $(this);
-        if ($this.hasClass('active')) {
-            $this.removeClass('active')
-            publicModeEnabled = false;
-            foreignCanvasData = [];
-            canvasObjects = [];
-            redrawCanvas();
-            if (user.userType == 'tutor') {
-                $.ajax({
-                    type: 'post',
-                    url: herokoUrl + 'unset-public-drawing',
-                    data: user,
-                    success: function (data) {
-
-                    }
-                });
-
-            }
+    if (publicModeEnabled) {
+        if (user.userType == 'student') {
+            checkPublicMethodEnabled(function (data) {
+                if (data.status) {
+                    foreignCanvasData = [];
+                    canvasObjects = [];
+                    redrawCanvas();
+                }
+            });
         } else {
-            if (user.userType == 'student') {
-
-                checkPublicMethodEnabled(function (data) {
+            $.ajax({
+                type: 'post',
+                url: herokoUrl + 'set-public-drawing',
+                data: user,
+                global: false,
+                crossDomain: true,
+                success: function (data) {
                     if (data.status) {
-                        $this.addClass('active');
-                        publicModeEnabled = true;
                         foreignCanvasData = [];
                         canvasObjects = [];
                         redrawCanvas();
-                    } else {
-                        alert('Sorry currently no public option avilable');
                     }
-                });
-            } else {
-                $.ajax({
-                    type: 'post',
-                    url: herokoUrl + 'set-public-drawing',
-                    data: user,
-                    global: false,
-                    crossDomain: true,
-                    success: function (data) {
-                        if (data.status) {
-                            $this.addClass('active');
-                            publicModeEnabled = true;
-                            foreignCanvasData = [];
-                            canvasObjects = [];
-                            redrawCanvas();
-                        } else {
-                            alert('Sorry You are currently Offline. Please refresh the page');
-                        }
 
-                    }
-                })
-
-            }
+                }
+            })
 
         }
-    });
+
+    }
 
     socket.on('get-public-drawing', function (data) {
         if (!publicModeEnabled) {
