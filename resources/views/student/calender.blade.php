@@ -50,7 +50,7 @@
                     @foreach($allSchedules as $schedule)
                         @if($date == \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d'))
                             <p style="font-size:11px;margin:0;font-weight: normal;">
-                                <span class="text-danger"><i class="fa fa-circle"></i></span> {{$schedule->subject->name}}    {{\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s a').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s a')}}
+                                <span class="text-danger"><i class="fa fa-circle"></i></span> {{$schedule->subject->name}}    {{\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A')}}
                             </p>
                         @endif
                     @endforeach
