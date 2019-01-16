@@ -24,4 +24,4 @@ composer.lock
 /mysql
 /.scannerwork
 /bootstrap/cache/
-storage/
+/storage/
