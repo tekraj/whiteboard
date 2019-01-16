@@ -21,7 +21,10 @@ class WhiteBoardController extends Controller
         $sessions = SessionRepository::getStudentSessions($user->id,$subjetId);
         $type = 'student';
         $domain = $request->getHttpHost();
-        $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 'false' : 'true';
+        $isPublic = false;
+        if(env('APP_ENV')=='production'){
+            $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 'false' : 'true';
+        }
         $subject = Subject::find($subjetId);
         if(!$subject)
             return redirect('student/dashboard');

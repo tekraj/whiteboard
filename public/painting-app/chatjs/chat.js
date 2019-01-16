@@ -478,6 +478,7 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign, xy) {
     var redrawForeign = redrawForeign ? redrawForeign : 'no';
     var xy = xy ? xy : {x: 0, y: 0};
     if (publicModeEnabled) {
+
         if (user.userType == 'student') {
             checkPublicMethodEnabled(function (response) {
                 if (response.status) {
@@ -492,6 +493,7 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign, xy) {
         }
 
     } else {
+        console.log(data);
         socket.emit('send-private-drawing', {
             user: user,
             receiver: receiver,

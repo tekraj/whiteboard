@@ -22,7 +22,10 @@ class WhiteBoardController extends Controller
         $subject = $user->subject;
         $sessions = SessionRepository::getTutorSessions($user->id,$subject->id);
         $domain = $request->getHttpHost();
-        $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 'false' : 'true';
+        $isPublic = false;
+        if(env('APP_ENV')=='production'){
+            $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 'false' : 'true';
+        }
         $factory = JWTFactory::addClaims([
             'sub'   => $user->id,
             'iss'   => url('/'),

@@ -48,17 +48,16 @@
 
             <td class="<?php echo e($today==$i ? 'today':''); ?>">
                 <a href="#" data-date="<?php echo e($date); ?>" data-url="<?php echo e($url); ?>" class="js-calender-date">
-                    <p><?php echo e($i<10 ? '0'.$i:$i); ?></p>
-                    <p>
-                        <?php $__currentLoopData = $allSchedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php if($date === \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d')): ?>
+                    <span style="display: block;"><?php echo e($i<10 ? '0'.$i:$i); ?></span>
+                    <?php $__currentLoopData = $allSchedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($date == \Carbon\Carbon::parse($schedule->schedule_start_time)->format('Y-m-d')): ?>
+                            <span style="font-size:10px;max-width:150px;margin:0;font-weight: normal;display: inline-block;">
+                            <span class="text-danger"><i
+                                        class="fa fa-circle"></i></span> <?php echo e($schedule->subject->name); ?>    <?php echo e(\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y g:i A')); ?>
 
-                                <span class="text-danger" data-toggle="tooltip" data-placement="top"
-                                      title="Schedule for <?php echo e($schedule->subject->name); ?> between <?php echo e(\Carbon\Carbon::parse($schedule->schedule_start_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s').'-'.\Carbon\Carbon::parse($schedule->schedule_end_time,'UTC')->tz('Asia/Calcutta')->format('d M Y H:i:s')); ?>"><i
-                                            class="fa fa-circle"></i></span>
-                            <?php endif; ?>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </p>
+                        </span>
+                        <?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </a>
             </td>
             <?php if($count%7==0): ?>
