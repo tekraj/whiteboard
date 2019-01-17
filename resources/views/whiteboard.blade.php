@@ -1289,7 +1289,7 @@
     });
     var base_url = '{{url('/')}}';
     var herokoUrl = '{{env('CHAT_URL')}}';
-    var publicModeEnabled = {{$isPublic?'true':'false'}};
+    var publicModeEnabled = {{$isPublic==='true'?'true':'false'}};
     $(document).ready(function () {
         var totalHeight = window.innerHeight;
         $('#loader').hide();
