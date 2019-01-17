@@ -13,16 +13,9 @@ class AddSessionIdTriggerStudentTutorSessions extends Migration
      */
     public function up()
     {
-//        DB::unprepared("
-//                CREATE TRIGGER insert_session_id_to_tutor_session
-//                BEFORE INSERT ON tutor_sessions
-//                FOR EACH  ROW
-//                BEGIN
-//                    SET NEW.session_id = UUID();
-//                END;
-//               ");
+
         DB::unprepared("
-                CREATE TRIGGER insert_session_id_to_student_session
+                CREATE TRIGGER IF NOT EXIST insert_session_id_to_student_session
                 BEFORE INSERT ON student_sessions
                 FOR EACH  ROW
                 BEGIN
