@@ -24,7 +24,7 @@ class WhiteBoardController extends Controller
         $domain = $request->getHttpHost();
         $isPublic = false;
         if(env('APP_ENV')=='production'){
-            $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 'false' : 'true';
+            $isPublic = strpos($domain,'megamindtutor.com')>=0 ? 0 : 1;
         }
         $factory = JWTFactory::addClaims([
             'sub'   => $user->id,
