@@ -178,6 +178,7 @@
 <script src="{{asset('js/main.js')}}"></script>
 <script src="{{asset('painting-app/js/angular.min.js')}}"></script>
 <script>
+    var chatUrl = '{{env('CHAT_URL')}}';
     var user = {!! $user !!};
     var subjects = {!! $subjects !!};
 </script>

@@ -206,7 +206,7 @@
         </div>
         <div class="col-sm-6 text-right">
             <?php if($type=='tutor' && !$isPublic): ?>
-                <button class="btn btn-success btn-public js-group-mode">Group Mode</button>
+                
             <?php endif; ?>
         </div>
     </div>
@@ -1295,7 +1295,7 @@
     });
     var base_url = '<?php echo e(url('/')); ?>';
     var herokoUrl = '<?php echo e(env('CHAT_URL')); ?>';
-    var publicModeEnabled = <?php echo e($isPublic?'true':'false'); ?>;
+    var publicModeEnabled = <?php echo e($isPublic===1?'true':'false'); ?>;
     $(document).ready(function () {
         var totalHeight = window.innerHeight;
         $('#loader').hide();

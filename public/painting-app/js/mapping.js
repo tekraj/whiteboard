@@ -3,7 +3,6 @@ angular.module('mappingApp',[])
 .controller('MappingController', function($scope,$http){
     var socket;
     var loader = $('#loader');
-    var herokoUrl = 'https://chatappwhiteboard.herokuapp.com/';
     $scope.tutors = [];
     $scope.admin = {};
     $scope.user = {};
@@ -19,7 +18,7 @@ angular.module('mappingApp',[])
         "transports": ["websocket"],
         "query": {"token": $scope.user.token}
     };
-    socket = new io(herokoUrl, connectionOptions);
+    socket = new io(chatUrl, connectionOptions);
 
     socket.emit('add-user');
     socket.on('update-users', function(data){

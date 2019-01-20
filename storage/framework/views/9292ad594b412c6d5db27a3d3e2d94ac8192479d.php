@@ -45,34 +45,18 @@
                         <div class="header-button">
                             <div class="noti-wrap">
                                 <div class="noti__item js-item-menu">
-                                    <i class="zmdi zmdi-comment-more"></i>
-                                    <span class="quantity">1</span>
+                                    <i class="zmdi zmdi-comment-more js-unread-notifications"></i>
+                                    <span class="quantity">{{techNotifications}}</span>
                                     <div class="mess-dropdown js-dropdown">
                                         <div class="mess__title">
                                             <p>You have {{techSupportData.length}} news message</p>
                                         </div>
-                                        <div class="mess__item">
-                                            <div class="image img-cir img-40">
-                                                <img src="images/icon/avatar-06.jpg" alt="Michelle Moreno" />
-                                            </div>
+                                        <div class="mess__item" ng-repeat="message in techSupportData track by $index">
                                             <div class="content">
-                                                <h6>Michelle Moreno</h6>
-                                                <p>Have sent a photo</p>
-                                                <span class="time">3 min ago</span>
+                                                <h6>{{ message.user_name }} <small>({{ message.user_type }})</small></h6>
+                                                <p>{{message.message}}</p>
+                                                <span class="time">{{message.time_diff}} min ago</span>
                                             </div>
-                                        </div>
-                                        <div class="mess__item">
-                                            <div class="image img-cir img-40">
-                                                <img src="images/icon/avatar-04.jpg" alt="Diane Myers" />
-                                            </div>
-                                            <div class="content">
-                                                <h6>Diane Myers</h6>
-                                                <p>You are now connected on message</p>
-                                                <span class="time">Yesterday</span>
-                                            </div>
-                                        </div>
-                                        <div class="mess__footer">
-                                            <a href="#">View all messages</a>
                                         </div>
                                     </div>
                                 </div>
@@ -194,6 +178,7 @@
 <script src="<?php echo e(asset('js/main.js')); ?>"></script>
 <script src="<?php echo e(asset('painting-app/js/angular.min.js')); ?>"></script>
 <script>
+    var chatUrl = '<?php echo e(env('CHAT_URL')); ?>';
     var user = <?php echo $user; ?>;
     var subjects = <?php echo $subjects; ?>;
 </script>
