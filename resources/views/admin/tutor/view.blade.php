@@ -18,7 +18,7 @@
                             <th>
                                 Subject
                             </th>
-                            <td>{{$tutor->subject->name}}</td>
+                            <td>{{$tutor->subject ? $tutor->subject->name:''}}</td>
                         </tr>
                         <tr>
                             <th>Contact No</th>

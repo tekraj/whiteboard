@@ -195,7 +195,7 @@ class StudentController extends Controller
 
     public function payments(){
         $pageTitle = 'Students';
-       return view('admin.student.payments',compact('pageTitle'));
+       return view('admin.student.payment',compact('pageTitle'));
     }
 
     public function sessions($id){

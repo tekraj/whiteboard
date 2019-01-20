@@ -1739,12 +1739,7 @@
                     });
 
                     $('#edit-schedule-tutors').html(html);
-                    if (editStudentMagicSelect)
-                        editStudentMagicSelect.clear();
 
-                    editStudentMagicSelect = $('#edit-schedule-students').magicSuggest({
-                        data: response.students
-                    });
                 }
             }
         });
@@ -1777,16 +1772,6 @@
         if($thisForm.find('.submit').hasClass('disabled'))
             return false;
 
-        if($thisForm.hasClass('edit')){
-            var students = editStudentMagicSelect.getValue();
-        }else{
-            if(!studentMagicSelect)
-                return false;
-
-            var students = studentMagicSelect.getValue();
-            console.log(students); console.log(students);
-        }
-
         var url = $(this).data().url;
         var formData = $(this).serializeArray();
 
@@ -1797,7 +1782,7 @@
 
         if(data.tutor_id.length<1 || data.subject_id.length<1 || data.schedule_start_date.length<1 || data.schedule_end_date.length<1)
             return false;
-        data.students = students;
+
         $thisForm.find('.submit').addClass('.disabled').html('Sending');
         $.ajax({
             type: 'post',
@@ -1857,10 +1842,7 @@
                     if (editStudentMagicSelect)
                         editStudentMagicSelect.clear();
 
-                    editStudentMagicSelect = $('#edit-schedule-students').magicSuggest({
-                        data: response.students,
-                        value : students
-                    });
+
                 }
             }
         });

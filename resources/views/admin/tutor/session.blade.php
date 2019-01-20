@@ -13,7 +13,7 @@
                     Email : <b>{{$tutor->email}}</b>
                 </div>
                 <div class="col-sm-4">
-                    Subject <b>{{$tutor->subject->name}}</b>
+                    Subject <b>{{$tutor->subject ? $tutor->subject->name:''}}</b>
                 </div>
             </div>
         </div>

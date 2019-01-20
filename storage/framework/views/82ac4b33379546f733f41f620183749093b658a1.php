@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="au-card recent-report">
             <div class="au-card-inner">
-                <h3 class="title-2">View Details About <?php echo e($tutor->name); ?> <a href="<?php echo e(url('admin/tutors')); ?>" class="btn btn-default pull-right">Back</a></h3>
+                <h3 class="title-2">View Details About <?php echo e($tutor->name); ?> <a href="<?php echo e(url('admin/tutors')); ?>" class="btn btn-default pull-right"><b>Back</b></a></h3>
                 <table class="table table-hover table-striped">
                     <tbody>
                         <tr>

@@ -80,13 +80,7 @@ $month = \Carbon\Carbon::now()->format('m');
 
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <label for="schedule-students" class="col-sm-4">Students</label>
-                            <div class="col-sm-8">
-                                <?php echo e(Form::text('students',null,['class'=>'form-control','id'=>'schedule-students'])); ?>
 
-                            </div>
-                        </div>
                     </div>
                     <div class="card-footer text-right" >
                         <button class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -145,13 +139,7 @@ $month = \Carbon\Carbon::now()->format('m');
 
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <label for="edit-schedule-students" class="col-sm-4">Students</label>
-                            <div class="col-sm-8">
-                                <?php echo e(Form::text('students',null,['class'=>'form-control','id'=>'edit-schedule-students'])); ?>
 
-                            </div>
-                        </div>
                     </div>
                     <div class="card-footer text-right" >
                         <button class="btn btn-default" data-dismiss="modal">Cancel</button>

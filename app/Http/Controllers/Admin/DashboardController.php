@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use Illuminate\Support\Facades\Validator;
 use View;
 class DashboardController extends Controller
 {
@@ -62,7 +63,17 @@ class DashboardController extends Controller
     }
 
     public function addNewSchedule(Request $request){
-
+        $validationRules = [
+            'schedule_start_date' => 'required',
+            'schedule_end_date' => 'required',
+            'subject_id'=>'required',
+            'tutor_id'=>'required'
+        ];
+        $validationMessages = [];
+        $validator = Validator::make($request->all(), $validationRules, $validationMessages);
+        if($validator->fails()){
+            return response()->json(['status'=>false]);
+        }
         $user = Auth::user();
         $schedule = new Schedule;
         $schedule->schedule_start_time = Carbon::parse($request->schedule_start_date,'Asia/Kolkata')->tz('UTC');
@@ -72,7 +83,9 @@ class DashboardController extends Controller
         $schedule->tutor_id = $request->tutor_id;
         $schedule->created_by = $user->id;
         if($schedule->save()){
-            $schedule->students()->sync($request->students);
+            $subject = Subject::find($request->subject_id);
+            $students = $subject->students()->pluck('id')->toArray();
+            $schedule->students()->sync($students);
             $endOfTheMonth = Carbon::now()->endOfMonth()->format('d');
             $url = url('admin/dashboard/get-schedule');
             $month = date('m');
