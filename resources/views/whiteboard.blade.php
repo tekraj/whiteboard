@@ -206,7 +206,7 @@
         </div>
         <div class="col-sm-6 text-right">
             @if($type=='tutor' && !$isPublic)
-                {{--<button class="btn btn-success btn-public js-group-mode">Group Mode</button>--}}
+                <button class="btn btn-success btn-public js-group-mode">Group Mode</button>
             @endif
         </div>
     </div>

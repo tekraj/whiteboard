@@ -2605,7 +2605,7 @@ function canvasDrawing(user, socket) {
         if (publicModeEnabled) {
             return false;
         }
-        if (user.userType == 'tutor' && data.user.ObjectID != currentStudentID) {
+        if (user.userType == 'tutor' && data.user.ObjectID != currentStudentID && !groupMode) {
             return false;
         }
 

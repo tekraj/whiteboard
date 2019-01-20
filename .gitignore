@@ -26,3 +26,8 @@ composer.lock
 /bootstrap/cache/
 /storage/
 storage/
+/storage
+/storage/framework/
+storage/framework/
+storage/framework/views/
+/storage/frameword/views/

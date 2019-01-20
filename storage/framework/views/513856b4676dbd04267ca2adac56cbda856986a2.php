@@ -206,7 +206,7 @@
         </div>
         <div class="col-sm-6 text-right">
             <?php if($type=='tutor' && !$isPublic): ?>
-                
+                <button class="btn btn-success btn-public js-group-mode">Group Mode</button>
             <?php endif; ?>
         </div>
     </div>

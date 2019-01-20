@@ -107,7 +107,10 @@ $(function () {
 
         });
 
-
+        socket.on('group-mode-enabled',function(data){
+            console.log(data);
+            groupMode=data.groupMode;
+        });
         /**
          * ================================
          * NOTIFY STUDENT ABOUT NEW TEACHER
@@ -260,9 +263,11 @@ $(function () {
             if($this.hasClass('active')){
                 groupMode = false;
                 $this.removeClass('active');
+                socket.emit('group-mode-enabled',{groupMode:groupMode});
             }else{
                 $this.addClass('active');
                 groupMode = true;
+                socket.emit('group-mode-enabled',{groupMode:groupMode});
             }
         })
     }
@@ -285,6 +290,7 @@ $(function () {
             }
         }
     });
+
 
 
     /**
@@ -447,7 +453,7 @@ $(function () {
         var senderName = data.senderName;
         var senderId = data.id;
         var userId = $('#user-' + senderId);
-        if (userId.hasClass('active')) {
+        if (userId.hasClass('active') || groupMode) {
             var html = '<li class="from">\n' +
                 ' <div>\n' +
                 ' <p class="clearfix"><span class="username">' + senderName + '</span> <span class="time">' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '</span></p>\n' +
@@ -459,7 +465,7 @@ $(function () {
 
             $chatBoard.append(html);
             $chatRoom.animate({scrollTop: $chatBoard.height()}, 0);
-        } else {
+        }else {
             if (userId.find('.notif-span').length > 0) {
                 var counter = parseInt(userId.find('.notif-span').text()) + 1;
                 userId.find('.notif-span').text(counter);
@@ -493,7 +499,6 @@ function streamCanvasDrawing(data, publicModeEnabled, redrawForeign, xy) {
         }
 
     } else {
-        console.log(data);
         socket.emit('send-private-drawing', {
             user: user,
             receiver: receiver,
