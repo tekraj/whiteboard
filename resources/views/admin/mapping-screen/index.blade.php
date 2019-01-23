@@ -186,7 +186,8 @@
                 </div>
                 <div class="tab-pane" id="live-students">
                     <h4>All Live Students</h4>
-                    <table>
+                    <br>
+                    <table class="table table-striped table-hover">
                         <thead>
                             <th>SN</th>
                             <th>Name</th>
@@ -205,7 +206,8 @@
                 </div>
                 <div class="tab-pane" id="practice-students">
                     <h4>All Practice Students</h4>
-                    <table>
+                    <br>
+                    <table class="table table-striped table-hover">
                         <thead>
                         <th>SN</th>
                         <th>Name</th>

@@ -53,7 +53,9 @@
                                         </div>
                                         <div class="mess__item" ng-repeat="message in techSupportData track by $index">
                                             <div class="content">
-                                                <h6>{{message.user_name }} <small>({{ message.user_type }})</small></h6>
+                                                <h6>{{message.user_name }}
+                                                    <small>({{ message.user_type }})</small>
+                                                </h6>
                                                 <p>{{message.message}}</p>
                                                 <span class="time" ng-bind="'ID:('+message.id+') '+message.created_at">}}</span>
                                             </div>
@@ -108,36 +110,68 @@
         </header>
         <div class="main-content" style="padding-top:40px;">
             <ul class="nav nav-tabs" role="tablist" id="tab-lists">
-                <li  role="presentation">
+                <li role="presentation">
                     <a href="#tab-mapping" role="tab" data-toggle="tab">Mapping Details</a>
                 </li>
+                <li role="presentation">
+                    <a href="#live-students" role="tab" data-toggle="tab">Live Students</a>
+                </li>
+                <li role="presentation">
+                    <a href="#practice-students" role="tab" data-toggle="tab">Practice Students</a>
+                </li>
             </ul>
-            <div class="subject-panel">
-                <ul class="nav nav-tabs" role="tablist" id="tab-lists">
-                    <li ng-repeat="subject in subjects track by $index" role="presentation"
-                        ng-class="{'active':$index==0}">
-                        <a href="#tab-{{subject.id}}" role="tab" data-toggle="tab">{{subject.name}}</a></li>
-                </ul>
-                <div class="tab-content" id="tab-contents" style="background: #fff;">
-                    <div ng-repeat="subject in subjects track by $index" role="tabpanel" class="tab-pane"
-                         ng-class="{'active':$index==0}" id="tab-{{subject.id }}"
-                         style="height: 400px;overflow-y: auto;">
-                        <div class="clearfix">
-                            <div class="col-sm-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Tutors
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="card js-tutor-card" ng-repeat="tutor in tutors track by $index"
-                                             ng-if="tutor.subject==subject.id" data-id="{{ tutor.sub }}">
-                                            <div class="header bg-green"><h2 ng-bind="tutor.Name"></h2>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-mapping">
+                    <div class="subject-panel">
+                        <ul class="nav nav-tabs" role="tablist" id="tab-lists">
+                            <li ng-repeat="subject in subjects track by $index" role="presentation"
+                                ng-class="{'active':$index==0}">
+                                <a href="#tab-{{subject.id}}" role="tab" data-toggle="tab">{{subject.name}}</a></li>
+                        </ul>
+                        <div class="tab-content" id="tab-contents" style="background: #fff;">
+                            <div ng-repeat="subject in subjects track by $index" role="tabpanel" class="tab-pane"
+                                 ng-class="{'active':$index==0}" id="tab-{{subject.id }}"
+                                 style="height: 400px;overflow-y: auto;">
+                                <div class="clearfix">
+                                    <div class="col-sm-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Tutors
                                             </div>
-                                            <div class="body">
+                                            <div class="panel-body">
+                                                <div class="card js-tutor-card"
+                                                     ng-repeat="tutor in tutors track by $index"
+                                                     ng-if="tutor.subject==subject.id" data-id="{{ tutor.sub }}">
+                                                    <div class="header bg-green"><h2 ng-bind="tutor.Name"></h2>
+                                                    </div>
+                                                    <div class="body">
+                                                        <ul class="list-group" style="list-style: none;">
+                                                            <li class="ui-state-default js-student tutor-student"
+                                                                ng-repeat="student in tutor.subscribedStudents track by student.ObjectID"
+                                                                style="padding:5px;" data-student="{{ student }}"><span
+                                                                        class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                                                                <span
+                                                                        ng-bind="student.Name"
+                                                                        class="text-capitalize"></span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="panel panel-default js-student-card">
+                                            <div class="panel-heading">
+                                                Unmapped Students
+                                            </div>
+                                            <div class="panel-body">
                                                 <ul class="list-group" style="list-style: none;">
-                                                    <li class="ui-state-default js-student tutor-student"
-                                                        ng-repeat="student in tutor.subscribedStudents track by student.ObjectID"
-                                                        style="padding:5px;" data-student="{{ student }}"><span
+                                                    <li class="ui-state-default js-student"
+                                                        ng-repeat="student in students track by student.ObjectID"
+                                                        ng-if="!student.tutor && student.subject==subject.id"
+                                                        style="padding:5px;"
+                                                        data-id="{{ student }}"><span
                                                                 class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span
                                                                 ng-bind="student.Name" class="text-capitalize"></span>
                                                     </li>
@@ -147,26 +181,46 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="panel panel-default js-student-card">
-                                    <div class="panel-heading">
-                                        Unmapped Students
-                                    </div>
-                                    <div class="panel-body">
-                                        <ul class="list-group" style="list-style: none;">
-                                            <li class="ui-state-default js-student"
-                                                ng-repeat="student in students track by student.ObjectID"
-                                                ng-if="!student.tutor && student.subject==subject.id"
-                                                style="padding:5px;"
-                                                data-id="{{ student }}"><span
-                                                        class="ui-icon ui-icon-arrowthick-2-n-s"></span> <span
-                                                        ng-bind="student.Name" class="text-capitalize"></span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="tab-pane" id="live-students">
+                    <h4>All Live Students</h4>
+                    <table>
+                        <thead>
+                            <th>SN</th>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th>Active From</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="students in student track by $index">
+                                <td ng-bind="$index+1"></td>
+                                <td ng-bind="student.Name"></td>
+                                <td ng-bind="user.subject_name"></td>
+                                <td ng-bind="student.connected_at|getTimeInterval"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="practice-students">
+                    <h4>All Practice Students</h4>
+                    <table>
+                        <thead>
+                        <th>SN</th>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Active From</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="students in practiceStudents track by $index">
+                            <td ng-bind="$index+1"></td>
+                            <td ng-bind="student.Name"></td>
+                            <td ng-bind="user.subject_name"></td>
+                            <td ng-bind="student.connected_at|getTimeInterval"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
