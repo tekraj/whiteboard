@@ -314,4 +314,6 @@ class UtilityController extends Controller
         }
         return response()->json($lastSession);
     }
+
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Schedule;
 use App\Models\Subject;
+use App\Models\TechSupportMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use JWTAuth;
@@ -35,6 +36,12 @@ class MappingScreenController extends Controller
         $token = JWTAuth::encode($payload)->get();
         $user->token = $token;
         $subjects = Subject::where('status',1)->get();
-        return view('admin.mapping-screen.index',compact('user','subjects'));
+        $technicalMessages = TechSupportMessage::orderBy('id','desc')->limit(5)->get();
+        return view('admin.mapping-screen.index',compact('user','subjects','technicalMessages'));
+    }
+
+    public function unreadAdminTechnicalSupportMessages(){
+        TechSupportMessage::where('status',1)->update(['status'=>0]);
+        return response()->json(['status'=>true]);
     }
 }

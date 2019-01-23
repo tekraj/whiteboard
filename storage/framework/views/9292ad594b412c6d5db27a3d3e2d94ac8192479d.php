@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="<?php echo e(asset('painting-app/izitoast/css/iziToast.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('painting-app/ripple-css/ripple.min.css')); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo e(asset('painting-app/css/maping-screen.css')); ?>">
-
+    <link rel="stylesheet" href="<?php echo e(asset('painting-app/izitoast/css/iziToast.min.css')); ?>">
     <link href="<?php echo e(asset('css/theme.css')); ?>" rel="stylesheet" media="all">
     <link href="<?php echo e(asset('css/style.css')); ?>" rel="stylesheet" media="all">
     <title>White Board</title>
@@ -44,8 +44,8 @@
                         </form>
                         <div class="header-button">
                             <div class="noti-wrap">
-                                <div class="noti__item js-item-menu">
-                                    <i class="zmdi zmdi-comment-more js-unread-notifications"></i>
+                                <div class="noti__item js-item-menu js-unread-notifications">
+                                    <i class="zmdi zmdi-comment-more "></i>
                                     <span class="quantity">{{techNotifications}}</span>
                                     <div class="mess-dropdown js-dropdown">
                                         <div class="mess__title">
@@ -53,9 +53,9 @@
                                         </div>
                                         <div class="mess__item" ng-repeat="message in techSupportData track by $index">
                                             <div class="content">
-                                                <h6>{{ message.user_name }} <small>({{ message.user_type }})</small></h6>
+                                                <h6>{{message.user_name }} <small>({{ message.user_type }})</small></h6>
                                                 <p>{{message.message}}</p>
-                                                <span class="time">{{message.time_diff}} min ago</span>
+                                                <span class="time" ng-bind="'ID:('+message.id+') '+message.created_at">}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -107,6 +107,11 @@
             </div>
         </header>
         <div class="main-content" style="padding-top:40px;">
+            <ul class="nav nav-tabs" role="tablist" id="tab-lists">
+                <li  role="presentation">
+                    <a href="#tab-mapping" role="tab" data-toggle="tab">Mapping Details</a>
+                </li>
+            </ul>
             <div class="subject-panel">
                 <ul class="nav nav-tabs" role="tablist" id="tab-lists">
                     <li ng-repeat="subject in subjects track by $index" role="presentation"
@@ -168,7 +173,7 @@
     </div>
 </div>
 <script src="<?php echo e(asset('painting-app/js/jquery.min.js')); ?>"></script>
-
+<script src="<?php echo e(asset('painting-app/izitoast/js/iziToast.min.js')); ?>"></script>
 <script src="<?php echo e(asset('painting-app/chatjs/socket.io.js')); ?>"></script>
 <script src="<?php echo e(asset('painting-app/js/proper.min.js')); ?>"></script>
 <script src="<?php echo e(asset('painting-app/plugins/jquery-ui/jquery-ui.min.js')); ?>"></script>
@@ -181,6 +186,8 @@
     var chatUrl = '<?php echo e(env('CHAT_URL')); ?>';
     var user = <?php echo $user; ?>;
     var subjects = <?php echo $subjects; ?>;
+    var base_url = '<?php echo e(url('/')); ?>';
+    var technicalMessages = <?php echo $technicalMessages; ?>;
 </script>
 <script src="<?php echo e(asset('painting-app/js/mapping.js')); ?>"></script>
 </body>

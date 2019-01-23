@@ -28,19 +28,19 @@
 		POSITIONS = ['bottomRight','bottomLeft','bottomCenter','topRight','topLeft','topCenter','center'],
 		THEMES = {
 			info: {
-				color: 'blue',
+				color: '#2196F3',
 				icon: 'ico-info'
 			},
 			success: {
-				color: 'green',
+				color: '#4CAF50',
 				icon: 'ico-success'
 			},
 			warning: {
-				color: 'orange',
+				color: '#FF9800',
 				icon: 'ico-warning'
 			},
 			error: {
-				color: 'red',
+				color: '#F44336',
 				icon: 'ico-error'
 			},
 			question: {

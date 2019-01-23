@@ -37,7 +37,8 @@ class WhiteBoardController extends Controller
             'Name'=>$user->name,
             'subject'=>$subject->id,
             'subject_name'=>$subject->name,
-            'userType'=>'tutor'
+            'userType'=>'tutor',
+            'connected_at'=>date('Y-m-d H:i:s')
         ]);
         $payload = $factory->make();
         $token = JWTAuth::encode($payload)->get();

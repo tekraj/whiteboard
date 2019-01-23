@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
 use App\Models\Role;
+use App\Models\TechSupportMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -145,4 +146,6 @@ class AdminController extends Controller
         })->paginate($this->pageSize);
         return view('admin.admin.index',compact('pageTitle','admins','search_data'));
     }
+
+
 }

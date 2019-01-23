@@ -476,6 +476,16 @@ $(function () {
 
     });
 
+    if(user.userType=='practice'){
+        socket.emit('connect-practice-mode');
+    }
+
+    socket.on('session-notice',function(data){
+        var html = '<p>Hi'+user.Name+' your class will start in '+data.time_remaining+'. Be prepared for it.</p>';
+        $('#session-note-alert').find('.modal-body').html(html);
+        $('#session-note-alert').show();
+        var audio = new Audio(base_url + '/painting-app/alert-bell.mp3').play();
+    });
 
 });
 

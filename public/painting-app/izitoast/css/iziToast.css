@@ -1736,3 +1736,9 @@
     opacity: 0;
   }
 }
+.iziToast-capsule{height: auto!important;}
+.iziToast.iziToast-animateInside .iziToast-icon{height: auto!important;}
+.iziToast-color-black{background: rgba(0,0,0,0.5);}
+.iziToast-color-black .slideIn{margin-top: 0px!important;}
+.iziToast-icon{position: absolute!important;top:18px!important;color: #fff!important;}
+.iziToast{max-height: 54px!important;overflow:hidden;}

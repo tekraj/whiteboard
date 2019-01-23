@@ -14,7 +14,7 @@ Homestead.yaml
 /mailoutput
 /vendor
 /node_modules
-/storage
+
 composer.lock
 .env
 .idea
@@ -24,10 +24,3 @@ composer.lock
 /mysql
 /.scannerwork
 /bootstrap/cache/
-/storage/
-storage/
-/storage
-/storage/framework/
-storage/framework/
-storage/framework/views/
-/storage/frameword/views/

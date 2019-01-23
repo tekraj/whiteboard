@@ -39,7 +39,11 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'], function(){
 
         });
 
+
+        Route::get('unread-notifications','MappingScreenController@unreadAdminTechnicalSupportMessages');
         Route::get('mapping-screen','MappingScreenController@index');
+
+
         Route::post('/dashboard/get-calender','DashboardController@getCalender');
         Route::post('/dashboard/add-new-schedule','DashboardController@addNewSchedule');
         Route::post('/dashboard/edit-schedule','DashboardController@editSchedule');

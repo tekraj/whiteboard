@@ -1271,6 +1271,21 @@
         </div>
     </div>
 </div>
+<div class="modal" id="session-note-alert">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Session Alert!
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 <input type="file" id="input-image" style="display:none">
 <ul class="student-request-list"></ul>
 <!-- Optional JavaScript -->
