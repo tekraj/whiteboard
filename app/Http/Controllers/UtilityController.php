@@ -30,8 +30,8 @@ class UtilityController extends Controller
         $base64 = $request->imageData;
         $image_base64 = base64_decode($base64);
         if (!realpath(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}"))) {
-            mkdir(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}/"), 777);
-            @chmod(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}/"), 777);
+            @mkdir(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}/"), 0777);
+            @chmod(storage_path("app/public/uploads/{$type}s/canvas_images/{$user->id}/"), 0777);
         }
         $uploadDir = "{$type}s/canvas_images/{$user->id}/{$time}_{$user->id}_canvas_image.png";
 

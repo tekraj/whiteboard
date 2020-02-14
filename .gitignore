@@ -24,3 +24,4 @@ composer.lock
 /mysql
 /.scannerwork
 /bootstrap/cache/
+/chat-app/node_modules/
