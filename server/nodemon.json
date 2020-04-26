@@ -1,0 +1,10 @@
+{
+  "watch": ["src/**/*.ts"],
+  "ext": "ts",
+  "ignore": [".git", "*.test.ts", "node_modules/.*.*/node_modules"],
+  "delay": "1",
+  "verbose": true,
+  "execMap": {
+    "ts": "ts-node"
+  }
+}

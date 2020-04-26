@@ -1,0 +1,12 @@
+package-lock.json
+node_modules
+*.map
+*.min.js
+*.min.css
+!.eslintignore
+!.eslintrc
+!.prettierrc
+!.prettierignore
+
+.history
+.vscode

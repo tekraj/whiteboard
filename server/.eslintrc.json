@@ -1,0 +1,73 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb-base",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "never",
+        "exports": "never",
+        "functions": "ignore"
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "vars": "local",
+        "args": "none",
+        "argsIgnorePattern": "res|next|^err",
+        "varsIgnorePattern": "[I]\\w+|Application|Request|Response|NextFunction"
+      }
+    ],
+    "no-console": "warn",
+    "no-use-before-define": "warn",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": ["_", "__", "__n"]
+      }
+    ],
+    "quotes": [
+      "error",
+      "backtick",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": false
+      }
+    ],
+    "no-shadow": [
+      "error",
+      {
+        "allow": ["err", "resolve", "reject", "done", "callback", "cb"]
+      }
+    ]
+  }
+}
