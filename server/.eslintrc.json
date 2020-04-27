@@ -49,12 +49,12 @@
         "props": false
       }
     ],
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allow": ["_", "__", "__n"]
-      }
-    ],
+    // "no-underscore-dangle": [
+    //   "error",
+    //   {
+    //     "allow": ["_", "__", "__n"]
+    //   }
+    // ],
     "quotes": [
       "error",
       "backtick",

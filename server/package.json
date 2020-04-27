@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "prepare": "install-peers",
+    "develop": "cp tsconfig.dev.json tsconfig.json",
     "start": "NODE_ENV=production node dist/index.js",
     "start:dev": "nodemon src/index.ts",
     "start:dev2": "ts-node-dev --respawn src/index.ts",
-    "build": "tsc -p .",
+    "build": "cp tsconfig.json tsconfig.backup.json 2>/dev/null || : && cp tsconfig.prod.json tsconfig.json && tsc -p . && cp tsconfig.backup.json tsconfig.json 2>/dev/null || : && rm tsconfig.backup.json 2>/dev/null || :",
+    "build:win": "cp tsconfig.json tsconfig.backup.json && cp tsconfig.prod.json tsconfig.json && tsc -p . && cp tsconfig.backup.json tsconfig.json && rm tsconfig.backup.json",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
     "husky": {

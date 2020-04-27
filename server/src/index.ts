@@ -2,7 +2,7 @@ import express, { Application, Request, Response, NextFunction } from "express";
 
 const app: Application = express();
 
-app.get(``, (_: Request, res: Response, __: NextFunction) => {
+app.get(``, (__: Request, res: Response, _: NextFunction) => {
   res.send(`🚀`);
 });
 
