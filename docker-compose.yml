@@ -6,8 +6,8 @@ services:
     restart: unless-stopped # always on production!
     # expose: # for linked services only!
     # - "5432"
-    ports: # Accessible on HOST:54321 # Disable in production!
-      - "54321:5432"
+    ports: # Accessible on HOST:2220 # Disable in production!
+      - "2224:5432"
 
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -29,9 +29,9 @@ services:
     build:
       context: ./server
     # expose: # for linked services only!
-    # - 2999
+    # - 2223
     ports:
-      - 3999:2999 # disable to only access by container own IP
+      - 2223:2223 # disable to only access by container own IP
       - 9339:9229 # debugger port, disable on production
     command: npm run start:dev # npm run start
     links:
@@ -42,7 +42,6 @@ services:
 
     environment:
       - NODE_ENV=${NODE_ENV}
-      # - NODE_ENV=development
     volumes:
       - ./server/src:/app/src
       - ./server/dist:/app/dist
@@ -61,9 +60,9 @@ services:
     # tty: true
     stdin_open: true
     expose: # for linked services only!
-      - 3700
-    ports:
-      - 3344:3700
+      - 2222
+    ports: #Host:container
+      - 2222:2222
     command: npm run start
     links:
       # Link services to access http://server and  http://api inside the container
@@ -76,7 +75,7 @@ services:
       - CHOKIDAR_USEPOLLING=1
     volumes:
       - ./client:/app
-      - /app/node_module
+      - /app/node_modules
     networks:
       app_net:
         ipv4_address: 172.16.0.4
