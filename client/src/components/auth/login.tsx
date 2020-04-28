@@ -11,6 +11,7 @@ export class Login extends Component {
     token: null,
   };
 
+
   componentDidMount() {
     this.getTestQuery();
   };
@@ -29,6 +30,7 @@ export class Login extends Component {
         this.setState({ data: res })
       })
   };
+  GOOGLE_CLIENT_ID:string = process.env.REACT_APP_GOOGLE_CLIENT_ID!;
   responseGoogle = (response: object) => {
     console.log("this is response", response);
     return <Redirect to="/dashboard" />;
@@ -40,7 +42,7 @@ export class Login extends Component {
     return (
       <React.Fragment>
         <GoogleLogin
-          clientId="779634656077-oh0ehj7kv2ddk3b66cgm22v6n65bhnp7.apps.googleusercontent.com"
+          clientId={this.GOOGLE_CLIENT_ID}
           onSuccess={this.responseGoogle}
           onFailure={this.responseGoogle}
           cookiePolicy={"single_host_origin"}
