@@ -55,7 +55,7 @@ const cloneRequestObject = (
 const modifyResponseBody = (body: any, req: Request, res: Response) => {
   // Modify response here
   // Attach the request to response, if requested
-  if (attachRequestToResponse(req && res.locals && res.locals.requestClone)) {
+  if (attachRequestToResponse(res?.locals?.requestClone)) {
     body.request = res.locals.requestClone;
   }
   return body;
