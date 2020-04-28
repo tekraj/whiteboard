@@ -12,11 +12,13 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+    // "plugin:@typescript-eslint/recommended",
+    // "plugin:@typescript-eslint/eslint-recommended",
     "airbnb-base",
     "prettier",
     "plugin:prettier/recommended"
@@ -38,10 +40,22 @@
         "vars": "local",
         "args": "none",
         "argsIgnorePattern": "res|next|^err",
-        "varsIgnorePattern": "[I]\\w+|Application|Request|Response|NextFunction"
+        "varsIgnorePattern": "[I]\\w+|Application|Request|Response|NextFunction|HttpError"
       }
     ],
-    "no-console": "warn",
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error",
+          "info"
+        ]
+      }
+    ],
+    "no-debugger": [
+      "warn"
+    ],
     "no-use-before-define": "warn",
     "no-param-reassign": [
       "error",
@@ -66,8 +80,46 @@
     "no-shadow": [
       "error",
       {
-        "allow": ["err", "resolve", "reject", "done", "callback", "cb"]
+        "allow": [
+          "err",
+          "resolve",
+          "reject",
+          "done",
+          "callback",
+          "cb"
+        ]
       }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "typeLike",
+        "format": [
+          "PascalCase"
+        ],
+        "prefix": [
+          "I"
+        ]
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "memberLike",
+        "modifiers": [
+          "private"
+        ],
+        "format": [
+          "camelCase"
+        ],
+        "leadingUnderscore": "require"
+      }
+    ],
+    "import/extensions": [
+      "off"
+    ],
+    "import/no-unresolved": [
+      "off"
     ]
   }
 }
