@@ -1,10 +1,11 @@
-import createError, { HttpError } from 'http-errors';
+import { HttpError } from "http-errors";
 
 import rateLimit from "express-rate-limit";
-const mung = require(`express-mung`);
-const { attachRequestToResponse } = require(`../helpers`);
-const cloneDeep = require(`lodash.clonedeep`);
 import { Request, Response, NextFunction } from "express";
+
+import mung from "express-mung";
+import cloneDeep from "lodash.clonedeep";
+import attachRequestToResponse from "../helpers";
 
 // FIXME: Move interfaces to a different location
 
@@ -21,7 +22,12 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // Error handling
-const errorHandler = (error: HttpError, _req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (
+  error: HttpError,
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({
@@ -32,7 +38,11 @@ const errorHandler = (error: HttpError, _req: Request, res: Response, next: Next
   next();
 };
 
-const cloneRequestObject = (req: Request, res: Response, next: NextFunction) => {
+const cloneRequestObject = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (attachRequestToResponse(req)) {
     res.locals.requestClone = {
       body: cloneDeep(req.body),
@@ -52,11 +62,15 @@ const modifyResponseBody = (body: any, req: Request, res: Response) => {
 };
 
 // TODO: Switch to a redis store in production!
-const rateLimiter = (windowMinutes: String | Number, maxReq: Request, resHeaders: boolean = true) => {
+const rateLimiter = (
+  windowMinutes: number = 0,
+  maxReq: number = 0,
+  resHeaders = true
+) => {
   // maxReq in windowMinutes will block the user!
   const windowMs =
-    Number(windowMinutes || process.env.LIMIT_WINDOW || `15`) * 60 * 1000;
-  const max = Number(maxReq || process.env.LIMIT_REQ || `100`);
+    (windowMinutes || Number(process.env.LIMIT_WINDOW) || 15) * 60 * 1000;
+  const max = maxReq || Number(process.env.LIMIT_REQ) || 100;
   return rateLimit({
     windowMs,
     max,
@@ -69,7 +83,7 @@ const rateLimiter = (windowMinutes: String | Number, maxReq: Request, resHeaders
     },
   });
 };
-module.exports = {
+export default {
   notFound,
   errorHandler,
   modifyResponseBody: mung.json(modifyResponseBody, { mungError: true }),

@@ -1,15 +1,15 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 
+import morgan from "morgan";
+import helmet from "helmet";
+import middleware from "./middleware";
+import setup from "./setup";
 
-const morgan = require(`morgan`);
-const helmet = require(`helmet`);
-const middleware = require(`./middleware`);
-const setup = require(`./setup`);
-setup.envSetup()
+setup.envSetup();
 // setup.dbSetup();
 
 // require routes after env & db Setup!
-const routes = require('./routes')
+const routes = require(`./routes`);
 
 const app = express();
 
@@ -21,9 +21,9 @@ app.use(morgan(`common`));
 app.use(helmet());
 app.use(setup.corsSetup());
 
-app.use(middleware.cloneRequestObject)
+app.use(middleware.cloneRequestObject);
 app.use(middleware.modifyResponseBody);
-app.use('/api', routes)
+app.use(`/api`, routes);
 app.use(middleware.notFound);
 app.use(middleware.errorHandler);
 

@@ -1,13 +1,15 @@
-const dotEnv = require(`dotenv`);
-const dotenvExpand = require(`dotenv-expand`);
 // const mongoose = require(`mongoose`); // keeps logs to mongoose!
-const cors = require(`cors`);
+// import { CallableFunction } from "express";
+import cors from "cors";
+import dotEnv from "dotenv";
+import dotenvExpand from "dotenv-expand";
+import { RequestHandler } from "express";
 
-const envSetup = () => {
+const envSetup = (): void => {
   // Load environment variables
   const envConfig = dotEnv.config({
     path: `.env`,
-    debug: process.env.DEBUG,
+    debug: Boolean(process.env.DEBUG),
   });
   dotenvExpand(envConfig);
 
@@ -17,7 +19,7 @@ const envSetup = () => {
 };
 // const mongoDbSetup = (consoleError = false, throwError = false) => {
 //   mongoose
-//     .connect(process.env.MONGO_CONNECTION_STRING, {
+//     .connect(process.env.MONGO_CONNECTION_sTRING, {
 //       useNewUrlParser: true,
 //       useUnifiedTopology: true,
 //       useFindAndModify: false,
@@ -36,26 +38,30 @@ const envSetup = () => {
 //       if (throwError) throw err;
 //     });
 // };
-const corsSetup = (whitelistDomains: [String] | String, includeFromEnv = true) => {
+const corsSetup = (
+  whitelistDomains: [string] | string | null = null,
+  includeFromEnv = true
+): RequestHandler => {
   /**
    * @param whitelistDomains is a list of domains to allow cors requests from
    * Can be an array of domains
    * Or a string with domains separated by a comma
    * @param includeFromEnv will look for CORS_WHITELIST in environment. Defaults to true
    */
-  let whitelist: Array<String | undefined> = [];
+  let whitelist: Array<string | undefined> = [];
 
   if (Array.isArray(whitelistDomains)) {
     whitelist = [...whitelist, ...whitelistDomains];
   } else if (typeof whitelistDomains === `string` && whitelistDomains.length) {
-    const whitelistFromParam = whitelistDomains.split(`,`).map(x => x.trim());
+    const whitelistFromParam = whitelistDomains.split(`,`).map((x) => x.trim());
     whitelist = [...whitelist, ...whitelistFromParam];
   }
   if (includeFromEnv) {
     const whitelistFromEnv: Array<string | undefined> =
-      includeFromEnv &&
-      process.env.CORS_WHITELIST &&
-      process.env.CORS_WHITELIST.split(`,`).map(x => x.trim()) || [];
+      (includeFromEnv &&
+        process.env.CORS_WHITELIST &&
+        process.env.CORS_WHITELIST.split(`,`).map((x) => x.trim())) ||
+      [];
 
     whitelist = [...whitelist, ...whitelistFromEnv];
     // required if you want to hit api through browser, origin is undefined!
@@ -64,8 +70,8 @@ const corsSetup = (whitelistDomains: [String] | String, includeFromEnv = true) =
     }
   }
   const corsOptions = {
-    origin: (origin: string, callback: Function) => {
-      console.log("origin", origin);
+    origin: (origin: string | undefined, callback: Function) => {
+      console.info(`origin`, origin, typeof origin);
 
       if (whitelist && whitelist.indexOf(origin) !== -1) {
         callback(null, true);
@@ -76,7 +82,7 @@ const corsSetup = (whitelistDomains: [String] | String, includeFromEnv = true) =
   };
   return cors(corsOptions);
 };
-module.exports = {
+export default {
   envSetup,
   // dbSetup: mongoDbSetup,
   corsSetup,
