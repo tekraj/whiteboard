@@ -1,0 +1,21 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "## Start Development",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker-compose up -d",
+    "start:dev": "docker-compose up",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tekraj/whiteboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tekraj/whiteboard/issues"
+  },
+  "homepage": "https://github.com/tekraj/whiteboard#readme"
+}
