@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { GoogleLogin } from "react-google-login";
-import { Redirect } from "react-router-dom";
 
-export class Login extends Component {
+export class Login extends Component<any> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -12,9 +11,12 @@ export class Login extends Component {
       token: null,
     };
   }
+  signup(res: object) {
+    console.log(res);
+    this.props.history.push("/dashboard");
+  }
   responseGoogle = (response: object) => {
-    console.log("this is response", response);
-    return <Redirect to="/dashboard" />;
+    this.signup(response);
   };
   render() {
     return (
