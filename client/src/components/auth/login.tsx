@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { GoogleLogin } from "react-google-login";
+import { withRouter } from "react-router-dom";
+import { loginuser } from "../../actions/authAction";
+import { connect } from "react-redux";
 
 export class Login extends Component<any> {
   constructor(props: any) {
@@ -11,13 +14,20 @@ export class Login extends Component<any> {
       token: null,
     };
   }
-  signup(res: object) {
-    console.log(res);
-    this.props.history.push("/dashboard");
+  signup(profileObj: any) {
+    console.log(profileObj);
+    this.props.loginuser(profileObj);
+    this.props.history.push("/");
   }
-  responseGoogle = (response: object) => {
-    this.signup(response);
+  responseGoogle = (response: any) => {
+    this.signup(response.profileObj);
   };
+  componentWillMount() {
+    const { isAuthenticated } = this.props.auth ? this.props.auth : false;
+    if (isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
   render() {
     return (
       <GoogleLogin
@@ -29,5 +39,9 @@ export class Login extends Component<any> {
     );
   }
 }
+const mapStateToProps = (state: any) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
 
-export default Login;
+export default connect(mapStateToProps, { loginuser })(Login);
