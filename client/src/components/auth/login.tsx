@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { GoogleLogin } from "react-google-login";
-import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { loginuser } from "../../actions/authAction";
+import { connect } from "react-redux";
 
-export class Login extends Component<any> {
+class Login extends Component<any> {
   state = {
     data: [],
     name: "",
@@ -32,12 +34,19 @@ export class Login extends Component<any> {
   GOOGLE_CLIENT_ID: string = process.env.REACT_APP_GOOGLE_CLIENT_ID!;
   signup(profileObj: any) {
     console.log(profileObj);
-    this.props.history.push("/dashboard");
+    this.props.loginuser(profileObj);
+    this.props.history.push("/");
   }
   responseGoogle = (response: any) => {
     console.log("this is response", response);
     this.signup(response.profileObj);
   };
+  componentWillMount() {
+    const { isAuthenticated } = this.props.auth ? this.props.auth : false;
+    if (isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
   render() {
     const data = this.state.data.length
       ? this.state.data.map((item: any) => (
@@ -70,5 +79,9 @@ export class Login extends Component<any> {
     );
   }
 }
+const mapStateToProps = (state: any) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
 
-export default Login;
+export default connect(mapStateToProps, { loginuser })(Login);

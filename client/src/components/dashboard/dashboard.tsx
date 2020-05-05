@@ -1,12 +1,27 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class dashboard extends Component {
+class Dashboard extends Component<any> {
+  constructor(props: any) {
+    super(props);
+  }
   state = { data: [] };
 
   componentDidMount() {
     this.getTestQuery();
   };
 
+  componentWillMount() {
+    const { isAuthenticated } = this.props.auth ? this.props.auth : false;
+    console.log(
+      "Dashboard -> componentWillMount -> this.props",
+      isAuthenticated
+    );
+
+    if (!isAuthenticated) {
+      this.props.history.push("/login");
+    }
+  }
   async getTestQuery() {
     const API_URL = process.env.REACT_APP_API_URL;
     const API_BASE_SLUG = process.env.REACT_APP_API_BASE_SLUG;
@@ -23,12 +38,13 @@ export default class dashboard extends Component {
   };
 
   render() {
+    const { user } = this.props.auth ? this.props.auth : false;
     const data = this.state.data.map((item: any) =>
       <p key={item.id}>{item.id}. {item.firstname} {item.lastname}</p>
     )
     return (
       <div>
-        <p>Hello welcome to dashboard page</p>
+        <p>Hello {user.name} welcome to dashboard page</p>
         {(() => {
           if (this.state.data.length) {
             return (
@@ -48,3 +64,11 @@ export default class dashboard extends Component {
     );
   }
 }
+
+const mapStateToProps = (state: any) => ({
+  isAuthenticated: state.isAuthenticated,
+  auth: state.auth,
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps)(Dashboard);
