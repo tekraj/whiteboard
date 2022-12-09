@@ -14,7 +14,7 @@
     "cors": "^2.8.4",
     "curl-request": "^1.1.1",
     "dotenv": "^5.0.1",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-session": "^1.15.6",
     "jsonwebtoken": "^8.2.1",
     "moment": "^2.22.2",
